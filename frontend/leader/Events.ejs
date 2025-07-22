@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <title>Manage Events</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900&display=swap" />
+  </head>
+  <body style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+    <div class="relative flex min-h-screen flex-col bg-white overflow-x-hidden">
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <%- include('partials/header.ejs') %>
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <!-- Header -->
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Manage Events</p>
+            </div>
+
+            <!-- Form -->
+            <form action="/Post_event" method="POST">
+              <h3 class="text-[#111518] text-lg font-bold px-4 pb-2 pt-4">Add Event</h3>
+              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
+                <label class="flex flex-col min-w-40 flex-1">
+                  <p class="text-base font-medium pb-2">Event Title</p>
+                  <input name="title" placeholder="Enter event title" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
+                </label>
+              </div>
+              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
+                <label class="flex flex-col min-w-40 flex-1">
+                  <p class="text-base font-medium pb-2">Event Date</p>
+                  <input type="date" name="date" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
+                </label>
+              </div>
+              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
+                <label class="flex flex-col min-w-40 flex-1">
+                  <p class="text-base font-medium pb-2">Event Time</p>
+                  <input type="time" name="time" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
+                </label>
+              </div>
+              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
+                <label class="flex flex-col min-w-40 flex-1">
+                  <p class="text-base font-medium pb-2">Event Venue</p>
+                  <input name="venue" placeholder="Enter venue" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
+                </label>
+              </div>
+              <div class="flex justify-end px-4 py-3">
+                <button type="submit" class="bg-[#0b80ee] text-white rounded-full px-4 h-10 font-bold">Add Event</button>
+              </div>
+            </form>
+
+            <!-- Event List -->
+            <h3 class="text-lg font-bold px-4 pb-2 pt-4">Upcoming Events</h3>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2">
+              <div class="flex flex-col gap-4 mt-6 w-full" id="events-container">
+                <% data.forEach(item => { %>
+                  <div class="flex items-start gap-4 p-4 border border-gray-200 rounded-xl shadow-sm">
+                    <div class="flex-shrink-0">
+                      <svg class="text-gray-500" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M3.5 0a.5.5 0...z"/>
+                      </svg>
+                    </div>
+                    <div class="flex flex-col">
+                      <p class="text-[#111518] font-medium"><%= item.title %></p>
+                      <p class="text-[#60768a] text-sm"><%= new Date(item.date).toLocaleDateString('en-GB') %></p>
+                      <p class="text-[#60768a] text-sm">
+                        <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %>
+                      </p>
+                      <p class="text-[#60768a] text-sm">Venue: <%= item.venue?.trim() || 'Not provided' %></p>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+
+            <!-- Pagination Buttons -->
+            <div class="flex justify-center gap-4 py-4">
+              <button id="prev-btn" class="bg-gray-200 px-4 py-2 rounded text-sm text-gray-800 disabled:opacity-50" disabled>Previous</button>
+              <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded text-sm disabled:opacity-50" <%= data.length < 5 ? "disabled" : "" %>>Next</button>
+            </div>
+
+            <!-- Pagination Script -->
+            <script>
+              let skip = 0;
+              const limit = 5;
+              const container = document.getElementById("events-container");
+              const nextBtn = document.getElementById("next-btn");
+              const prevBtn = document.getElementById("prev-btn");
+
+              async function loadEvents() {
+                const res = await fetch(`/leader/events/page?skip=${skip}`);
+                const { events, totalCount } = await res.json();
+
+                container.innerHTML = "";
+                events.forEach(item => {
+                  const div = document.createElement("div");
+                  div.className = "flex items-start gap-4 p-4 border border-gray-200 rounded-xl shadow-sm";
+                  div.innerHTML = `
+                    <div class="flex-shrink-0">
+                      <svg class="text-gray-500" width="32" height="32" fill="currentColor"><path d="M3.5 0a.5.5 0...z"/></svg>
+                    </div>
+                    <div class="flex flex-col">
+                      <p class="text-[#111518] font-medium">${item.title}</p>
+                      <p class="text-[#60768a] text-sm">${new Date(item.date).toLocaleDateString('en-GB')}</p>
+                      <p class="text-[#60768a] text-sm">${new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                      <p class="text-[#60768a] text-sm">Venue: ${item.venue?.trim() || 'Not provided'}</p>
+                    </div>
+                  `;
+                  container.appendChild(div);
+                });
+
+                prevBtn.disabled = skip === 0;
+                nextBtn.disabled = skip + limit >= totalCount;
+              }
+
+              nextBtn.addEventListener("click", () => {
+                skip += limit;
+                loadEvents();
+              });
+
+              prevBtn.addEventListener("click", () => {
+                skip = Math.max(0, skip - limit);
+                loadEvents();
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

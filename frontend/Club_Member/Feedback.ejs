@@ -1,0 +1,57 @@
+<%- include("./Partials/starter.ejs") %>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+           <%- include("./Partials/header.ejs") %>
+
+           
+           <form action="/member_feedback" method="POST" class="layout-content-container flex flex-col max-w-[960px] flex-1">
+
+  <!-- Page Heading -->
+  <div class="flex flex-wrap justify-between gap-3 p-4">
+    <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Feedback</p>
+  </div>
+
+  <!-- Title Input -->
+  <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+    <label class="flex flex-col min-w-40 flex-1">
+      <span class="mb-1 text-[#60768a] font-medium">Title</span>
+      <input
+        type="text"
+        name="title"
+        required
+        placeholder="Title of your feedback"
+        class="form-input w-full rounded-xl border border-[#dbe1e6] bg-white p-3 text-[#111518] text-base placeholder-[#60768a] focus:border-[#0b80ee] focus:outline-none"
+      />
+    </label>
+  </div>
+
+  <!-- Description Textarea -->
+  <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+    <label class="flex flex-col min-w-40 flex-1">
+      <span class="mb-1 text-[#60768a] font-medium">Description</span>
+      <textarea
+        name="description"
+        required
+        placeholder="Enter your suggestions"
+        class="form-input w-full resize-none rounded-xl border border-[#dbe1e6] bg-white p-3 text-[#111518] text-base min-h-36 placeholder-[#60768a] focus:border-[#0b80ee] focus:outline-none"
+      ></textarea>
+    </label>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex px-4 py-3 justify-end">
+    <button
+      type="submit"
+      class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center rounded-full h-10 px-4 bg-[#0b80ee] hover:bg-[#0964be] text-white text-sm font-bold transition"
+    >
+      <span class="truncate">Submit Feedback</span>
+    </button>
+  </div>
+
+</form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

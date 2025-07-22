@@ -1,0 +1,66 @@
+ <%- include( '../partials/head' )%>
+              <%- include( '../partials/navbar' )%>
+      <div class="flex pt-[150px] pb-[50px] bg-gradient-to-r from-blue-300 via-blue-500 to-black-600 animate-gradient ... text-white  my-0 justify-between">
+<div class="w-1/2">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<p id="typing-text" class="mx-4 mt-20 text-[42px] whitespace-nowrap overflow-hidden min-h-[60px]" style="font-family: 'Brush Script Std', cursive;">
+
+</p>
+<script>
+const text = "ALL CLUBS,ONE-STOP SOLUTION!";
+const el = document.getElementById("typing-text");
+let i = 0;
+let forward = true;
+
+function typeWriter() {
+      if (forward) {
+            if (i <= text.length) {
+                  el.textContent = text.slice(0, i);
+                  i++;
+                  setTimeout(typeWriter, 70);
+            } else {
+                  forward = false;
+                  setTimeout(typeWriter, 1000);
+            }
+      } else {
+            if (i >= 0) {
+                  el.textContent = text.slice(0, i);
+                  i--;
+                  setTimeout(typeWriter, 40);
+            } else {
+                  forward = true;
+                  setTimeout(typeWriter, 500);
+            }
+      }
+}
+typeWriter();
+</script>
+</script>
+<div class="flex flex-col items-start justify-center mx-4 my-4 max-w-xl">
+  <p class="text-base sm:text-lg md:text-[16px] leading-relaxed">
+    Welcome to ClubArea – your centralized platform for everything related to college clubs! From the latest updates, event announcements, and recruitment drives to AI-powered mock interviews, we bring all your college club needs under one roof. Whether you’re into sports, coding, music, or arts, ClubArea ensures you’re always in the loop. Discover. Connect. Grow. All in one place.
+  </p>
+</div>
+<div class="flex my-4">
+
+<!-- <button class="bg-purple-700 text-white text-[18px] ml-6  rounded-md p-2 hover:text-white hover:bg-fuchsia-700 ">Buy Now</button>
+<button class="bg-purple-700 text-white text-[18px]  rounded-md p-2 ml-4 hover:text-white hover:bg-fuchsia-700 ">Contact Us</button> -->
+</div>
+</div>
+<div class="relative inline-block">
+  <img src="/home/image copy.png" alt="Faded Border" class="rounded-xl shadow-2xl ring-4 ring-white/30 h-[500px]">
+</div>
+
+</div>
+<div class="flex justify-between ">
+      <div class="ml-8 mt-8">
+            <img src="/home/clublogo.png" alt="">
+      </div>
+<div class="items-right w-1/2 mt-24">
+      <video src="/home/INTRODUCTION.MP4" autoplay="ON" muted="" controls="ON"></video>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Teams</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <%- include('partials/header.ejs') %>
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <p class="text-[#111418] tracking-light text-[32px] font-bold leading-tight min-w-72">Teams</p>
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f0f2f5] text-[#111418] text-sm font-medium leading-normal"
+              >
+                <span class="truncate">New Team</span>
+              </button>
+            </div>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-hidden rounded-lg border border-[#dbe0e6] bg-white">
+                <table class="flex-1">
+                  <thead>
+                    <tr class="bg-white">
+                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-120 px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-medium leading-normal">
+                        Team Name
+                      </th>
+                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-240 px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-medium leading-normal">Members</th>
+                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-360 px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-medium leading-normal">
+                        Description
+                      </th>
+                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-480 px-4 py-3 text-left text-[#111418] w-60 text-[#60758a] text-sm font-medium leading-normal">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%teamStats.forEach(({teamName,membercount})=>{%>
+                    <tr class="border-t border-t-[#dbe0e6]">
+                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-120 h-[72px] px-4 py-2 w-[400px] text-[#111418] text-sm font-normal leading-normal">
+                        <%= teamName%>
+                      </td>
+                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-240 h-[72px] px-4 py-2 w-[400px] text-[#60758a] text-sm font-normal leading-normal">
+                        <%= membercount%>
+                      </td>
+                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-360 h-[72px] px-4 py-2 w-[400px] text-[#60758a] text-sm font-normal leading-normal">
+                        Responsible for club promotions and outreach.
+                      </td>
+                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-480 h-[72px] px-4 py-2 w-60 text-[#60758a] text-sm font-bold leading-normal tracking-[0.015em]">
+                        View
+                      </td>
+                    </tr>
+                    <%});%>
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                          @container(max-width:120px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-120{display: none;}}
+                @container(max-width:240px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-240{display: none;}}
+                @container(max-width:360px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-360{display: none;}}
+                @container(max-width:480px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-480{display: none;}}
+              </style>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+<%- include("./Partials/starter.ejs") %>
+<div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+      <%- include("./Partials/header.ejs") %>
+      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        
+        <!-- Title -->
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+          <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Upcoming Events</p>
+        </div>
+
+        <!-- Events List -->
+        <div id="event-list">
+          <% data.forEach(function(item) { %>
+            <div class="flex items-start gap-4 p-4 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition">
+              <div class="flex-shrink-0">
+                <svg class="text-gray-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h.5A1.5 1.5 0 0 1 15 2.5v11A1.5 1.5 0 0 1 13.5 15h-11A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1H3v-.5a.5.5 0 0 1 .5-.5zM14 4H2v9.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V4z"/>
+                </svg>
+              </div>
+              <div class="flex flex-col">
+                <p class="text-[#111518] text-base font-medium leading-snug">
+                  <%= item.title %>
+                </p>
+                <p class="text-[#60768a] text-sm">
+                  <%= new Date(item.date).toLocaleDateString('en-GB') %>
+                </p>
+                <p class="text-[#60768a] text-sm">
+                  <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                  }) %>
+                </p>
+                <% if (item.venue && item.venue.trim() !== '') { %>
+                  <p class="text-[#60768a] text-sm">Venue: <%= item.venue %></p>
+                <% } else { %>
+                  <p class="text-[#60768a] text-sm">Venue: Not provided</p>
+                <% } %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <!-- Show More Button -->
+        <% if (currentPage < totalPages) { %>
+          <form method="GET" action="/member_events#event-list" class="flex justify-center my-6">
+            <input type="hidden" name="page" value="<%= currentPage + 1 %>">
+            <button
+              type="submit"
+              class="px-6 py-2 bg-[#2a5298] hover:bg-[#1e3f7c] text-white font-semibold rounded-lg transition"
+            >
+              Show More
+            </button>
+          </form>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

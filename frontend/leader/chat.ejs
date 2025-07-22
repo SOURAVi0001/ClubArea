@@ -1,0 +1,126 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Chat</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <%- include('partials/header.ejs') %>
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#111418] tracking-light text-[32px] font-bold leading-tight">Club Settings</p>
+                <p class="text-[#60758a] text-sm font-normal leading-normal">
+                  Manage your club's general settings, member permissions, notification preferences, and club details.
+                </p>
+              </div>
+            </div>
+            <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">General Settings</h2>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
+              <div class="flex flex-col justify-center">
+                <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Member Event Creation</p>
+                <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Allow members to create events</p>
+              </div>
+              <div class="shrink-0">
+                <label
+                  class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-[#f0f2f5] p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[#0c7ff2]"
+                >
+                  <div class="h-full w-[27px] rounded-full bg-white" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px, rgba(0, 0, 0, 0.06) 0px 3px 1px;"></div>
+                  <input type="checkbox" class="invisible absolute" />
+                </label>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
+              <div class="flex flex-col justify-center">
+                <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Member Invitations</p>
+                <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Allow members to invite new members</p>
+              </div>
+              <div class="shrink-0">
+                <label
+                  class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-[#f0f2f5] p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[#0c7ff2]"
+                >
+                  <div class="h-full w-[27px] rounded-full bg-white" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px, rgba(0, 0, 0, 0.06) 0px 3px 1px;"></div>
+                  <input type="checkbox" class="invisible absolute" />
+                </label>
+              </div>
+            </div>
+            <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Notification Preferences</h2>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
+              <div class="flex flex-col justify-center">
+                <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">New Member Requests</p>
+                <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Receive notifications for new member requests</p>
+              </div>
+              <div class="shrink-0">
+                <label
+                  class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-[#f0f2f5] p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[#0c7ff2]"
+                >
+                  <div class="h-full w-[27px] rounded-full bg-white" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px, rgba(0, 0, 0, 0.06) 0px 3px 1px;"></div>
+                  <input type="checkbox" class="invisible absolute" />
+                </label>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
+              <div class="flex flex-col justify-center">
+                <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Event Sign-Ups</p>
+                <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Receive notifications for new event sign-ups</p>
+              </div>
+              <div class="shrink-0">
+                <label
+                  class="relative flex h-[31px] w-[51px] cursor-pointer items-center rounded-full border-none bg-[#f0f2f5] p-0.5 has-[:checked]:justify-end has-[:checked]:bg-[#0c7ff2]"
+                >
+                  <div class="h-full w-[27px] rounded-full bg-white" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px, rgba(0, 0, 0, 0.06) 0px 3px 1px;"></div>
+                  <input type="checkbox" class="invisible absolute" />
+                </label>
+              </div>
+            </div>
+            <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Club Details</h2>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <p class="text-[#111418] text-base font-medium leading-normal pb-2">Club Name</p>
+                <input
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] focus:outline-0 focus:ring-0 border border-[#dbe0e6] bg-white focus:border-[#dbe0e6] h-14 placeholder:text-[#60758a] p-[15px] text-base font-normal leading-normal"
+                  value=""
+                />
+              </label>
+            </div>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <p class="text-[#111418] text-base font-medium leading-normal pb-2">Club Description</p>
+                <textarea
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] focus:outline-0 focus:ring-0 border border-[#dbe0e6] bg-white focus:border-[#dbe0e6] min-h-36 placeholder:text-[#60758a] p-[15px] text-base font-normal leading-normal"
+                ></textarea>
+              </label>
+            </div>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <p class="text-[#111418] text-base font-medium leading-normal pb-2">Club Rules</p>
+                <textarea
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] focus:outline-0 focus:ring-0 border border-[#dbe0e6] bg-white focus:border-[#dbe0e6] min-h-36 placeholder:text-[#60758a] p-[15px] text-base font-normal leading-normal"
+                ></textarea>
+              </label>
+            </div>
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0c7ff2] text-white text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Save Changes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

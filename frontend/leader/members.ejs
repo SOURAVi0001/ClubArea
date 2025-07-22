@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#fcf8f8] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+      <%- include('./partials/header.ejs') %>
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight min-w-72">Members</p></div>
+            <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">All Members</h2>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-hidden rounded-lg border border-[#e7d0d1] bg-[#fcf8f8]">
+                <table class="flex-1">
+                  <thead>
+                    <tr class="bg-[#fcf8f8]">
+                      <th class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-56 px-4 py-3 text-left text-[#1b0e0e] w-14 text-sm font-medium leading-normal">Member</th>
+                      <th class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-176 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">Name</th>
+                      <th class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-296 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">Team</th>
+                      <th class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-416 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        <%members.forEach(memberss => {%>
+                    <tr class="border-t border-t-[#e7d0d1]">
+                      <td class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-56 h-[72px] px-4 py-2 w-14 text-sm font-normal leading-normal">
+                        <div
+                          class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10"
+                          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdzN9dP90LqFZUtXI4I5zvmUjuyZEP3_saSiiiu4trKeSPQUjdXKMSHotJnAvbYGPObjpYZtXX_I4tYtyzjrVLPwi6_3GYbV32kSX0QaivQ5tn85MCdk_w7VPsEIW8pP2SXstkSx0L0z9OQOYYSnr8SjrUq4wACRRsaqQ_PmD9gm8zVXBL3WGYHt0LFc2-2l5PYObrELTlVOj7P6WhufiTVmWgornqkEpin2i_VU4cSGMrx8rpTyZSSIHeBgpMf5KNioLDWtQODBA");'
+                        ></div>
+                      </td>
+                      <td class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-176 h-[72px] px-4 py-2 w-[400px] text-[#1b0e0e] text-sm font-normal leading-normal">
+                        <%=memberss.name%>
+                      </td>
+                      <td class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-296 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal"><%=memberss.teamName%></td>
+                      <td class="table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-416 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                         <%=memberss.email%>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                          @container(max-width:56px){.table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-56{display: none;}}
+                @container(max-width:176px){.table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-176{display: none;}}
+                @container(max-width:296px){.table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-296{display: none;}}
+                @container(max-width:416px){.table-bad5006f-c360-4791-95c1-64a04f16ad5a-column-416{display: none;}}
+              </style>
+            </div>
+            <h2 class="text-[#1b0e0e] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Art Show</h2>
+            <div class="p-4">
+              <div class="flex items-stretch justify-between gap-4 rounded-lg">
+                <div class="flex flex-col gap-1 flex-[2_2_0px]">
+                  <p class="text-[#1b0e0e] text-base font-bold leading-tight">Whitefish Art Show</p>
+                  <p class="text-[#994d51] text-sm font-normal leading-normal">
+                    Join us for our upcoming art show featuring works inspired by the theme "Whitefish." Artists from various disciplines will showcase their interpretations of
+                    this captivating subject.
+                  </p>
+                </div>
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex-1"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2CZHS0DKze-WUaF6JFMqb0w2d_ozDIQkwduLjZl05hcOBnA7KfK2pLE2d9JFJaQHuAnabQGzhd5ceQiFx9Hf5nC4SMy01iyxn314Cve9Hgb_0fzDFJU-uO7vK20d7_YzWArnKwFVfGLlxW_rZQV7W-OBR1ojz8K5o0Npdpyxt3l1cpkQlq-hSybbS4lyEkWxYtXL2Qz0d8d14Zc6iQmCPUbKiX2nZC1jCN4f5XTj_FZtFtOiZ_R5wD7GHjl--ChRV80ryqm1g3qU");'
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

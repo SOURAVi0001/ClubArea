@@ -1,0 +1,140 @@
+[
+      {
+            "id": "1",
+            "name": "Bookworms Unite",
+            "description": "Dive into captivating stories and literary discussions with Bookworms Unite, a club dedicated to all lovers of the written word. Whether you enjoy classic literature, contemporary novels, poetry, or non-fiction, our club offers a welcoming space to share your passion for reading. We host regular book discussions, author meet-and-greets, and themed reading challenges to keep members engaged and inspired. Our members come from diverse backgrounds, bringing unique perspectives to every conversation. In addition to exploring new genres and authors, we also organize creative writing workshops and literary trivia nights. Bookworms Unite is more than just a book club—it's a community where friendships are formed over shared stories and ideas. Join us to expand your literary horizons, discover hidden gems, and connect with fellow bibliophiles who appreciate the magic of books as much as you do. Whether you're a seasoned reader or just starting your literary journey, you'll find a supportive and enthusiastic group eager to welcome you. Let’s turn the page together and embark on countless adventures through the world of literature.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDvlJO4zHYB7aiqtM-Ss9M6dUV6rJ-zvTvrnrbYXppsccpySC7aM_vqh8JYN4s-i-af48VC8Zum3jfDdfaIYxIcJiP99-MRb0Z_7emdDjrntduDI2-XJ6IXQPww1P_1tDmSCDY0dQKi4h30VsY_gUMYdpMgZC9ju-BklYh1ae2Y_NGWOB8UniIIwbb80xRhPjZfpECDTUvIyGY165pssE4AlBn3URLbfcwJ3bJTTKZY-MHI6nvIHhw3667XEWuNxC58CeX64M606Dg"
+      },
+      {
+            "id": "2",
+            "name": "Tech Innovators Hub",
+            "description": "Explore the latest tech trends and innovations at Tech Innovators Hub, where curiosity meets creativity. Our club is a vibrant community of tech enthusiasts, developers, engineers, and innovators who are passionate about shaping the future. We organize hands-on workshops, hackathons, and guest lectures from industry leaders to keep our members at the forefront of technological advancements. Whether you're interested in artificial intelligence, blockchain, cybersecurity, or app development, you'll find opportunities to learn, collaborate, and grow. Members regularly share project ideas, participate in coding challenges, and support each other in personal and professional development. We also host networking events and career guidance sessions to help you connect with like-minded peers and mentors. Tech Innovators Hub is committed to fostering an inclusive environment where everyone, from beginners to experts, can thrive. Join us to stay updated on emerging technologies, work on exciting projects, and be part of a community that celebrates innovation and lifelong learning. Together, we’re building the future—one breakthrough at a time.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDeCXtQPCnGr3hUoA5RfyW8W7HsTAVjH5_ojv-e4T9VEfZQ6IXB_L-czaApCX-T2Cv-FjxzyJzUVuqYQL7h7rU3Z9xcNup8JvQPmM1Kohl3aCSLGfeXYmbBfu2tOWpWn6_IUXYukyANtxH95Wxc2BIelcfOH_rzOEP7cBs2yEFl95CymwVkXSeGlrQQYBaL42Vug90xY_iEZJnirFnsOoLh4_ecrko6403Aoge9rQrIPGoaQDvmGhgO6LNOzX0Avi-g_HGS0W81f50"
+      },
+      {
+            "id": "3",
+            "name": "Outdoor Adventures Crew",
+            "description": "Embark on thrilling outdoor activities and adventures with the Outdoor Adventures Crew, your gateway to exploring the wonders of nature. Our club brings together individuals who share a love for hiking, camping, rock climbing, kayaking, and more. We organize regular excursions to scenic locations, from tranquil forests to rugged mountains, ensuring every adventure is unique and memorable. Safety and environmental stewardship are at the core of our activities, and we provide training sessions for beginners to build confidence and skills. Members enjoy team-building exercises, survival workshops, and opportunities to learn about local flora and fauna. Whether you’re seeking adrenaline-pumping challenges or peaceful retreats in nature, you’ll find a supportive group eager to share the journey. We also participate in conservation projects and community clean-ups, giving back to the environments we cherish. Join Outdoor Adventures Crew to push your limits, make lasting friendships, and create unforgettable memories in the great outdoors. Adventure awaits—let’s explore together!",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBG8iLT3d_oMSvuXvWHCO_3On6o7O4KzOcldQ6ap0k9syyf_KLvpxxZzb2gEp1fcwKxteQ9Mj4opvlw8ITEUfo2zC1TN8zV2xDIHXqa0VVaXwZF8uDRl99VEV2lLxhAWD2veGFqjqfg9Qw9p7m6EmyBjFPGwJWTofB7gBl1ahTUA50MzCpPxLnY6VekJpx0z8HLW8IZSu8ouklxRL-OTnSdFci6dojA4xEeBH7SgU17vM__XIKX-chSAWza468GWcaeIx9oXFdxLik"
+      },
+      {
+            "id": "4",
+            "name": "Creative Minds Collective",
+            "description": "Unleash your creativity and collaborate on artistic projects with Creative Minds Collective, a vibrant community for artists, designers, writers, and creators of all kinds. Our club is a haven for those who seek inspiration and wish to express themselves through various art forms, including painting, sculpture, digital art, music, and more. We host regular workshops, art exhibitions, and collaborative projects that encourage members to experiment and grow. Creative Minds Collective values diversity and inclusivity, welcoming individuals of all skill levels and backgrounds. Members benefit from constructive feedback, mentorship opportunities, and a supportive environment that nurtures artistic growth. We also organize open mic nights, creative writing sessions, and art therapy events to foster self-expression and well-being. Whether you’re looking to refine your craft, showcase your work, or simply find inspiration, you’ll find a community eager to support your creative journey. Join us and let your imagination soar as we bring ideas to life together.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCRE5oZoJQ9ZxZop5RFtbcKd6WDTBDLFVpJZeSsQ5hgFbpRLTxp_HhUg6K5F5kYU1FnLjsAdrS8pSXYbSaDAi_4nexovodCaPrtzravLmGoubjNatb8Q7excr_8drzCFFl4tykMIYZa09KZ4zpUyRCKwve0Suyiwt8vrQHUKaG-KEWacXUpL1USWjXuV-wdlStMui8w8vNc_NoJt-QDUiFxxjep5ukGJufLHS3Jkhqs1tHHN330m8MAs09yha8Qla4adUw-m4L5wh4"
+      },
+      {
+            "id": "5",
+            "name": "Global Cuisine Explorers",
+            "description": "Discover diverse cultures through culinary experiences with Global Cuisine Explorers, a club for food lovers and adventurous eaters. Our members are passionate about exploring the world one dish at a time, from street food to gourmet cuisine. We organize cooking classes, food tastings, and cultural nights where members can learn about traditional recipes and cooking techniques from around the globe. Each event is an opportunity to expand your palate, share family recipes, and celebrate the stories behind every meal. We also invite guest chefs and culinary experts to share their knowledge and inspire creativity in the kitchen. Global Cuisine Explorers is committed to inclusivity, welcoming cooks of all skill levels and backgrounds. In addition to savoring delicious food, we promote sustainable and ethical eating practices. Join us to make new friends, experience new flavors, and embark on a culinary journey that connects people and cultures. Bon appétit!",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAEJ2vti0ViSJGJpArUSAYOyPIHsDHjDVrDqY4vU-tBrGG-y6AZQjaTkl9omQilQOb429TpDi15SDDcSNNeyq7V9FSchAXqHLYT4eWCLXUV5n043U5EEn83UAD9bFKWg_9tPEffYx37LjbyPmMpTOaRNUDrewwF6ug3zAzDsGC3WW7Ip9yKbsN0oGZQFY_nugSrgJwuj9f4H8lnWtSyDaPQLGANHCWOkjT04D3290BD7egVjW1fTD3dM9O-thWZ1jICKXFwSTu3xWQ"
+      },
+      {
+            "id": "6",
+            "name": "Fitness Fanatics",
+            "description": "Stay fit and motivated with group workouts and challenges at Fitness Fanatics, a club dedicated to health, wellness, and personal growth. Our members support each other in achieving fitness goals, whether it’s building strength, improving endurance, or simply staying active. We offer a variety of activities, including group runs, yoga sessions, HIIT classes, and outdoor bootcamps, catering to all fitness levels. Certified trainers and wellness coaches provide guidance, ensuring safe and effective workouts. Fitness Fanatics also hosts nutrition seminars, mental health workshops, and friendly competitions to keep members engaged and inspired. Our inclusive community values encouragement, accountability, and fun, making it easy to stay on track and celebrate progress. Whether you’re training for a marathon or just starting your fitness journey, you’ll find a supportive group ready to cheer you on. Join us to boost your energy, make new friends, and embrace a healthier lifestyle together.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDwTCGHmWj2QjvZaBZ8Y5zfKQtj3gqnM9EDxqDqHgobzk-M-PF7gYFgwYNf4EGpCnsCfZsz7Ak0Tuxdf7JCi2Wt3Q0WmvWNcdQHjoVoiegBby4pU8CI9UZ8Sb640qZPNCkEgKZ2_VSRtFR1rbT6zdB-yqUt5w4fhsAwDXJxS_peH7bQ4AhVxYBZT_j-0l598yy-H-qPhCWcod1crp_IY6EKrbdASC9iuUKYxvLj3q8Ok5mYXh-T5bC8jZcuyrjtt45zFlen03qxYfI"
+      },
+      {
+            "id": "7",
+            "name": "Photography Enthusiasts",
+            "description": "Capture stunning moments and share your photographic journey with Photography Enthusiasts, a club for everyone passionate about the art of photography. Whether you’re a beginner with a smartphone or a seasoned professional with a DSLR, our club offers a platform to learn, create, and inspire. We organize photo walks, workshops, and themed contests to help members hone their skills and explore new techniques. Guest photographers and industry experts regularly share insights on composition, lighting, editing, and storytelling. Members are encouraged to showcase their work, receive constructive feedback, and collaborate on creative projects. Photography Enthusiasts also hosts exhibitions and publishes a club magazine featuring members’ best shots. Our inclusive community values diversity and creativity, welcoming photographers of all backgrounds and styles. Join us to expand your portfolio, make new friends, and see the world through a different lens. Every picture tells a story—let’s capture them together.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuA8S5ifsDSmBsUpytEVBieWc8VVJMELZg7oLYmWUlVaobCtQPaUyqBshy43BskkXowissczB81vSHc4dMMgahrVcLmG_xfycSsXX1kMQK-deMRnrHyh5wfiDTC1o0FQQzNk0icyTHDkVU5qdpswOqvoZeoHIiD5sm3DbNr_e60ju3qgbyhjg1uvOef37iIFOoqV4V3RASVRXE4xrr96tlrSjj8KDz7LHhpoiqd83TBaVEc0dLNUe1jRQrKZ0kaveeCTDE0UAE_HsBM"
+      },
+      {
+            "id": "8",
+            "name": "Music Lovers Society",
+            "description": "Connect with fellow music enthusiasts and explore diverse genres at Music Lovers Society, a club for anyone who finds joy in melodies and rhythms. Our members share a passion for music, from classical to contemporary, jazz to rock, and everything in between. We host listening parties, jam sessions, and open mic nights where members can perform, collaborate, and discover new sounds. Guest musicians and industry professionals offer workshops on songwriting, music production, and performance techniques. Music Lovers Society also organizes trips to concerts, music festivals, and local gigs, providing opportunities to experience live music together. Our inclusive community welcomes musicians, singers, producers, and fans of all skill levels. Members are encouraged to share playlists, discuss favorite artists, and support each other’s musical journeys. Join us to broaden your musical horizons, make lasting friendships, and celebrate the universal language of music. Let’s create and enjoy music together!",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBLn72qzC6cOgxO6ffZsYdrYnZLD_R0PCPsVr5o0MRYwRNoo6IY8xaUqAnRYKkntDVK-3WY33IY3JyWZdPISBlIItSws010G1mrKWPDUFZJ1ONbfRW48P-QlrohHRynLN7beuzwrzYeI0ArJnEDor9oY9taXDoL4SmGD3Sf2o7Pq5Sc9Ao0FaIBzj-DUyWoZEhKb1-tkYlj8Fh2LH3Bdh8zahhLKFLjwlv1DTii35g2RqUunF0UhpdL8okOG0YhvTz3m2bDsJcuo5E"
+      },
+      {
+            "id": "9",
+            "name": "Film Buffs Club",
+            "description": "Discuss and analyze films, from classics to contemporary masterpieces, at Film Buffs Club—a haven for cinephiles and movie lovers. Our club brings together individuals who appreciate the art of filmmaking, storytelling, and cinematic history. We host weekly screenings, followed by in-depth discussions where members can share insights, interpretations, and critiques. Special events include director spotlights, genre marathons, and film trivia nights. Guest speakers from the film industry provide behind-the-scenes perspectives and career advice. Film Buffs Club also encourages members to create their own short films, offering workshops on scriptwriting, directing, and editing. Our inclusive community values diverse viewpoints and welcomes everyone, from casual viewers to aspiring filmmakers. Join us to expand your cinematic knowledge, discover hidden gems, and connect with others who share your passion for movies. Lights, camera, action—let’s celebrate the magic of film together.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDkEH6VCHAHLZqvArmApY4i6SGBOmLV8gBNVtPffDg8yrah3DJ_8QYiNKKQBYmoI7uZlsR0Pwfra2ojZcB_qH5j06vz-cp9prMBCVfd56-Ke7znVUe-Fvk6IuCNFhXEkvAZhmmAq39Raf_V_quQIO5ytiukyuq96dRZlchMyAEn2r1PuahxUnKh8ft3BK2eMijffGXVgoXj9r06eRhm8Aera0RdGfUpZkdGxnRhWXQgnGo47rWELD0Oj6yL5fODigxy6TqBTm6qc_c"
+      },
+      {
+            "id": "10",
+            "name": "Gaming Guild",
+            "description": "Join forces with gamers and conquer virtual worlds together at Gaming Guild, a club for everyone passionate about video games, board games, and eSports. Our members enjoy friendly competitions, cooperative campaigns, and tournaments across a wide range of genres and platforms. We host regular gaming nights, LAN parties, and strategy workshops to help members improve their skills and discover new favorites. Guest streamers and professional gamers share tips, tricks, and industry insights. Gaming Guild also organizes game development jams, encouraging creativity and collaboration among aspiring developers. Our inclusive community welcomes players of all skill levels, from casual gamers to hardcore competitors. Members are encouraged to share reviews, discuss gaming news, and support each other’s gaming journeys. Join us to make new friends, experience epic adventures, and celebrate the joy of gaming. Ready, set, play—let’s level up together!",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDEF1CcnJ3XovA0wFCGG1Z3oEGVv5EGygexsrNQVJf6GZwwp56HuxNE-QFRoCwKFZO9Mx-Jj_VhVSay8_z7Anz5yJufRHKHrq7e9RF7mi26S9jQFlA3llaFZO9_wCG4n92emaXHc4YvSQwR4pUR7jz5Hv5QdO9vSAg4OzgrWc8dbWlHjdixgD4nGJCBUbavMmSkyY4y9iqy6RC7AcQ0_BtSmhccNw6wVvE_LnKsvkdUfh9OgN7_5bizSHeKLhsX78MCi1dW31EJCrw"
+      },
+      {
+            "id": "11",
+            "name": "Travel Buddies",
+            "description": "Plan and embark on exciting travel adventures with like-minded individuals at Travel Buddies, a club for explorers and wanderers. Our members share a passion for discovering new places, cultures, and experiences. We organize group trips, weekend getaways, and cultural exchange events, making travel accessible and enjoyable for everyone. Travel Buddies offers planning resources, safety tips, and destination guides to help members make the most of their journeys. Experienced travelers share stories, advice, and recommendations, while newcomers find support and inspiration for their first adventures. Our inclusive community values diversity and encourages responsible, sustainable travel. Members also participate in travel photography contests, language exchange sessions, and international cuisine nights. Join us to make lifelong friends, create unforgettable memories, and explore the world together—one adventure at a time.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBEyZgAfP840dUYo6CkPHYEpFxzPz41X3ZU7i-aMKTqTvrJHjZyQad_s2EKUPtEa0YzIUMabrazj2zRUaN4_2z5QnHnNHXq8MVrcAg0ug8d1uNAtKDxJANq9t_TTBdVRbSG9s408-Cc8CIHlirHIFCtvSYDIaES0NMbcIG9mAEB5mhrGNjRtOJNFCkKlrcTUw2MCgXKjC1UsfUrSzR_lWTeGr_6zi24Zcop-i4r9CiP-pbemsP0INvQOxuDx8uhhztyJ1X6ls1USXw"
+      },
+      {
+            "id": "12",
+            "name": "Environmental Advocates",
+            "description": "Make a positive impact on the environment through collective action with Environmental Advocates, a club for eco-conscious individuals committed to sustainability and conservation. Our members participate in tree planting drives, recycling campaigns, and educational workshops to raise awareness about environmental issues. We collaborate with local organizations on clean-up projects, wildlife protection, and green initiatives. Environmental Advocates also hosts film screenings, guest lectures, and panel discussions featuring experts in ecology, climate science, and renewable energy. Members are encouraged to share ideas, lead projects, and inspire others to adopt eco-friendly habits. Our inclusive community welcomes everyone passionate about making a difference, regardless of experience or background. Join us to learn, take action, and be part of a movement dedicated to preserving our planet for future generations. Together, we can create a greener, healthier world—one step at a time.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuA0aqraRNwkIZB64sJKnJPZvafnTWWffGjMsZ9y89sJqZn8qSS-P7BcR_HoK6LdT3xrbuUwiLKqpL1G9ZtbZXMvVxZAGfLsZhpOe2CTSPO4J6QpFWikz_Eus5ZgFqOg79CL3BiKrTGtN8y6Da_PLeSfPOMyM4xicYbzHtN6boCKew6_JupO0NjUZl3Kw0L8kaj35SXTPK9n8wPgiVL-K5TZyzkXiK97GF6WZcNIaDtd-BcFsu7P4e5ESZMO0tj8R7oeI7q_LIVSSaI"
+      }
+]
+
+
+Updates data:-
+           <div class="flex gap-4 bg-slate-300 px-4 py-3 justify-between">
+              <div class="flex items-start gap-4">
+                <div class="text-[#121416] flex items-center justify-center rounded-lg bg-[#f1f2f4] shrink-0 size-12" data-icon="Calendar" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="flex flex-1 flex-col justify-center">
+                  <p class="text-[#121416] text-base font-medium leading-normal">Workshop: Effective Communication</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">Posted by: Training Team</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">
+                    Join us for a workshop on 'Effective Communication in Teams' led by Sophia Bennett, a renowned communication expert.
+                  </p>
+                </div>
+              </div>
+              <div class="shrink-0"><p class="text-[#6a7681] text-sm font-normal leading-normal">3d ago</p></div>
+            </div>
+            <div class="flex gap-4 bg-slate-300 px-4 py-3 justify-between">
+              <div class="flex items-start gap-4">
+                <div class="text-[#121416] flex items-center justify-center rounded-lg bg-[#f1f2f4] shrink-0 size-12" data-icon="Users" data-size="24px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="flex flex-1 flex-col justify-center">
+                  <p class="text-[#121416] text-base font-medium leading-normal">Welcome New Members</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">Posted by: Membership Team</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">
+                    Welcome our new members, Ethan Harper and Olivia Reed, to the club! We're excited to have you on board.
+                  </p>
+                </div>
+              </div>
+              <div class="shrink-0"><p class="text-[#6a7681] text-sm font-normal leading-normal">5d ago</p></div>
+            </div>
+            <div class="flex gap-4 bg-slate-300 px-4 py-3 justify-between">
+              <div class="flex items-start gap-4">
+                <div
+                  class="text-[#121416] flex items-center justify-center rounded-lg bg-[#f1f2f4] shrink-0 size-12"
+                  data-icon="CurrencyDollar"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M152,120H136V56h8a32,32,0,0,1,32,32,8,8,0,0,0,16,0,48.05,48.05,0,0,0-48-48h-8V24a8,8,0,0,0-16,0V40h-8a48,48,0,0,0,0,96h8v64H104a32,32,0,0,1-32-32,8,8,0,0,0-16,0,48.05,48.05,0,0,0,48,48h16v16a8,8,0,0,0,16,0V216h16a48,48,0,0,0,0-96Zm-40,0a32,32,0,0,1,0-64h8v64Zm40,80H136V136h16a32,32,0,0,1,0,64Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="flex flex-1 flex-col justify-center">
+                  <p class="text-[#121416] text-base font-medium leading-normal">Fundraising Success</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">Posted by: Fundraising Committee</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">
+                    The club's fundraising event for the local children's hospital raised over $5,000! Thank you to everyone who participated.
+                  </p>
+                </div>
+              </div>
+              <div class="shrink-0"><p class="text-[#6a7681] text-sm font-normal leading-normal">1w ago</p></div>
+            </div>
+            <div class="flex gap-4 bg-slate-300 px-4 py-3 justify-between">

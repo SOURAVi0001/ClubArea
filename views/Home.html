@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Club-Areia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #5f72be, #9b23ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka', sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 3rem 5rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 2rem;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 4rem;
+      color: #ffe600;
+      margin-bottom: 2rem;
+      animation: popIn 1s ease-in-out;
+    }
+
+    a {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background-color: #fff;
+      color: #9b23ea;
+      border: none;
+      border-radius: 1rem;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    a:hover {
+      background-color: #ffe600;
+      color: #000;
+      transform: scale(1.1);
+    }
+
+    .emoji {
+      margin-left: 1rem;
+      animation: bounce 1.5s infinite;
+      display: inline-block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Club-Areia</h1>
+    <a href="./login">Login<span class="emoji">👉😋</span></a>
+  </div>
+
+  <script>
+    console.log("Club-Areia: Where the fun begins!");
+  </script>
+</body>
+</html>

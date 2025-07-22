@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="flex justify-center bg-cover bg-center min-h-screen" style="background-image: url('/Login/image.png');">
+  <div class="absolute inset-0 bg-black opacity-80 z-0"></div>
+
+  <div class="flex z-10">
+    <form id="loginForm"
+          class="flex justify-center my-[200px] border border-b-black-400 rounded-md px-3 py-2 w-[420px]"
+          style="background-image: url('/Login/image.png');"
+          method="POST">
+
+      <div class="flex justify-center rounded-md w-[450px] p-6 shadow-lg">
+        <div>
+          <h1 class="mx-[80px] text-3xl mb-6 text-white">Login</h1>
+
+          <input title="Name" type="text" name="name" placeholder="Name"
+            class="border border-gray-400 rounded-md px-3 py-2 w-full
+                   focus:outline-none focus:ring-2 focus:ring-grey-200"
+            value="<%= oldInput?.name || '' %>"
+            required/>
+          <br><br>
+
+          <input title="Email" type="text" name="email" placeholder="Email"
+            class="border border-gray-400 rounded-md px-3 py-2 w-full
+                   focus:outline-none focus:ring-2 focus:ring-grey-200"
+            value="<%= oldInput?.email || '' %>"
+            required/>
+          <br><br>
+
+          <input title="Password" type="password" name="password" placeholder="Password"
+            class="border border-gray-400 rounded-md px-3 py-2 w-full
+                   focus:outline-none focus:ring-2 focus:ring-grey-200"
+            required/>
+          <br><br>
+
+          <!-- Login Button -->
+          <button id="Loginbtn"
+                  class="flex justify-center w-full p-2 bg-slate-200 rounded-2xl hover:bg-blue-400 font-semibold">
+            Login
+          </button>
+
+          <!-- ✅ Error Display Just Below Login Button -->
+          <% if (errors && errors.length > 0) { %>
+            <div class="text-center mt-2">
+              <% errors.forEach(error => { %>
+                <p class="text-red-500 text-sm font-medium"><%= error.msg %></p>
+              <% }) %>
+            </div>
+          <% } %>
+
+          <!-- Sign Up Button -->
+          <button id="Sign_Upbtn"
+                  class="flex justify-center w-full mt-[10px] border p-2 bg-slate-200 rounded-2xl hover:bg-blue-400 font-semibold">
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Script to set form action -->
+  <script>
+    const form = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('Loginbtn');
+    const signUpBtn = document.getElementById('Sign_Upbtn');
+
+    loginBtn.addEventListener('click', function () {
+      form.action = '/user_login_post';
+      form.method = 'POST';
+    });
+
+    signUpBtn.addEventListener('click', function (e) {
+      e.preventDefault(); // Prevent default form submission
+      window.location.href = '/Sign_Up'; // Redirect to signup
+    });
+  </script>
+</body>
+</html>

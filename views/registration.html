@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Club Registration</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(45deg, #f9f9f9, #e0f7fa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: #007BFF;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <form action="/register" method="POST">
+    <h2>Club Recruitment Form</h2>
+    <input type="text" name="name" placeholder="Full Name" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="text" name="rollNo" placeholder="Roll No" required />
+    <select name="club" required>
+      <option value="">Select Club</option>
+      <option value="Coding Club">Coding Club</option>
+      <option value="Music Club">Music Club</option>
+      <option value="Dance Club">Dance Club</option>
+      <option value="Drama Club">Drama Club</option>
+    </select>
+    <textarea name="whyJoin" placeholder="Why do you want to join?" rows="3" required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<%- include("./Partials/starter.ejs") %>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <%- include("./Partials/header.ejs") %>
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#121416] tracking-light text-[32px] font-bold leading-tight min-w-72">Dashboard</p></div>
+            <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Task Status</h3>
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between"><p class="text-[#121416] text-base font-medium leading-normal">Tasks Completed</p></div>
+              <div class="rounded bg-[#dde1e3]"><div class="h-2 rounded bg-[#121416]" style="width: 75%;"></div></div>
+              <p class="text-[#6a7681] text-sm font-normal leading-normal">3 out of 4 tasks completed</p>
+            </div>
+            <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Upcoming Events</h3>
+            <div class="p-4">
+              <div class="flex items-stretch justify-between gap-4 rounded-xl">
+                <div class="flex flex-col gap-1 flex-[2_2_0px]">
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">Upcoming</p>
+                  <p class="text-[#121416] text-base font-bold leading-tight">Club Meeting</p>
+                  <p class="text-[#6a7681] text-sm font-normal leading-normal">Join us for our monthly club meeting to discuss upcoming events and activities.</p>
+                </div>
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCHDHvg6KnfwlYtTQbjS2LMwqe-e_bEPcelGSCifOAoL5apcdCIRLh34y3OfgmFIFg3pvxqRaJmWkIDeB2EupqoOEKfFM-zRuI_o4n3ikdLuaSJ0Cr0R-_9huZ-cekF5-6oEfamGjcgjEamXSAe1P6a6hCz5Ifo3Dl1TqE9o0_uAoYIzmRVIc5JC6J1jHJj0Fl_iwclNK0J-oewQgbzmLqHro5dnSo0ASzZqLZSrYpCxmkrYPJw9SmnO9yCUxVxaUlSOYMmX-NFFWKX");'
+                ></div>
+              </div>
+            </div>
+            <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Leader Contact Information</h3>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2">
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
+                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCSPpBPHtztXEH3_xGYYjANP5UblX2ERii3SAGA3-h4BzAVRGtbomktB_jIUYarNXVZ7ZHoF-7B1GolKtoL-6m3cmxiyKULPwq_aVNVcpbAuju4Wd3zhxtU5NclMbfS0ZRn_Nr-OJC6p_eKMSsbDuXuO1qo7JRJkQMW48JrdhibH_q6GQkXRyjXqiqS3KWgA5h6RJTA3PUCQPANm4BThGSmnqIFUx1tDEc7AtE7S2wtjx5Nau2F2j5P-VmKZIoobg7ONLKJZrHXKhUL");'
+              ></div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#121416] text-base font-medium leading-normal line-clamp-1">Emily Carter</p>
+                <p class="text-[#6a7681] text-sm font-normal leading-normal line-clamp-2">Club Leader</p>
+              </div>
+            </div>
+            <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Updates</h3>
+            <div class="flex gap-4 bg-white px-4 py-3">
+              <div class="text-[#121416] flex items-center justify-center rounded-lg bg-[#f1f2f4] shrink-0 size-12" data-icon="Megaphone" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-1 flex-col justify-center">
+                <p class="text-[#121416] text-base font-medium leading-normal">Volunteer Event Announcement</p>
+                <p class="text-[#6a7681] text-sm font-normal leading-normal">
+                  We're excited to announce our upcoming volunteer event at the local park. Sign up now to participate!
+                </p>
+                <p class="text-[#6a7681] text-sm font-normal leading-normal">Posted 2 days ago</p>
+              </div>
+            </div>
+            <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Feedback</h3>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <textarea
+                  placeholder="Share your feedback or suggestions"
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] min-h-36 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal"
+                ></textarea>
+              </label>
+            </div>
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#dce8f3] text-[#121416] text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Submit Feedback</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

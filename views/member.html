@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Member Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&family=Courgette&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+      font-family: 'Kanit', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 3.5rem 5rem;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 2rem;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+      animation: popIn 1.2s ease-out;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); /* ✅ Safari support added */
+    }
+
+    h1 {
+      font-family: 'Courgette', cursive;
+      font-size: 4.5rem;
+      color: #fff000;
+      text-shadow: 0 0 10px #fff, 0 0 20px #00000055;
+      margin-bottom: 2rem;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    .btn {
+      padding: 1rem 3rem;
+      font-size: 1.6rem;
+      background-color: #fff;
+      color: #00b894;
+      border: none;
+      border-radius: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #fff000;
+      color: #000;
+      transform: scale(1.1);
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff000, 0 0 20px #fff000;
+      }
+      to {
+        text-shadow: 0 0 20px #ffffff, 0 0 30px #fff000;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Member page it is!!</h1>
+    <a href="/" class="btn">Back to Home</a>
+  </div>
+
+  <script>
+    console.log("Welcome, dear member! 🎉 You made it to the exclusive zone.");
+  </script>
+</body>
+</html>

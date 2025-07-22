@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Selection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&family=Kanit:wght@600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      font-family: 'Rubik', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 4rem 5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2rem;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); /* ✅ Safari/iOS support */
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    h1 {
+      font-family: 'Kanit', sans-serif;
+      font-size: 3.5rem;
+      margin-bottom: 3rem;
+      color: #ffe600;
+    }
+
+    form {
+      margin: 1.5rem 0;
+    }
+
+    button {
+      padding: 1rem 3rem;
+      font-size: 1.6rem;
+      background-color: #fff;
+      color: #0072ff;
+      border: none;
+      border-radius: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ffe600;
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Select Login Role</h1>
+
+    <form action="/register" method="get">
+      <button type="submit">Register for Club Recuriemnt👤</button>
+    </form>
+
+    <form action="/member" method="POST">
+      <button type="submit">Login as Member 👤</button>
+    </form>
+
+    <form action="/leader-dashboard" method="GET">
+      <button type="submit">Login as Leader 👑</button>
+    </form>
+  </div>
+
+  <script>
+    console.log("Choose your role wisely. 🧙‍♂️");
+  </script>
+</body>
+</html>

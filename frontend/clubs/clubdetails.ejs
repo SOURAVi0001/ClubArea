@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+
+    <title><%= PageTitle%></title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#14191f] dark group/design-root overflow-x-hidden"
+      style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72"><%= club.name%></p></div>
+            <p class="text-white text-base font-normal leading-normal pb-3 pt-1 px-4"><%= club.description%></p>
+            <div class="flex w-full grow bg-[#14191f] @container p-4">
+              <div class="w-full gap-1 overflow-hidden bg-[#14191f] @[480px]:gap-2 aspect-[3/2] rounded-xl flex">
+                <div
+                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
+                  style='background-image: url("<%= club.image%>");'
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

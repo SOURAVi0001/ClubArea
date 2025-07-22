@@ -1,0 +1,146 @@
+
+      
+
+  <html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title><%= PageTitle %></title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+ <body>
+       <%- include( '../partials/navbar' )%>
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-900 text-white group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p class=" tracking-light text-[32px] font-bold leading-tight">Explore Clubs</p>
+                <p class="text-[#60768a] text-sm font-normal leading-normal">Discover communities that match your interests and passions.</p>
+              </div>
+            </div>
+            <div class="px-4 py-3">
+              <label class="flex flex-col min-w-40 h-12 w-full">
+                <div class="flex w-full flex-1 items-stretch rounded-xl h-full">
+                  <div
+                    class="text-[#60768a] flex border-none bg-[#f0f2f5] items-center justify-center pl-4 rounded-l-xl border-r-0"
+                    data-icon="MagnifyingGlass"
+                    data-size="24px"
+                    data-weight="regular"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                        d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    placeholder="Search for clubs"
+                    class="text-black form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl  focus:outline-0 focus:ring-0 border-none bg-[#f0f2f5] focus:border-none h-full placeholder:text-[#60768a] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                    value=""
+                  />
+                </div>
+              </label>
+            </div>
+            <h2 class=" text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Clubs</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+             
+
+              <% Register.forEach(function(club) { %>
+                <a href="/club/<%= club.id%>" class="transition-transform duration-300 ease-in-out hover:scale-105">
+  <div class="flex flex-col gap-3 pb-3">
+    <div
+      class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+      style='background-image: url("<%= club.image %>");'
+    ></div>
+    <div>
+      <p class="text-base font-medium leading-normal"><%= club.name %></p>
+      <p class="text-[#60768a] text-sm font-normal leading-normal">
+  <%= club.description.split(" ").slice(0, 10).join(" ") %><%= club.description.split(" ").length > 20 ? "..." : "" %>
+</p>
+    </div>
+  </div>
+</a>
+<% }); %>
+
+
+
+            </div>
+            <h2 class=" text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">All Clubs</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8S5ifsDSmBsUpytEVBieWc8VVJMELZg7oLYmWUlVaobCtQPaUyqBshy43BskkXowissczB81vSHc4dMMgahrVcLmG_xfycSsXX1kMQK-deMRnrHyh5wfiDTC1o0FQQzNk0icyTHDkVU5qdpswOqvoZeoHIiD5sm3DbNr_e60ju3qgbyhjg1uvOef37iIFOoqV4V3RASVRXE4xrr96tlrSjj8KDz7LHhpoiqd83TBaVEc0dLNUe1jRQrKZ0kaveeCTDE0UAE_HsBM");'
+                ></div>
+                <div>
+                  <p class=" text-base font-medium leading-normal">Photography Enthusiasts</p>
+                  <p class="text-[#60768a] text-sm font-normal leading-normal">Capture stunning moments and share your photographic journey.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLn72qzC6cOgxO6ffZsYdrYnZLD_R0PCPsVr5o0MRYwRNoo6IY8xaUqAnRYKkntDVK-3WY33IY3JyWZdPISBlIItSws010G1mrKWPDUFZJ1ONbfRW48P-QlrohHRynLN7beuzwrzYeI0ArJnEDor9oY9taXDoL4SmGD3Sf2o7Pq5Sc9Ao0FaIBzj-DUyWoZEhKb1-tkYlj8Fh2LH3Bdh8zahhLKFLjwlv1DTii35g2RqUunF0UhpdL8okOG0YhvTz3m2bDsJcuo5E");'
+                ></div>
+                <div>
+                  <p class=" text-base font-medium leading-normal">Music Lovers Society</p>
+                  <p class="text-[#60768a] text-sm font-normal leading-normal">Connect with fellow music enthusiasts and explore diverse genres.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkEH6VCHAHLZqvArmApY4i6SGBOmLV8gBNVtPffDg8yrah3DJ_8QYiNKKQBYmoI7uZlsR0Pwfra2ojZcB_qH5j06vz-cp9prMBCVfd56-Ke7znVUe-Fvk6IuCNFhXEkvAZhmmAq39Raf_V_quQIO5ytiukyuq96dRZlchMyAEn2r1PuahxUnKh8ft3BK2eMijffGXVgoXj9r06eRhm8Aera0RdGfUpZkdGxnRhWXQgnGo47rWELD0Oj6yL5fODigxy6TqBTm6qc_c");'
+                ></div>
+                <div>
+                  <p class=" text-base font-medium leading-normal">Film Buffs Club</p>
+                  <p class="text-[#60768a] text-sm font-normal leading-normal">Discuss and analyze films, from classics to contemporary masterpieces.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDEF1CcnJ3XovA0wFCGG1Z3oEGVv5EGygexsrNQVJf6GZwwp56HuxNE-QFRoCwKFZO9Mx-Jj_VhVSay8_z7Anz5yJufRHKHrq7e9RF7mi26S9jQFlA3llaFZO9_wCG4n92emaXHc4YvSQwR4pUR7jz5Hv5QdO9vSAg4OzgrWc8dbWlHjdixgD4nGJCBUbavMmSkyY4y9iqy6RC7AcQ0_BtSmhccNw6wVvE_LnKsvkdUfh9OgN7_5bizSHeKLhsX78MCi1dW31EJCrw");'
+                ></div>
+                <div>
+                  <p class=" text-base font-medium leading-normal">Gaming Guild</p>
+                  <p class="text-[#60768a] text-sm font-normal leading-normal">Join forces with gamers and conquer virtual worlds together.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEyZgAfP840dUYo6CkPHYEpFxzPz41X3ZU7i-aMKTqTvrJHjZyQad_s2EKUPtEa0YzIUMabrazj2zRUaN4_2z5QnHnNHXq8MVrcAg0ug8d1uNAtKDxJANq9t_TTBdVRbSG9s408-Cc8CIHlirHIFCtvSYDIaES0NMbcIG9mAEB5mhrGNjRtOJNFCkKlrcTUw2MCgXKjC1UsfUrSzR_lWTeGr_6zi24Zcop-i4r9CiP-pbemsP0INvQOxuDx8uhhztyJ1X6ls1USXw");'
+                ></div>
+                <div>
+                  <p class=" text-base font-medium leading-normal">Travel Buddies</p>
+                  <p class="text-[#60768a] text-sm font-normal leading-normal">Plan and embark on exciting travel adventures with like-minded individuals.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA0aqraRNwkIZB64sJKnJPZvafnTWWffGjMsZ9y89sJqZn8qSS-P7BcR_HoK6LdT3xrbuUwiLKqpL1G9ZtbZXMvVxZAGfLsZhpOe2CTSPO4J6QpFWikz_Eus5ZgFqOg79CL3BiKrTGtN8y6Da_PLeSfPOMyM4xicYbzHtN6boCKew6_JupO0NjUZl3Kw0L8kaj35SXTPK9n8wPgiVL-K5TZyzkXiK97GF6WZcNIaDtd-BcFsu7P4e5ESZMO0tj8R7oeI7q_LIVSSaI");'
+                ></div>
+                <div>
+                  <p class=" text-base font-medium leading-normal">Environmental Advocates</p>
+                  <p class="text-[#60768a] text-sm font-normal leading-normal">Make a positive impact on the environment through collective action.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
