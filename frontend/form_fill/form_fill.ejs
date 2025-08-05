@@ -1,0 +1,223 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+    <title>Application</title>
+    <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    
+    <div class="relative flex size-full min-h-screen flex-col bg-[#1a1a1a] dark group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        
+        <!-- Header -->
+        
+
+        <!-- Application Form -->
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Application Form</p>
+            </div>
+
+            <!-- Application Form -->
+            <form id="interviewApplicationForm" enctype="multipart/form-data" class="bg-[#2a2a2a] rounded-lg p-6 m-4" method="POST">
+              <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-4">Personal Information</h3>
+              
+              <!-- Personal Details Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label class="block text-white text-sm font-medium mb-2">Full Name *</label>
+                  <input type="text" id="fullName" name="fullName" required 
+                    class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500" 
+                    placeholder="Enter your full name">
+                </div>
+                
+                <div>
+                  <label class="block text-white text-sm font-medium mb-2">Email Address *</label>
+                  <input type="email" id="email" name="email" value="<%= email %>" readonly required
+                    class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500" 
+                    placeholder="your.email@example.com">
+                </div>
+                
+                <div>
+                  <label class="block text-white text-sm font-medium mb-2">Scholar Number *</label>
+                  <input type="text" id="scholarNo" name="scholarNo" required 
+                    class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500" 
+                    placeholder="Enter your scholar number">
+                </div>
+                
+                <div>
+                  <label class="block text-white text-sm font-medium mb-2">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" 
+                    class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500" 
+                    placeholder="Enter your phone number">
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <label class="block text-white text-sm font-medium mb-2">Address *</label>
+                <textarea id="address" name="address" required rows="3"
+                  class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500 resize-none" 
+                  placeholder="Enter your complete address"></textarea>
+              </div>
+
+              <!-- Club and Role Selection (FIXED) -->
+<!-- Club and Role Selection (FIXED) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <!-- Club (pre-filled from session) -->
+  <div>
+    <label class="block text-white text-sm font-medium mb-2">Club *</label>
+    <input type="text" id="clubName" name="clubName" value="<%= clubName %>" readonly required
+      class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500 cursor-not-allowed">
+  </div>
+
+  <!-- Role (pre-filled from session) -->
+  <div>
+    <label class="block text-white text-sm font-medium mb-2">Team/Role *</label>
+    <input type="text" id="TeamName" name="TeamName" value="<%= TeamName %>" readonly required
+      class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500 cursor-not-allowed">
+  </div>
+</div>
+
+
+              <!-- Resume Upload -->
+              <div class="mb-6">
+                <label class="block text-white text-sm font-medium mb-2">Upload Resume (PDF) *</label>
+                <div class="flex items-center justify-center w-full">
+                  <label for="resume" class="flex flex-col items-center justify-center w-full h-32 border-2 border-[#363636] border-dashed rounded-lg cursor-pointer bg-[#363636] hover:bg-[#4a4a4a] transition-colors">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg class="w-8 h-8 mb-4 text-[#adadad]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                      </svg>
+                      <p class="mb-2 text-sm text-[#adadad]"><span class="font-semibold">Click to upload</span> your resume</p>
+                      <p class="text-xs text-[#adadad]">PDF files only (MAX. 5MB)</p>
+                    </div>
+                    <input id="resume" name="resume" type="file" accept=".pdf" class="hidden" required />
+                  </label>
+                </div>
+                <p id="fileName" class="text-sm text-[#adadad] mt-2"></p>
+              </div>
+
+              <!-- Motivation -->
+              <div class="mb-6">
+                <label class="block text-white text-sm font-medium mb-2">Why do you want this position? *</label>
+                <textarea id="motivation" name="motivation" required rows="4"
+                  class="w-full rounded-lg bg-[#363636] text-white border-none px-4 py-3 focus:outline-0 focus:ring-2 focus:ring-blue-500 resize-none" 
+                  placeholder="Tell us why you're interested in this position and what you hope to contribute..."></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="flex justify-center">
+                <button type="submit" 
+                  class="flex min-w-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-black text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-900 transition-colors">
+                  <span>Submit Application</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIXED JAVASCRIPT - Single approach only -->
+    <script>
+      // Handle file upload display
+      document.getElementById('resume').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const fileName = document.getElementById('fileName');
+        if (file) {
+          // Validate file size (5MB max)
+          if (file.size > 5 * 1024 * 1024) {
+            alert('File size must be less than 5MB');
+            e.target.value = '';
+            fileName.textContent = '';
+            return;
+          }
+          
+          fileName.textContent = `Selected: ${file.name}`;
+          fileName.classList.remove('text-[#adadad]');
+          fileName.classList.add('text-green-400');
+        } else {
+          fileName.textContent = '';
+          fileName.classList.remove('text-green-400');
+          fileName.classList.add('text-[#adadad]');
+        }
+      });
+
+      // Handle form submission (CORRECTED)
+      document.getElementById('interviewApplicationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData();
+        const form = e.target;
+        
+        // Validate required fields
+        if (!form.fullName.value.trim()) {
+          alert('Please enter your full name');
+          return;
+        }
+        
+        if (!form.email.value.trim()) {
+          alert('Please enter your email address');
+          return;
+        }
+        
+        if (!form.resume.files[0]) {
+          alert('Please upload your resume');
+          return;
+        }
+        
+        // Append all form fields with CORRECT field names
+        formData.append('fullName', form.fullName.value.trim());
+        formData.append('email', form.email.value.trim());
+        formData.append('scholarNo', form.scholarNo.value.trim());
+        formData.append('phone', form.phone.value.trim());
+        formData.append('address', form.address.value.trim());
+        formData.append('clubName', form.clubName.value);  // Fixed: was clubId
+        formData.append('TeamName', form.TeamName.value);  // Fixed: was role
+        formData.append('motivation', form.motivation.value.trim());
+        formData.append('resume', form.resume.files[0]);
+
+        // Disable submit button during submission
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Submitting...</span>';
+
+        try {
+          const response = await fetch('/submit-application', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+          
+          if (response.ok) {
+            alert('Thanks for showing your interest in us!');
+            window.location.href = '/user';
+          } 
+     else {
+            alert('Error: ' + (result.message || 'Something went wrong'));
+          }
+        }
+        catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred while submitting your application. Please try again.');
+        } 
+        finally {
+          // Re-enable submit button
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants - <%= opening.role %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <!-- Opening Details -->
+            <div class="border-b pb-6 mb-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Applicants for <%= opening.role %></h1>
+                        <p class="text-gray-600 mb-2"><strong>Team:</strong> <%= opening.teamName %></p>
+                        <p class="text-gray-600 mb-2"><strong>Club:</strong> <%= opening.clubName %></p>
+                        <p class="text-gray-600"><strong>Created:</strong> <%= new Date(opening.createdDate).toLocaleDateString() %></p>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-<%= opening.status === 'active' ? 'green' : 'red' %>-100 text-<%= opening.status === 'active' ? 'green' : 'red' %>-800 text-sm font-medium px-3 py-1 rounded-full">
+                            <%= opening.status.charAt(0).toUpperCase() + opening.status.slice(1) %>
+                        </span>
+                        <p class="text-sm text-gray-500 mt-2">Total: <%= applicants.length %> applicants</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <p class="text-gray-700"><strong>Description:</strong> <%= opening.description %></p>
+                    <p class="text-gray-700 mt-2"><strong>Requirements:</strong> <%= opening.requirements %></p>
+                </div>
+            </div>
+
+            <!-- Applicants List -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold text-gray-700">Applicants</h2>
+                    <div class="flex space-x-2">
+                        <select id="statusFilter" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <% if (applicants && applicants.length > 0) { %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <% applicants.forEach(applicant => { %>
+                            <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm applicant-card" 
+                                 data-status="<%= applicant.status %>" 
+                                 data-applicant-id="<%= applicant._id %>">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-800"><%= applicant.applicantName || applicant.fullName %></h3>
+                                    <span class="status-badge bg-<%= applicant.status === 'pending' ? 'yellow' : applicant.status === 'accepted' ? 'green' : 'red' %>-100 text-<%= applicant.status === 'pending' ? 'yellow' : applicant.status === 'accepted' ? 'green' : 'red' %>-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                                        <%= applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1) %>
+                                    </span>
+                                </div>
+                                
+                                <div class="space-y-2 mb-4">
+                                    <p class="text-sm text-gray-600"><strong>Email:</strong> <%= applicant.applicantEmail || applicant.email %></p>
+                                    <p class="text-sm text-gray-600"><strong>Scholar No:</strong> <%= applicant.scholarNo %></p>
+                                    <p class="text-sm text-gray-600"><strong>Phone:</strong> <%= applicant.phone || 'Not provided' %></p>
+                                    <p class="text-sm text-gray-600"><strong>Address:</strong> <%= applicant.address %></p>
+                                </div>
+                                
+                                <div class="mb-4 p-3 bg-gray-50 rounded">
+                                    <p class="text-sm text-gray-700"><strong>Why this position:</strong></p>
+                                    <p class="text-sm text-gray-600 mt-1"><%= applicant.motivation %></p>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <button onclick="previewResume('<%= applicant._id %>')" 
+                                            class="text-blue-600 hover:underline text-sm cursor-pointer bg-transparent border-none p-0">
+                                        📄 Preview Resume
+                                    </button>
+                                    <p class="text-xs text-gray-500 mt-1">Applied: <%= new Date(applicant.createdAt).toLocaleDateString() %></p>
+                                </div>
+                                
+                                <!-- FIXED: Changed from 'active' to 'pending' -->
+                                <% if (applicant.status === 'pending') { %>
+                                    <div class="flex space-x-2 action-buttons">
+                                        <button onclick="reviewApplication('<%= applicant._id %>', 'accepted')" 
+                                                class="accept-btn flex-1 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                                            Accept
+                                        </button>
+                                        <button onclick="reviewApplication('<%= applicant._id %>', 'rejected')" 
+                                                class="reject-btn flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                                            Reject
+                                        </button>
+                                    </div>
+                                <% } else { %>
+                                    <div class="text-center py-2">
+                                        <p class="text-sm text-gray-500">
+                                            <%= applicant.status === 'accepted' ? 'Accepted' : 'Rejected' %> on 
+                                            <%= applicant.reviewedDate ? new Date(applicant.reviewedDate).toLocaleDateString() : 'N/A' %>
+                                        </p>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="text-center py-12">
+                        <p class="text-gray-500 text-lg">No applicants found for this opening.</p>
+                        <p class="text-gray-400">Share the opening link to start receiving applications!</p>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Back Button -->
+            <div class="mt-8 text-center">
+                <a href="/leader/openings" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded">
+                    Back to Openings
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Resume Preview Modal -->
+    <div id="resumeModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-bold text-gray-800">Resume Preview</h3>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-3xl font-bold leading-none">&times;</button>
+            </div>
+            <div class="mt-4">
+                <div id="loadingIndicator" class="text-center py-8">
+                    <p class="text-gray-600">Loading resume...</p>
+                </div>
+                <iframe 
+                    id="resumeFrame" 
+                    src="" 
+                    width="100%" 
+                    height="600px" 
+                    frameborder="0"
+                    onload="document.getElementById('loadingIndicator').style.display='none'"
+                    style="border: 1px solid #e5e7eb; border-radius: 8px;">
+                </iframe>
+            </div>
+            <div class="mt-4 text-center">
+                <button onclick="closeResumeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            const filterValue = this.value;
+            const cards = document.querySelectorAll('.applicant-card');
+            
+            cards.forEach(card => {
+                if (filterValue === '' || card.dataset.status === filterValue) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Enhanced review application function
+        async function reviewApplication(applicantId, decision) {
+            const confirmMessage = decision === 'accepted' 
+                ? 'Are you sure you want to ACCEPT this applicant? They will receive an email notification and be added to the club.'
+                : 'Are you sure you want to REJECT this applicant? They will receive an email notification.';
+                
+            if (!confirm(confirmMessage)) return;
+
+            const card = document.querySelector(`[data-applicant-id="${applicantId}"]`);
+            const buttons = card ? card.querySelectorAll('.action-buttons button') : [];
+            
+            // Disable buttons during processing
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.textContent = decision === 'accepted' ? 'Accepting...' : 'Rejecting...';
+            });
+
+            try {
+                const response = await fetch(`/leader/applicant/${applicantId}/review`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ decision })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(`Applicant ${decision} successfully!`);
+                    
+                    // Update UI immediately without page reload
+                    if (card) {
+                        card.dataset.status = decision;
+                        const statusBadge = card.querySelector('.status-badge');
+                        const actionButtons = card.querySelector('.action-buttons');
+                        
+                        // Update status badge
+                        statusBadge.className = `status-badge bg-${decision === 'accepted' ? 'green' : 'red'}-100 text-${decision === 'accepted' ? 'green' : 'red'}-800 text-xs font-medium px-2.5 py-0.5 rounded`;
+                        statusBadge.textContent = decision.charAt(0).toUpperCase() + decision.slice(1);
+                        
+                        // Replace buttons with status message
+                        actionButtons.innerHTML = `
+                            <div class="text-center py-2">
+                                <p class="text-sm text-gray-500">
+                                    ${decision === 'accepted' ? 'Accepted' : 'Rejected'} on ${new Date().toLocaleDateString()}
+                                </p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    alert('Error: ' + (result.message || 'Something went wrong'));
+                    // Re-enable buttons on error
+                    buttons.forEach((btn, index) => {
+                        btn.disabled = false;
+                        btn.textContent = index === 0 ? 'Accept' : 'Reject';
+                    });
+                }
+            } catch (error) {
+                console.error('Error processing application:', error);
+                alert('Error processing application: ' + error.message);
+                // Re-enable buttons on error
+                buttons.forEach((btn, index) => {
+                    btn.disabled = false;
+                    btn.textContent = index === 0 ? 'Accept' : 'Reject';
+                });
+            }
+        }
+
+        // Enhanced resume preview function
+        function previewResume(applicantId) {
+            console.log('Opening resume for applicant:', applicantId);
+            
+            const modal = document.getElementById('resumeModal');
+            const iframe = document.getElementById('resumeFrame');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            if (!modal || !iframe) {
+                console.error('Modal elements not found');
+                alert('Resume preview is not available');
+                return;
+            }
+            
+            // Show loading state
+            loadingIndicator.style.display = 'block';
+            iframe.src = '';
+            
+            // Set the resume URL for preview
+            const resumeUrl = `/download/resume/${applicantId}`;
+            console.log('Loading resume from:', resumeUrl);
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            
+            // Set iframe source
+            iframe.src = resumeUrl;
+            
+            // Add error handling for iframe
+            iframe.onerror = function() {
+                console.error('Failed to load resume');
+                alert('Failed to load resume. Please try downloading instead.');
+                closeResumeModal();
+            };
+        }
+
+        // Close modal functions
+        function closeResumeModal() {
+            const modal = document.getElementById('resumeModal');
+            const iframe = document.getElementById('resumeFrame');
+            
+            if (modal) modal.classList.add('hidden');
+            if (iframe) iframe.src = '';
+        }
+
+        // Event listeners for modal
+        document.getElementById('closeModal').addEventListener('click', closeResumeModal);
+
+        document.getElementById('resumeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeResumeModal();
+            }
+        });
+
+        // Keyboard support for modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeResumeModal();
+            }
+        });
+    </script>
+</body>
+</html>

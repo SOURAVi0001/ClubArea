@@ -1,18 +1,12 @@
+require('dotenv').config();  // Load environment variables
 const mysql = require('mysql2');
-const fs = require('fs');
 
-     // Create DB connection
-
+// Create DB connection pool
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'Pander@2022',
-  database: 'ClubArea'
- });
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
 
-module.exports=pool.promise();
-
-
-
-
-
+module.exports = pool.promise();

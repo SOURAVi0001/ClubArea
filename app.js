@@ -1,6 +1,15 @@
 const express=require('express');
 const path = require('path');
+
+// import dotenv from 'dotenv';
+// import cors from 'cors';
+// import interviewRoutes from './routes/interviewRoutes.js';
+// import connectDB from './config/db.js';
+
+// dotenv.config();
+
 const app=express();
+
 const home=require('./route/Home');
 const ContactUs=require('./route/ContactUs');
 const updates=require('./route/Updates');
@@ -56,7 +65,8 @@ db.execute("Select * from clubs").then(([rows,fields]) =>{
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const memberData = {
   name: 'Rahul Sharma',
   tasks: [
@@ -77,6 +87,26 @@ const memberData = {
     } 
   ]
 };
+
+
+
+// Add this middleware AFTER express.json() but BEFORE your routes
+app.use((req, res, next) => {
+    console.log('--- Request Debug ---');
+    console.log('Method:', req.method);
+    console.log('URL:', req.url);
+    console.log('Content-Type:', req.get('Content-Type'));
+    console.log('Content-Length:', req.get('Content-Length'));
+    console.log('Body:', req.body);
+    console.log('Raw Body Length:', req.rawBody ? req.rawBody.length : 'No raw body');
+    next();
+});
+
+
+
+
+
+
 
 app.get('/member-dashboard', (req, res) => {
   res.render('member_dashboard', { member: memberData });
@@ -138,6 +168,16 @@ app.use(Error404);
 //       res.send(`<h1>Currently working on it!!!!!</h1>`);
       
 // });
+const fs = require('fs');
+
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads', { recursive: true });
+}
+if (!fs.existsSync('uploads/resumes')) {
+  fs.mkdirSync('uploads/resumes', { recursive: true });
+}
+
 
 const port=3005;
 

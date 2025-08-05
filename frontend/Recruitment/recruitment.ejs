@@ -1,86 +1,479 @@
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
 
-    <title>Recruitment</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+<!-- ============ Tech-Competitive Recruitment Page ============ -->
+<section class="relative min-h-screen bg-slate-900 text-white overflow-hidden">
+  
+  <!-- Animated Tech Background -->
+  <div class="absolute inset-0 bg-gradient-to-br from-purple-900 via-slate-900 to-indigo-900 
+              bg-[length:400%_400%] animate-[techPulse_20s_ease-in-out_infinite]"></div>
+  
+  <!-- Floating particles effect -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-sky-400 rounded-full animate-ping opacity-70"></div>
+    <div class="absolute top-3/4 right-1/4 w-3 h-3 bg-fuchsia-400 rounded-full animate-pulse opacity-60"></div>
+    <div class="absolute top-1/2 left-3/4 w-1 h-1 bg-purple-400 rounded-full animate-bounce opacity-80"></div>
+    <div class="absolute top-1/3 right-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-ping opacity-50"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-2 h-2 bg-violet-400 rounded-full animate-pulse opacity-40"></div>
+  </div>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  </head>
-  <body>
-     <%- include( '../partials/navbar' )%>
-    <div class="relative flex size-full min-h-screen flex-col bg-slate-500 group/design-root overflow-x-hidden" style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Join Clubs</p></div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Current Openings</h2>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl bg-white p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
-                <div class="flex flex-[2_2_0px] flex-col gap-4">
-                  <div class="flex flex-col gap-1">
-                    <p class="text-white text-base font-bold leading-tight">CampusConnect Marketing Team</p>
-                    <p class="text-[#60758a] text-sm font-normal leading-normal">Marketing Associate | 3 Openings | Application Deadline: July 15th</p>
-                  </div>
-                  <button
-                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#0000f0] text-slate-200 text-sm font-medium leading-normal w-fit"
-                  >
-                    <span class="truncate">Apply Now</span>
-                  </button>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCMKBUQ_Tqxr0VSVGJznrhfK3pLNDS-3kXscvJeIahB4lWssQNVYA5ElgAbX6q6M2wgbAI-kJLmn6Ymz23NIrQ6JKWiHFmslbdi-Ez_nHVJjXHd3_SjxlTyuc6zE5KPUrDYYMnhtOh_XuENv0z00sAJoQN0WIWRgzv6od9A91yVf4XCXBPt2FhJZ9JRtKB91gEDXpOqGuPAr1qOjxatXAl7Z5S5qXYkJ12_4ERODg4gFSM9gtbYuRhs1xLRaErK0yUqb-KQenlBJw");'
-                ></div>
-              </div>
+  <div class="relative z-10 mx-auto max-w-7xl px-6 pt-28 pb-16">
+    
+    <!-- ===== HERO SECTION ===== -->
+    <header class="text-center mb-16">
+      <div class="glass-hero p-8 rounded-3xl max-w-4xl mx-auto">
+        <h1 class="text-5xl sm:text-6xl font-extrabold mb-6 bg-gradient-to-r from-sky-300 via-purple-300 to-fuchsia-300 bg-clip-text text-transparent">
+          Join the Elite
+        </h1>
+        <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+          Compete for exclusive positions in top college clubs. 
+          <span class="text-fuchsia-300 font-semibold">Limited spots available.</span>
+        </p>
+        
+        <!-- Single Login Prompt -->
+        <div class="mb-8 p-6 rounded-xl bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 border border-fuchsia-400/30">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <svg class="w-6 h-6 text-fuchsia-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <h3 class="text-2xl font-bold text-fuchsia-200">Login to Apply</h3>
+          </div>
+          <p class="text-gray-300 mb-6 text-lg">
+            Please login first to submit your application for any position
+          </p>
+          <button onclick="redirectToLogin()" class="btn-login-prompt">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+            </svg>
+            Login Now
+          </button>
+        </div>
+        
+        <!-- Live Stats Bar -->
+        <div class="flex flex-wrap justify-center gap-8 text-sm">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-sky-300">
+              <%= opening ? opening.reduce((total, op) => total + (op.applicantCount || 0), 0) : 0 %>
             </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl bg-white p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
-                <div class="flex flex-[2_2_0px] flex-col gap-4">
-                  <div class="flex flex-col gap-1">
-                    <p class="text-white text-base font-bold leading-tight">CampusConnect Event Planning Committee</p>
-                    <p class="text-[#60758a] text-sm font-normal leading-normal">Event Coordinator | 4 Openings | Application Deadline: July 15th</p>
-                  </div>
-                  <button
-                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#0000f0] text-slate-200 text-sm font-medium leading-normal w-fit"
-                  >
-                    <span class="truncate">Apply Now</span>
-                  </button>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA0eRFBS9KxlnQ7XpgsqFWA6-yo4A38a0xnxI0f_4LaB4iueJkE1V0OxC8JOj0ibvnCuytmgTTIHy1Pnw0Dpr3z16outQy3DzYvNKowLTDKtNBD7Unst1UHGeovTqug1BiqK9pcWh7lQUie7unKHYzTw0vRe9EP9OOux1fmenVTynEG5_LYueUMsT6WOae7r04LvIkc7Aw5JEOj8aIWLAA1Q4uYGlHtrbKu5X6ZrPltG8bUHISjkgF2IiIKKe6Qq2e4nKpDs6oh7v8");'
-                ></div>
-              </div>
+            <div class="text-gray-400">Active Applications</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-fuchsia-300">
+              <%= opening ? opening.filter(op => op.status === 'active').length : 0 %>
             </div>
-            <div class="p-4">
-              <div class="flex items-stretch justify-between gap-4 rounded-xl bg-white p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
-                <div class="flex flex-[2_2_0px] flex-col gap-4">
-                  <div class="flex flex-col gap-1">
-                    <p class="text-white text-base font-bold leading-tight">CampusConnect Tech Team</p>
-                    <p class="text-[#60758a] text-sm font-normal leading-normal">Web Developer | 2 Openings | Application Deadline: July 15th</p>
-                  </div>
-                  <button
-                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#0000f0] text-slate-200 text-sm font-medium leading-normal w-fit"
-                  >
-                    <span class="truncate">Apply Now</span>
-                  </button>
-                </div>
-                <div
-                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrQ1c_jfcJkghJTtJlGkxc8pVSTVIKXBX4IcZFR9J-5ivurBKROZIR7QaYDVOynFwbIJYbImdC4FuguCd0eZ8H7hOTjdbPM1nYfaPU5uzrx5fq6YAT8_TSAmyFDcnrxEJ662W50QCOtXnMMqKlfG3a5I1kdV6BR42vW-g1BCj0cIOdB6VOIYin7hsPUmgtq1uMvUJoY5zHjBlls_0AYTYltt_UATjH2UJvy7YRlsn4_XQqCifoSQ4Ho0sz4t1SV0XfegPs5vP44bk");'
-                ></div>
-              </div>
+            <div class="text-gray-400">Open Positions</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-purple-300">
+              <%= opening && opening.length > 0 ? Math.round((opening.filter(op => op.status === 'closed').length / opening.length) * 100) : 0 %>%
             </div>
+            <div class="text-gray-400">Success Rate</div>
           </div>
         </div>
       </div>
-    </div>
-  </body>
-</html>
+    </header>
+
+    <!-- ===== FEATURED OPPORTUNITIES ===== -->
+    <% if (opening && opening.filter(op => op.status === 'active').length > 0) { %>
+    <section class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
+        <span class="w-1 h-8 bg-gradient-to-b from-sky-400 to-fuchsia-500 rounded"></span>
+        Featured Opportunities
+        <span class="text-sm bg-red-500 px-2 py-1 rounded-full animate-pulse">HOT</span>
+      </h2>
+
+      <!-- Premium Job Cards - Show first 2 active openings -->
+      <div class="grid gap-6 lg:grid-cols-2">
+        <% 
+        const featuredOpenings = opening.filter(op => op.status === 'active').slice(0, 2);
+        const gradients = [
+          { 
+            card: 'from-purple-600/20 to-fuchsia-600/20', 
+            icon: 'from-purple-500 to-fuchsia-600', 
+            progress: 'from-fuchsia-500 to-purple-600',
+            accent: 'text-fuchsia-300'
+          },
+          { 
+            card: 'from-sky-600/20 to-indigo-600/20', 
+            icon: 'from-sky-500 to-indigo-600', 
+            progress: 'from-sky-500 to-indigo-600',
+            accent: 'text-sky-300'
+          }
+        ];
+        %>
+        
+        <% featuredOpenings.forEach((op, index) => { 
+          const gradient = gradients[index] || gradients[0];
+          const createdDate = new Date(op.createdDate || Date.now());
+          const deadlineDate = new Date(createdDate.getTime() + (30 * 24 * 60 * 60 * 1000));
+          const daysLeft = Math.ceil((deadlineDate.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000));
+          const maxApplicants = op.maxApplicants || 50;
+          const currentApplicants = op.applicantCount || 0;
+          const progressPercent = Math.min((currentApplicants / maxApplicants) * 100, 100);
+        %>
+        <div class="group recruitment-card relative overflow-hidden rounded-2xl p-6 
+                    hover:scale-105 transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-r <%= gradient.card %>"></div>
+          
+          <!-- Urgency Indicator -->
+          <div class="absolute top-4 right-4 flex items-center gap-2">
+            <div class="w-2 h-2 <%= daysLeft <= 3 ? 'bg-red-400' : 'bg-orange-400' %> rounded-full animate-ping"></div>
+            <span class="text-xs <%= daysLeft <= 3 ? 'text-red-300' : 'text-orange-300' %> font-medium">
+              <%= daysLeft > 0 ? daysLeft + ' days left' : 'Deadline passed' %>
+            </span>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br <%= gradient.icon %> 
+                         flex items-center justify-center">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm text-sky-300 font-medium">PREMIUM ROLE</div>
+                <h3 class="text-xl font-bold"><%= op.role || 'Member' %></h3>
+              </div>
+            </div>
+
+            <div class="space-y-2 mb-4">
+              <p class="text-sm text-gray-300">
+                <strong>Team:</strong> <%= op.teamName || 'General Team' %>
+              </p>
+              <p class="text-sm text-gray-400 line-clamp-3">
+                <%= op.description || 'Join our team and make a difference!' %>
+              </p>
+            </div>
+
+            <div class="space-y-2 mb-6">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">Applications</span>
+                <span class="<%= gradient.accent %>"><%= currentApplicants %>/<%= maxApplicants %></span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-gradient-to-r <%= gradient.progress %> h-2 rounded-full transition-all duration-500" 
+                     style="width: <%= progressPercent %>%"></div>
+              </div>
+            </div>
+
+            <div class="flex gap-2 flex-wrap">
+              <span class="px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full text-xs">
+                <%= op.teamName || 'General Team' %>
+              </span>
+              <span class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs">Member</span>
+              <% if (daysLeft <= 3) { %>
+              <span class="px-3 py-1 bg-red-500/20 text-red-300 rounded-full text-xs animate-pulse">
+                Urgent
+              </span>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </section>
+    <% } %>
+
+    <!-- ===== ALL OPENINGS ===== -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
+        <span class="w-1 h-8 bg-gradient-to-b from-purple-400 to-sky-500 rounded"></span>
+        All Current Openings
+      </h2>
+
+      <% if (opening && opening.filter(op => op.status === 'active').length > 0) { %>
+        <div class="space-y-4">
+          <% 
+          const teamIcons = {
+            'Technical Team': 'M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z',
+            'Marketing Team': 'M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z',
+            'Events Team': 'M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z',
+            'Content Team': 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
+            'Design Team': 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4 4 4 0 004-4V5z'
+          };
+          
+          const teamGradients = {
+            'Technical Team': 'from-emerald-500 to-teal-600',
+            'Marketing Team': 'from-purple-500 to-fuchsia-600',
+            'Events Team': 'from-sky-500 to-indigo-600',
+            'Content Team': 'from-orange-500 to-red-600',
+            'Design Team': 'from-pink-500 to-rose-600',
+            'default': 'from-gray-500 to-slate-600'
+          };
+          %>
+          
+          <% opening.filter(op => op.status === 'active').forEach((op, index) => { 
+            const maxApplicants = op.maxApplicants || 25;
+            const currentApplicants = op.applicantCount || 0;
+            const progressPercent = Math.min((currentApplicants / maxApplicants) * 100, 100);
+            const createdDate = new Date(op.createdDate || Date.now());
+            const deadline = new Date(createdDate.getTime() + (30 * 24 * 60 * 60 * 1000));
+            const iconPath = teamIcons[op.teamName] || teamIcons['Technical Team'];
+            const gradient = teamGradients[op.teamName] || teamGradients['default'];
+            const daysLeft = Math.ceil((deadline.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000));
+          %>
+          <div class="recruitment-card-simple group hover:scale-[1.02] transition-all duration-200">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between p-6 gap-6">
+              <div class="flex items-start gap-4 flex-1">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-br <%= gradient %> 
+                           flex items-center justify-center flex-shrink-0">
+                  <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="<%= iconPath %>"/>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    <%= op.role || 'Member' %> - <%= op.teamName || 'General Team' %>
+                  </h3>
+                  <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-3">
+                    <span class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                      </svg>
+                      1 Opening
+                    </span>
+                    <span>•</span>
+                    <span class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                      </svg>
+                      Deadline: <%= deadline.toLocaleDateString() %>
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                      Active
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-300 line-clamp-2 mb-3">
+                    <%= op.description || 'Join our dynamic team and contribute to exciting projects!' %>
+                  </p>
+                  
+                  <!-- Requirements preview -->
+                  <% if (op.requirements) { %>
+                  <p class="text-xs text-gray-400 line-clamp-1">
+                    <strong>Requirements:</strong> <%= op.requirements %>
+                  </p>
+                  <% } %>
+                </div>
+              </div>
+
+              <div class="flex flex-col items-start lg:items-end">
+                <div class="text-left lg:text-right text-sm">
+                  <div class="text-emerald-300 font-medium mb-1">
+                    <%= currentApplicants %>/<%= maxApplicants %> Applied
+                  </div>
+                  <div class="text-gray-400 mb-2">
+                    <%= Math.round(progressPercent) %>% filled
+                  </div>
+                  <% if (daysLeft <= 3 && daysLeft > 0) { %>
+                  <div class="text-red-300 text-xs font-medium animate-pulse">
+                    Only <%= daysLeft %> days left!
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="text-center py-16">
+          <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
+            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V6"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-300 mb-2">No Active Openings</h3>
+          <p class="text-gray-400 mb-6">Check back soon for new opportunities!</p>
+          <div class="flex justify-center">
+            <a href="/" class="btn-simple">
+              Go Back Home
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      <% } %>
+    </section>
+  </div>
+</section>
+
+<!-- ============ Enhanced Styles ============ -->
+<style>
+  @keyframes techPulse {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .glass-hero {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .recruitment-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .recruitment-card-simple {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-login-prompt {
+    @apply flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r 
+           from-fuchsia-600 to-purple-600 px-8 py-4 text-lg font-semibold transition-all 
+           duration-300 hover:scale-105 hover:shadow-xl hover:shadow-fuchsia-500/25
+           focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50;
+  }
+
+  .btn-simple {
+    @apply flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 font-medium 
+           transition-all duration-200 hover:bg-white/20 hover:scale-105
+           focus:outline-none focus:ring-2 focus:ring-white/20 backdrop-blur-sm;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Enhanced mobile responsiveness */
+  @media (max-width: 768px) {
+    .recruitment-card .flex {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .recruitment-card-simple .flex {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .glass-hero {
+      padding: 1.5rem;
+    }
+
+    .text-5xl {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .text-5xl {
+      font-size: 2rem;
+    }
+    
+    .sm\:text-6xl {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Simple redirect function to login page
+  function redirectToLogin() {
+    console.log('Redirecting to login page');
+    
+    try {
+      // Create the login URL with return URL parameter
+      const returnUrl = encodeURIComponent(window.location.pathname);
+      const loginUrl = `/user_login`;
+      console.log('Login URL:', loginUrl);
+      // Redirect to login page
+      window.location.href = loginUrl;
+    }
+    catch (error) {
+      console.error('Redirect failed:', error);
+      // Fallback redirect
+      window.location.href = './user_login';
+    }
+  }
+
+  // Mobile navbar toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const burger = document.getElementById('nav-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (burger && mobileMenu) {
+      let isOpen = false;
+      
+      burger.addEventListener('click', function() {
+        isOpen = !isOpen;
+        
+        // Toggle mobile menu
+        if (isOpen) {
+          mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+          mobileMenu.classList.add('open');
+        } else {
+          mobileMenu.style.maxHeight = '0';
+          mobileMenu.classList.remove('open');
+        }
+        
+        // Animate burger icon
+        const lines = burger.children;
+        if (lines.length >= 3) {
+          lines[0].style.transform = isOpen ? 'rotate(45deg) translateY(6px)' : '';
+          lines[1].style.opacity = isOpen ? '0' : '1';
+          lines[2].style.transform = isOpen ? 'rotate(-45deg) translateY(-6px)' : '';
+        }
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (isOpen && !burger.contains(e.target) && !mobileMenu.contains(e.target)) {
+          isOpen = false;
+          mobileMenu.style.maxHeight = '0';
+          mobileMenu.classList.remove('open');
+          
+          const lines = burger.children;
+          if (lines.length >= 3) {
+            lines[0].style.transform = '';
+            lines[1].style.opacity = '1';
+            lines[2].style.transform = '';
+          }
+        }
+      });
+    }
+  });
+
+  // Add smooth scrolling for any anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>

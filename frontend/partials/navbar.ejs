@@ -1,24 +1,71 @@
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#362839] px-10 py-3 bg-slate-900 text-white">
-  <div class="flex items-center gap-4 text-white">
-    
-    <img src="./partials/logo.png" class="h-[35px] w-[110px]"> </img>
-  </div>
-  <div class="flex flex-1 justify-end gap-8">
-    <div class="flex items-center gap-9">
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/">Home</a>
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/clublist">Clubs</a>
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/recruitment">Recruitment</a>
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/updates">Updates</a>
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/interview">AI-INTERVIEW</a>
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/gallery">Gallery</a>
-      <a class="text-white text-sm font-medium hover:text-fuchsia-300 transition" href="/ContactUs">Contact Us</a>
-    </div>
-    <a href="/login_type">
-      <button
-        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#c313eb] text-white text-sm font-bold tracking-[0.015em]"
-      >
-        <span class="truncate">Login</span>
-      </button>
+<!-- ===== Responsive Tech-Vibes Header ===== -->
+<header class="fixed top-0 left-0 z-50 w-full bg-slate-900/90 text-white backdrop-blur-md">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2">
+      <img src="./partials/logo.png" alt="ClubArea logo" class="h-[35px] w-[110px]" />
     </a>
+
+    <!-- Hamburger (hidden ≥ md) -->
+    <button id="nav-toggle"
+      class="md:hidden flex h-9 w-9 items-center justify-center rounded hover:bg-white/10 focus:outline-none">
+      <!-- 3-bar icon -->
+      <span class="block h-0.5 w-5 bg-white transition-all duration-300"></span>
+      <span class="mt-1 block h-0.5 w-5 bg-white transition-all duration-300"></span>
+      <span class="mt-1 block h-0.5 w-5 bg-white transition-all duration-300"></span>
+    </button>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex flex-1 items-center justify-end gap-9 text-sm font-medium">
+      <a class="hover:text-fuchsia-300 transition" href="/">Home</a>
+      <a class="hover:text-fuchsia-300 transition" href="/clublist">Clubs</a>
+      <a class="hover:text-fuchsia-300 transition" href="/recruitment">Recruitment</a>
+      <a class="hover:text-fuchsia-300 transition" href="/updates">Updates</a>
+      <a class="hover:text-fuchsia-300 transition" href="/gallery">Gallery</a>
+      <a class="hover:text-fuchsia-300 transition" href="/ContactUs">Contact&nbsp;Us</a>
+
+      <!-- CTA -->
+      <a href="/login_type">
+        <button
+          class="rounded-full bg-[#c313eb] px-4 py-2 font-bold tracking-wide hover:brightness-110">
+          Login
+        </button>
+      </a>
+    </nav>
   </div>
+
+  <!-- Mobile drawer (hidden ≥ md) -->
+  <nav id="mobile-menu"
+    class="md:hidden max-h-0 overflow-hidden bg-slate-900/95 transition-[max-height] duration-300">
+    <div class="flex flex-col gap-5 px-6 py-6 text-sm font-medium">
+      <a class="hover:text-fuchsia-300 transition" href="/">Home</a>
+      <a class="hover:text-fuchsia-300 transition" href="/clublist">Clubs</a>
+      <a class="hover:text-fuchsia-300 transition" href="/recruitment">Recruitment</a>
+      <a class="hover:text-fuchsia-300 transition" href="/updates">Updates</a>
+      <a class="hover:text-fuchsia-300 transition" href="/gallery">Gallery</a>
+      <a class="hover:text-fuchsia-300 transition" href="/ContactUs">Contact&nbsp;Us</a>
+      <a href="/login_type">
+        <button
+          class="w-full rounded-full bg-[#c313eb] py-2 font-bold tracking-wide hover:brightness-110">
+          Login
+        </button>
+      </a>
+    </div>
+  </nav>
 </header>
+
+<!-- Toggle script (vanilla JS, ~10 lines) -->
+<script>
+  const burger = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let open = false;
+
+  burger.addEventListener('click', () => {
+    open = !open;
+    mobileMenu.style.maxHeight = open ? mobileMenu.scrollHeight + 'px' : '0';
+    // animate burger into “X”
+    burger.children[0].style.transform = open ? 'rotate(45deg) translateY(6px)' : '';
+    burger.children[1].style.opacity   = open ? '0' : '1';
+    burger.children[2].style.transform = open ? 'rotate(-45deg) translateY(-6px)' : '';
+  });
+</script>

@@ -2,7 +2,30 @@ const register = require('../models/clubs');
 const updatesdb = require('../models/updates');
 const userdb=require('../models/user');
 const admindb=require('../models/clubadmin');
+const InterviewApplicationdb = require('../models/Application_form');
+// Add this import at the top of controllers/home.js
+const InterviewApplication = require('../models/Application_form'); // Adjust path as needed
+const Applieddb = require('../models/Applied'); // Adjust path as needed
+
+const opening=require('../models/Opening');
+const openingdb=require('../models/Opening');
+
 const { body, validationResult } = require('express-validator');
+const form = async (req, res) => {
+  const openingData = await openingdb.findById(req.session.user.openingId);
+  const clubName = openingData.clubName;
+  const role = openingData.teamName;
+  const email=req.session.user.email;
+  console.log("EMAIL FOR THE USER IN THE SESSION IS ", req.session.user);
+  res.render('form_fill/form_fill', {
+    clubName,
+    role,
+    email
+  });
+};
+
+
+exports.form=form;
 
 const clubs = (req, res) => {
   register.fetchAll().then(([rows,fields]) => {
@@ -62,7 +85,7 @@ const leader = (req, res) => {
   if (req.session.isLoggedIn) {
     const {name,clubName}=req.session.user;
     console.log(name);
-    res.render( 'leader/dashboard', { PageTitle: "Leader Dashboard" ,Leader_Name:name,Club_Name:clubName } );
+    res.redirect( '/leader/leader-events');
   } else {
     res.redirect("/login");
   }
@@ -168,7 +191,7 @@ const VALIDATE = [
       .then(() => {
         req.session.errors = [];
         req.session.oldInput = {};
-        res.render('Login/user_login');
+        res.redirect('/user_login');
       })
       .catch(err => {
         console.log("Error in saving the user: ", err);
@@ -297,9 +320,65 @@ const admin_login_post = async (req, res) => {
 exports.admin_login_post = admin_login_post;
 
 
-const user =(req,res)=>{
- console.log(req.url,req.method,req.body);
-      res.render('User/user');
+const user =async(req,res)=>{
+console.log("user call here with session ",req.url,req.method,req.body,req.session.user);
+const userEmail = req.session.user.email;
+
+// Step 1: Get all applied job records by this user
+const appliedDocs = await Applieddb.find({ applicantEmail: userEmail });
+console.log('appliedDocs:', appliedDocs);
+
+// Step 2: Build Set of composite keys for efficient lookup
+const appliedKeysSet = new Set(
+  appliedDocs.map(doc =>
+    [doc.clubName.trim().toLowerCase(), doc.teamName.trim().toLowerCase()].join('|')
+  )
+);
+
+const allOpenings = await openingdb.find();
+
+console.log('appliedKeysSet:', Array.from(appliedKeysSet));
+console.log('allOpeningsKeys:', allOpenings.map(openingKey));
+
+function openingKey(opening) {
+  return [
+    opening.clubName.trim().toLowerCase(),
+    opening.teamName.trim().toLowerCase()
+  ].join('|');
+}
+
+console.log('appliedKeysSet:', Array.from(appliedKeysSet));
+console.log('allOpeningsKeys:', allOpenings.map(openingKey));
+
+const openingsApplied = [];
+const openingsNotApplied = [];
+
+allOpenings.forEach(opening => {
+  if (appliedKeysSet.has(openingKey(opening))) {
+    openingsApplied.push(opening);
+  } 
+  else {
+    openingsNotApplied.push(opening);
+  }
+});
+
+
+console.log("openingsApplied", openingsApplied);
+console.log("openingsNotApplied", openingsNotApplied);
+const alreadyApplied = await InterviewApplicationdb.find({ applicantEmail: userEmail });
+const username=req.session.user.name;
+// Step 2: Extract jobIds the user has applied to
+
+// Now you can use openingsApplied and openingsNotApplied in your view or return them
+
+  
+      res.render('User/user',{
+        opening:openingsNotApplied,
+        openingsApplied:alreadyApplied,
+        email:userEmail,
+        PageTitle:"User",
+        username
+      });
 };
 exports.user=user;
 
@@ -345,20 +424,338 @@ const updates = async (req, res) => {
 
 exports.updates = updates;
 
+// Add this route to check if user is logged in
+// Add to your routes controller
+const checkSession = (req, res) => {
+  try {
+    const isLoggedIn = !!(req.session && req.session.user && req.session.isLoggedIn);
+    
+    res.json({ 
+      loggedIn: isLoggedIn,
+      user: isLoggedIn ? {
+        name: req.session.user.name,
+        email: req.session.user.email,
+        role: req.session.user.role
+      } : null
+    });
+  } catch (error) {
+    console.error('Error checking session:', error);
+    res.json({ loggedIn: false });
+  }
+};
 
-const recruitment =(req,res)=>{
-      res.render('Recruitment/recruitment');
+exports.checkSession = checkSession;
+
+
+const recruitment =async(req,res)=>{
+  const openings=await openingdb.find();
+      res.render('Recruitment/recruitment',{
+        PageTitle: "Recruitment",
+       opening:openings
+      });
 };
 exports.recruitment=recruitment;
 
 
-const interview =(req,res)=>{
-      res.render('AI_INTERVIEW/dashboard');
-};
-exports.interview=interview;
+
+
+
+
+
+
+
+
+
 
 
 const Login_Type =(req,res)=>{
       res.render('Login_Type/logintype');
 };
 exports.Login_Type=Login_Type;
+
+
+
+
+
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Configure multer for file upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = 'uploads/resumes';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'resume-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else {
+    cb(new Error('Only PDF files are allowed!'), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  },
+  fileFilter: fileFilter
+});
+
+// Submit application
+// Add this at the top of your submitApplication function
+const submitApplication = async (req, res) => {
+ 
+
+  console.log('=== APPLICATION SUBMISSION STARTED ===');
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Request body: for the SUMBIT APPLICATION ', req.session);
+
+  console.log('=== FIELD VALIDATION DEBUG ===');
+  console.log('fullName:', req.body.fullName, '| exists:', !!req.body.fullName);
+  console.log('email:', req.body.email, '| exists:', !!req.body.email);
+  console.log('clubName:', req.body.clubName, '| exists:', !!req.body.clubName);
+  console.log('TeamName:', req.body.TeamName, '| exists:', !!req.body.TeamName);
+  console.log('motivation:', req.body.motivation, '| exists:', !!req.body.motivation);
+
+  try {
+    const {
+      fullName,
+      email,
+      scholarNo,
+      phone,
+      address,
+      clubName,
+      TeamName,
+      motivation
+    } = req.body;
+
+     const appliedDoc = await InterviewApplicationdb.findOne({
+  clubName: clubName,          // e.g., "AI Club"
+  teamName: TeamName,          // e.g., "Orthoptist Team"
+  applicantEmail: email        // e.g., "souravpandr@gmail.com"
+});
+
+if (appliedDoc) {
+  const applied = new Applieddb({
+  jobId: appliedDoc._id,
+  clubName: clubName,          // e.g., "AI Club"
+  teamName: TeamName, 
+  applicantEmail: appliedDoc.applicantEmail
+});
+await applied.save();
+    
+
+}
+else {
+  console.log("No application found.");
+}
+
+    console.log('Extracted form ', {
+      fullName, email, scholarNo, phone, address, clubName, TeamName, motivation
+    });
+    console.log(req.session);
+    // Validate required fields
+    if (!clubName || !TeamName) {
+      return res.status(400).json({
+        success: false,
+        message: 'Club Name and Team Name are required.'
+      });
+    }
+
+    // Check if resume file is uploaded
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Resume file is required.'
+      });
+    }
+
+    // Create new Opening document with form data
+    const newOpening = new InterviewApplicationdb({
+      clubName: clubName,
+      teamName: TeamName,
+      applicantName: fullName,
+      applicantEmail: email,
+      scholarNo: scholarNo,
+      phone: phone,
+      address: address,
+      motivation: motivation,
+      resumeFileName: req.file.originalname,
+      resumePath: req.file.path,
+      status: 'pending',
+      role: 'member',
+      createdDate: new Date(),
+      updatedAt: new Date()
+    });
+
+    console.log('Saving to Opening collection:', newOpening);
+
+    // Save to Opening collection
+    await newOpening.save();
+try {
+  const appliedEntry = new Applieddb({
+    jobId: newOpening._id,
+    clubName: clubName,
+    teamName: TeamName,
+    applicantEmail: email
+  });
+  await appliedEntry.save();
+  console.log('Application saved to Applieddb:', appliedEntry._id);
+} catch (appliedErr) {
+  console.error('Error saving to Applieddb:', appliedErr);
+}
+    console.log('Data saved successfully to Opening collection:', newOpening._id);
+
+    // Clear session data
+    if (req.session.applied) {
+      delete req.session.applied;
+    }
+
+    // Send success response
+    return res.status(201).json({
+      success: true,
+      message: 'Application data saved to Opening collection successfully.',
+      data: {
+        id: newOpening._id,
+        clubName: newOpening.clubName,
+        teamName: newOpening.teamName,
+        applicantName: newOpening.applicantName,
+        status: newOpening.status
+      }
+    });
+
+  } catch (error) {
+    console.error('=== ERROR IN APPLICATION SUBMISSION ===');
+    console.error('Error:', error);
+
+    if (req.file && req.file.path) {
+      const fs = require('fs');
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error('Error deleting uploaded file:', err);
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while saving application data.',
+      error: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+};
+
+exports.submitApplication = submitApplication;
+
+exports.upload=upload;
+
+// Add to your routes controller
+
+// Store application data in session
+const storeApplicationData = (req, res) => {
+  try {
+    console.log("JJJJJJJJJJJJJJJJ");
+    console.log('Received ', req.body);
+    
+    if (!req.session) {
+      return res.status(400).json({ success: false, message: 'Session not available' });
+    }
+    
+    // Handle both data formats - current frontend sends {applied: {clubName, TeamName}}
+    let sessionData;
+    
+    if (req.body.applied) {
+      // Current frontend format
+      sessionData = {
+        clubName: req.body.applied.clubName,
+        TeamName: req.body.applied.TeamName, 
+        timestamp: new Date()
+      };
+      
+      // Store in session under 'applied' key to match frontend expectation
+      req.session.applied = sessionData;
+      
+    }
+    else {
+      // Alternative format if you want to use openingId format
+      const { openingId, clubId, role, teamName } = req.body;
+      sessionData = {
+        openingId,
+        clubId,
+        role,
+        teamName,
+        timestamp: new Date()
+      };
+      
+      req.session.applicationData = sessionData;
+    }
+    
+    // Force session save
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ success: false, message: 'Failed to save session' });
+      }
+      
+      console.log("Session data stored successfully:");
+      console.log(req.session.applied || req.session.applicationData);
+      res.json({ success: true, message: 'Application data stored' });
+    });
+    
+  } catch (error) {
+    console.error('Error storing application ', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+
+// Get user applications
+const getUserApplications = async (req, res) => {
+  try {
+    if (!req.session || !req.session.user) {
+      return res.json({ success: false, message: 'Not logged in' });
+    }
+    
+    const userEmail = req.session.user.email;
+    
+    // Fetch user's applications using correct field name from schema
+    const applications = await InterviewApplicationdb.find({ 
+      applicantEmail: userEmail  // Changed from 'email' to 'applicantEmail'
+    })
+    .sort({ createdAt: -1 });
+    
+    const formattedApplications = applications.map(app => ({
+      id: app._id,
+      role: app.role || 'Member',
+      teamName: app.teamName,
+      clubName: app.clubName,
+      status: app.status || 'pending',
+      appliedDate: app.createdAt,
+      reviewedDate: app.reviewedDate,
+      applicantName: app.applicantName,
+      applicantEmail: app.applicantEmail,
+      phone: app.phone
+    }));
+    
+    res.json({
+      success: true, 
+      applications: formattedApplications 
+    });
+  }
+  catch (error) {
+    console.error('Error fetching user applications:', error);
+    res.json({ success: false, message: 'Error fetching applications' });
+  }
+};
+
+exports.storeApplicationData = storeApplicationData;
+exports.getUserApplications = getUserApplications;
+

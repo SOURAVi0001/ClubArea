@@ -8,4 +8,6 @@ UserRouter.post('/admin_login_post',home.admin_login_post);
 UserRouter.get('/user_login',home.user_login);
 UserRouter.post('/user_login_post',home.user_login_post);
 UserRouter.get('/login_type',home.Login_Type);
-module.exports=UserRouter;
+UserRouter.get('/check-session', home.checkSession);
+
+module.exports=UserRouter;          
