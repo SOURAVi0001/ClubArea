@@ -46,7 +46,6 @@ const Sign_Up=require('./route/Sign_Up');
 const VALIDATE=require('./route/VALIDATE');
 const user=require('./route/user');
 const RegistrationRoutes = require('./route/Registration');
-const db = require('./Utils/database');
 const session = require('express-session');
 
 app.use(session({
@@ -57,11 +56,6 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 // Optional: 1-day cookie expiry
   }
 }));
-db.execute("Select * from clubs").then(([rows,fields]) =>{
- // console.log(rows);
-}).catch((error)=>{
-  console.log("Error db fetching", error);
-});
 
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
