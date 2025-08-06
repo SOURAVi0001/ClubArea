@@ -1,22 +1,16 @@
-const express=require('express');
+const express = require('express');
 const path = require('path');
+const fs = require('fs');
+const session = require('express-session');
 
-// import dotenv from 'dotenv';
-// import cors from 'cors';
-// import interviewRoutes from './routes/interviewRoutes.js';
-// import connectDB from './config/db.js';
+const app = express();
 
-// dotenv.config();
-
-const app=express();
-
-const home=require('./route/Home');
-const ContactUs=require('./route/ContactUs');
-const updates=require('./route/Updates');
-const Clubs=require('./route/Clubs');
-const Login=require('./route/Login');
-
-
+// Route imports
+const home = require('./route/Home');
+const ContactUs = require('./route/ContactUs');
+const updates = require('./route/Updates');
+const Clubs = require('./route/Clubs');
+const Login = require('./route/Login');
 
 const member = require('./route/member');
 const memberContact = require('./route/member/Contact');
@@ -25,46 +19,65 @@ const memberFeedback = require('./route/member/Feedback');
 const memberTask_Status = require('./route/member/Task_Status');
 const memberupdates = require('./route/member/updates');
 
-
-const leader=require('./route/leader');
-const leaderfeedback=require('./route/leader/feedback');
-const leadermembers=require('./route/leader/members');
-const leaderteams=require('./route/leader/teams');
-const leaderupdates=require('./route/leader/updates');
-const leaderevents=require('./route/leader/events');
-const leaderclubsettings=require('./route/leader/clubsetting');
-const leadertaskstatus=require('./route/leader/chat');
-const leadergallery=require('./route/leader/gallery');
-const leaderchat=require('./route/leader/taskstatus');
-const leaderrecuriment=require('./route/leader/recuriment');
-const Interview=require('./route/Interview');
-const {Selection}=require('./route/Selection');
-const Error404=require('./route/Error404');
-const Gallery=require('./route/Gallery');
-const Recruitment=require('./route/Recruitment');
-const Sign_Up=require('./route/Sign_Up');
-const VALIDATE=require('./route/VALIDATE');
-const user=require('./route/user');
+const leader = require('./route/leader');
+const leaderfeedback = require('./route/leader/feedback');
+const leadermembers = require('./route/leader/members');
+const leaderteams = require('./route/leader/teams');
+const leaderupdates = require('./route/leader/updates');
+const leaderevents = require('./route/leader/events');
+const leaderclubsettings = require('./route/leader/clubsetting');
+const leadertaskstatus = require('./route/leader/chat');
+const leadergallery = require('./route/leader/gallery');
+const leaderchat = require('./route/leader/taskstatus');
+const leaderrecuriment = require('./route/leader/recuriment');
+const Interview = require('./route/Interview');
+const {Selection} = require('./route/Selection');
+const Error404 = require('./route/Error404');
+const Gallery = require('./route/Gallery');
+const Recruitment = require('./route/Recruitment');
+const Sign_Up = require('./route/Sign_Up');
+const VALIDATE = require('./route/VALIDATE');
+const user = require('./route/user');
 const RegistrationRoutes = require('./route/Registration');
-const session = require('express-session');
 
-app.use(session({
-  secret: 'DUNIYA_SURU_AUR_KATAM_AK_VAHEM_HAI',
+// Session configuration - improved for production
+let sessionConfig = {
+  secret: process.env.SESSION_SECRET || 'DUNIYA_SURU_AUR_KATAM_AK_VAHEM_HAI',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 // Optional: 1-day cookie expiry
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 24 // 1-day cookie expiry
   }
-}));
+};
 
+// Use MongoDB session store in production if available
+if (process.env.MONGODB_URI) {
+  try {
+    const MongoStore = require('connect-mongo');
+    sessionConfig.store = MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI
+    });
+    console.log('Using MongoDB session store');
+  } catch (error) {
+    console.log('MongoDB session store not available, using default memory store');
+  }
+}
+
+app.use(session(sessionConfig));
+
+// Static file serving
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend'));
 app.use('/public', express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Sample member data
 const memberData = {
   name: 'Rahul Sharma',
   tasks: [
@@ -86,10 +99,9 @@ const memberData = {
   ]
 };
 
-
-
-// Add this middleware AFTER express.json() but BEFORE your routes
-app.use((req, res, next) => {
+// Debug middleware (only in development)
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
     console.log('--- Request Debug ---');
     console.log('Method:', req.method);
     console.log('URL:', req.url);
@@ -98,14 +110,10 @@ app.use((req, res, next) => {
     console.log('Body:', req.body);
     console.log('Raw Body Length:', req.rawBody ? req.rawBody.length : 'No raw body');
     next();
-});
+  });
+}
 
-
-
-
-
-
-
+// Dashboard routes
 app.get('/member-dashboard', (req, res) => {
   res.render('member_dashboard', { member: memberData });
 });
@@ -120,6 +128,7 @@ app.get('/leader-dashboard', (req, res) => {
   res.sendFile(path.join(dashboardPath, 'build', 'index.html'));
 });
 
+// Route middleware
 app.use(home);
 app.use(Sign_Up);
 app.use(VALIDATE);
@@ -145,10 +154,8 @@ app.use(leadergallery);
 app.use(leaderrecuriment);
 app.use(leaderevents);
 
-
 app.use(RegistrationRoutes);
 app.use(Selection);
-
 
 app.use(member);
 app.use(memberContact);
@@ -157,19 +164,9 @@ app.use(memberFeedback);
 app.use(memberTask_Status);
 app.use(memberupdates);
 
-
 app.use(Error404);
 
-
-
-// app.use('/',(req,res)=>{
-//       console.log(req.url,req.method,req.body);
-//       res.send(`<h1>Currently working on it!!!!!</h1>`);
-      
-// });
-const fs = require('fs');
-
-// Create uploads directory if it doesn't exist
+// Create necessary directories
 if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads', { recursive: true });
 }
@@ -177,13 +174,71 @@ if (!fs.existsSync('uploads/resumes')) {
   fs.mkdirSync('uploads/resumes', { recursive: true });
 }
 
+// Server configuration
+const port = process.env.PORT || 3005;
 
-const port=3005;
+// Database connection with graceful error handling
+async function connectToDatabase() {
+  try {
+    const mongoDB = require('./Utils/mongoDB');
+    await mongoDB();
+    console.log('✅ Database connection successful');
+    return true;
+  } catch (error) {
+    console.log('⚠️ Database connection failed:', error.message);
+    console.log('🔄 Server will continue without database connection');
+    return false;
+  }
+}
 
-const mongoDB = require('./Utils/mongoDB');
-
-mongoDB().then(() => {
-  app.listen(port, () => {
-    console.log(`Your server is live on:- http://localhost:${port}`);
+// Start server function
+function startServer() {
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Server is live on port ${port}`);
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🌍 Production mode - Server accessible via Render URL');
+    } else {
+      console.log(`🔗 Local development - Server accessible at http://localhost:${port}`);
+    }
   });
+}
+
+// Initialize application
+async function initializeApp() {
+  console.log('🔄 Starting application...');
+  
+  // Try to connect to database
+  const dbConnected = await connectToDatabase();
+  
+  if (dbConnected) {
+    console.log('✅ Application started with database connection');
+  } else {
+    console.log('⚠️ Application started without database connection');
+    console.log('💡 Add database environment variables to enable database features');
+  }
+  
+  // Start the server regardless of database connection status
+  startServer();
+}
+
+// Handle uncaught exceptions gracefully
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔄 Attempting to continue in production mode...');
+  } else {
+    process.exit(1);
+  }
 });
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔄 Attempting to continue in production mode...');
+  } else {
+    process.exit(1);
+  }
+});
+
+// Start the application
+initializeApp();
