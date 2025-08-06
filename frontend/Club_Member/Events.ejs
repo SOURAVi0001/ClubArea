@@ -1,64 +1,606 @@
 <%- include("./Partials/starter.ejs") %>
-<div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
-  <div class="layout-container flex h-full grow flex-col">
-    <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-      <%- include("./Partials/header.ejs") %>
-      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-        
-        <!-- Title -->
-        <div class="flex flex-wrap justify-between gap-3 p-4">
-          <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Upcoming Events</p>
+
+<div class="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+  
+  <!-- Include the sidebar partial with proper parameters -->
+  <%- include('Partials/sidebar', { 
+    Member_Name: typeof Member_Name !== 'undefined' ? Member_Name : 'Member Name',
+    Club_Name: typeof Club_Name !== 'undefined' ? Club_Name : 'Club Name',
+    currentPage: 'events' 
+  }) %>
+
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="max-w-[960px] mx-auto px-6 py-8">
+      
+      <!-- Enhanced Page Header -->
+      <header class="mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 class="text-4xl font-bold text-[#111518] mb-2">Upcoming Events</h1>
+            <p class="text-gray-600">Discover and stay updated with club activities</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Enhanced Search & Filter Section -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+        <div class="space-y-4">
+          <!-- Search Input -->
+          <div class="flex items-center gap-4">
+            <div class="flex-1 relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <input
+                id="searchInput"
+                type="text"
+                placeholder="Search events by title or venue..."
+                class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#111518] 
+                       placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                       focus:bg-white transition-all duration-200"
+                value="<%= typeof search !== 'undefined' ? search : '' %>"
+              />
+              <!-- Clear Button -->
+              <button
+                id="clearSearch"
+                type="button"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Search Button -->
+            <button
+              id="searchButton"
+              type="button"
+              class="px-6 py-3 bg-[#2a5298] text-white rounded-lg font-medium hover:bg-[#1e3f7c] 
+                     transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              Search
+            </button>
+          </div>
+
+          <!-- Advanced Filters -->
+          <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
+            <span class="text-sm font-medium text-gray-700">Filter by:</span>
+            
+            <!-- Date Filter -->
+            <select id="dateFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+              <option value="">All Dates</option>
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+            </select>
+
+            <!-- Venue Filter -->
+            <select id="venueFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+              <option value="">All Venues</option>
+              <% if (typeof data !== 'undefined' && data.length > 0) { %>
+                <% 
+                const uniqueVenues = [...new Set(data.map(event => event.venue).filter(venue => venue && venue.trim() !== ''))];
+                uniqueVenues.forEach(venue => { 
+                %>
+                  <option value="<%= venue %>"><%= venue %></option>
+                <% }); %>
+              <% } %>
+            </select>
+
+            <!-- Reset Filters -->
+            <button
+              id="resetFilters"
+              type="button"
+              class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              Reset Filters
+            </button>
+
+            <!-- Results Count -->
+            <div class="ml-auto">
+              <span id="resultsCount" class="text-sm text-gray-500">
+                Showing <span id="visibleCount"><%= typeof data !== 'undefined' ? data.length : 0 %></span> of <span id="totalCount"><%= typeof data !== 'undefined' ? data.length : 0 %></span> events
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Section -->
+      <section>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-[#111518]">Event Listings</h2>
+          <div class="text-sm text-gray-500">
+            <span id="eventCount"><%= typeof data !== 'undefined' ? data.length : 0 %></span> event<span id="eventPlural"><%= typeof data !== 'undefined' && data.length !== 1 ? 's' : '' %></span> found
+          </div>
         </div>
 
         <!-- Events List -->
-        <div id="event-list">
-          <% data.forEach(function(item) { %>
-            <div class="flex items-start gap-4 p-4 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition">
-              <div class="flex-shrink-0">
-                <svg class="text-gray-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h.5A1.5 1.5 0 0 1 15 2.5v11A1.5 1.5 0 0 1 13.5 15h-11A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1H3v-.5a.5.5 0 0 1 .5-.5zM14 4H2v9.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V4z"/>
+        <div id="eventsContainer" class="space-y-4">
+          <% if (typeof data === 'undefined' || data.length === 0) { %>
+            <div id="noEventsRow" class="text-center py-12 bg-white rounded-xl border border-gray-200">
+              <div class="text-gray-400 mb-4">
+                <svg class="mx-auto w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
                 </svg>
               </div>
-              <div class="flex flex-col">
-                <p class="text-[#111518] text-base font-medium leading-snug">
-                  <%= item.title %>
-                </p>
-                <p class="text-[#60768a] text-sm">
-                  <%= new Date(item.date).toLocaleDateString('en-GB') %>
-                </p>
-                <p class="text-[#60768a] text-sm">
-                  <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                  }) %>
-                </p>
-                <% if (item.venue && item.venue.trim() !== '') { %>
-                  <p class="text-[#60768a] text-sm">Venue: <%= item.venue %></p>
-                <% } else { %>
-                  <p class="text-[#60768a] text-sm">Venue: Not provided</p>
-                <% } %>
-              </div>
+              <h3 class="text-xl font-semibold text-gray-600 mb-2">No events found</h3>
+              <p class="text-gray-500">No upcoming events have been scheduled yet.</p>
             </div>
-          <% }) %>
+          <% } else { %>
+            <% data.forEach(function(item, index) { %>
+              <div class="event-item bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+                   data-event-title="<%= item.title.toLowerCase() %>"
+                   data-event-venue="<%= (item.venue && item.venue.trim() !== '') ? item.venue.toLowerCase() : '' %>"
+                   data-event-date="<%= new Date(item.date).getTime() %>"
+                   data-venue-name="<%= (item.venue && item.venue.trim() !== '') ? item.venue : '' %>">
+                <div class="flex items-start gap-4">
+                  <!-- Icon Section -->
+                  <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg">
+                    <svg class="text-[#2a5298] w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h.5A1.5 1.5 0 0 1 15 2.5v11A1.5 1.5 0 0 1 13.5 15h-11A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1H3v-.5a.5.5 0 0 1 .5-.5zM14 4H2v9.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V4z"/>
+                    </svg>
+                  </div>
+
+                  <!-- Content Section -->
+                  <div class="flex-1">
+                    <!-- Event Title -->
+                    <h3 class="text-xl font-bold text-[#111518] mb-3 event-title">
+                      <%= item.title %>
+                    </h3>
+
+                    <!-- Event Details -->
+                    <div class="space-y-2">
+                      <!-- Date -->
+                      <div class="flex items-center gap-2 text-[#60768a]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                        </svg>
+                        <span class="font-medium">Date:</span>
+                        <span><%= new Date(item.date).toLocaleDateString('en-GB') %></span>
+                      </div>
+
+                      <!-- Time -->
+                      <div class="flex items-center gap-2 text-[#60768a]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="font-medium">Time:</span>
+                        <span><%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true
+                        }) %></span>
+                      </div>
+
+                      <!-- Venue -->
+                      <div class="flex items-center gap-2 text-[#60768a]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span class="font-medium">Venue:</span>
+                        <% if (item.venue && item.venue.trim() !== '') { %>
+                          <span class="event-venue"><%= item.venue %></span>
+                        <% } else { %>
+                          <span class="text-gray-400 italic">Not provided</span>
+                        <% } %>
+                      </div>
+                    </div>
+
+                    <!-- Days Until Event -->
+                    <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                                <%= (new Date(item.date) - new Date()) / (1000 * 60 * 60 * 24) <= 1 ? 'bg-red-100 text-red-700' : 
+                                    (new Date(item.date) - new Date()) / (1000 * 60 * 60 * 24) <= 7 ? 'bg-yellow-100 text-yellow-700' : 
+                                    'bg-green-100 text-green-700' %>">
+                      <% 
+                        const daysUntil = Math.ceil((new Date(item.date) - new Date()) / (1000 * 60 * 60 * 24));
+                        if (daysUntil === 0) { %>
+                          Today
+                      <% } else if (daysUntil === 1) { %>
+                          Tomorrow
+                      <% } else if (daysUntil < 0) { %>
+                          <%= Math.abs(daysUntil) %> day<%= Math.abs(daysUntil) !== 1 ? 's' : '' %> ago
+                      <% } else { %>
+                          <%= daysUntil %> day<%= daysUntil !== 1 ? 's' : '' %> away
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResultsMessage" class="hidden text-center py-12 bg-white rounded-xl border border-gray-200">
+          <div class="flex flex-col items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <div>
+              <p class="text-gray-500 text-lg font-medium">No matching events found</p>
+              <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
+            </div>
+          </div>
         </div>
 
         <!-- Show More Button -->
-        <% if (currentPage < totalPages) { %>
-          <form method="GET" action="/member_events#event-list" class="flex justify-center my-6">
-            <input type="hidden" name="page" value="<%= currentPage + 1 %>">
-            <button
-              type="submit"
-              class="px-6 py-2 bg-[#2a5298] hover:bg-[#1e3f7c] text-white font-semibold rounded-lg transition"
-            >
-              Show More
-            </button>
-          </form>
+        <% if (typeof currentPage !== 'undefined' && typeof totalPages !== 'undefined' && currentPage < totalPages) { %>
+          <div class="flex justify-center mt-8">
+            <form method="GET" action="/member_events#event-list">
+              <input type="hidden" name="page" value="<%= currentPage + 1 %>">
+              <button
+                type="submit"
+                class="px-6 py-3 bg-[#2a5298] hover:bg-[#1e3f7c] text-white font-semibold rounded-lg transition-colors"
+              >
+                Show More Events
+              </button>
+            </form>
+          </div>
         <% } %>
+      </section>
 
+      <!-- Quick Stats Cards -->
+      <div class="mt-8 grid gap-6 md:grid-cols-4">
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-blue-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Total Events</p>
+              <p id="totalEventsCount" class="text-2xl font-bold text-gray-900"><%= typeof data !== 'undefined' ? data.length : 0 %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">This Week</p>
+              <p id="thisWeekCount" class="text-2xl font-bold text-gray-900">
+                <% if (typeof data !== 'undefined' && data.length > 0) { %>
+                  <%
+                    const now = new Date();
+                    const oneWeekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+                    const thisWeekEvents = data.filter(event => {
+                      const eventDate = new Date(event.date);
+                      return eventDate >= now && eventDate <= oneWeekFromNow;
+                    });
+                  %>
+                  <%= thisWeekEvents.length %>
+                <% } else { %>
+                  0
+                <% } %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-yellow-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Venues</p>
+              <p id="venuesCount" class="text-2xl font-bold text-gray-900">
+                <% if (typeof data !== 'undefined' && data.length > 0) { %>
+                  <%
+                    const uniqueVenues = [...new Set(data.map(event => event.venue).filter(venue => venue && venue.trim() !== ''))];
+                  %>
+                  <%= uniqueVenues.length %>
+                <% } else { %>
+                  0
+                <% } %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-red-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Today</p>
+              <p id="todayCount" class="text-2xl font-bold text-gray-900">
+                <% if (typeof data !== 'undefined' && data.length > 0) { %>
+                  <%
+                    const today = new Date().toDateString();
+                    const todayEvents = data.filter(event => new Date(event.date).toDateString() === today);
+                  %>
+                  <%= todayEvents.length %>
+                <% } else { %>
+                  0
+                <% } %>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
+
+  <!-- Enhanced JavaScript with Search Functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const clearSearch = document.getElementById('clearSearch');
+      const searchButton = document.getElementById('searchButton');
+      const dateFilter = document.getElementById('dateFilter');
+      const venueFilter = document.getElementById('venueFilter');
+      const resetFilters = document.getElementById('resetFilters');
+      const eventItems = document.querySelectorAll('.event-item');
+      const noResultsMessage = document.getElementById('noResultsMessage');
+      const resultsCount = document.getElementById('resultsCount');
+      const visibleCount = document.getElementById('visibleCount');
+      const totalCount = document.getElementById('totalCount');
+      const eventCount = document.getElementById('eventCount');
+      const eventPlural = document.getElementById('eventPlural');
+      
+      let allEvents = Array.from(eventItems);
+      let filteredEvents = [...allEvents];
+
+      // Show/hide clear button
+      function toggleClearButton() {
+        if (searchInput && searchInput.value.length > 0) {
+          clearSearch && clearSearch.classList.remove('hidden');
+        } else {
+          clearSearch && clearSearch.classList.add('hidden');
+        }
+      }
+
+      // Highlight search terms
+      function highlightText(element, searchTerm) {
+        if (!searchTerm || !element) return;
+        
+        const text = element.textContent;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        if (regex.test(text)) {
+          element.innerHTML = text.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+        }
+      }
+
+      // Remove highlights
+      function removeHighlights() {
+        const highlights = document.querySelectorAll('mark');
+        highlights.forEach(mark => {
+          const parent = mark.parentNode;
+          parent.replaceChild(document.createTextNode(mark.textContent), mark);
+          parent.normalize();
+        });
+      }
+
+      // Filter events
+      function filterEvents() {
+        if (!searchInput) return;
+        
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const dateValue = dateFilter ? dateFilter.value : '';
+        const venueValue = venueFilter ? venueFilter.value : '';
+
+        // Remove previous highlights
+        removeHighlights();
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+        const oneWeekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+        const oneMonthFromNow = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+
+        filteredEvents = allEvents.filter(item => {
+          const title = item.dataset.eventTitle || '';
+          const venue = item.dataset.eventVenue || '';
+          const venueName = item.dataset.venueName || '';
+          const eventDate = new Date(parseInt(item.dataset.eventDate));
+
+          // Text search
+          const matchesSearch = !searchTerm || 
+            title.includes(searchTerm) || 
+            venue.includes(searchTerm);
+
+          // Date filter
+          let matchesDate = true;
+          if (dateValue) {
+            switch (dateValue) {
+              case 'today':
+                matchesDate = eventDate.toDateString() === today.toDateString();
+                break;
+              case 'tomorrow':
+                matchesDate = eventDate.toDateString() === tomorrow.toDateString();
+                break;
+              case 'week':
+                matchesDate = eventDate >= today && eventDate <= oneWeekFromNow;
+                break;
+              case 'month':
+                matchesDate = eventDate >= today && eventDate <= oneMonthFromNow;
+                break;
+            }
+          }
+
+          // Venue filter
+          const matchesVenue = !venueValue || venueName === venueValue;
+
+          return matchesSearch && matchesDate && matchesVenue;
+        });
+
+        // Show/hide items
+        allEvents.forEach(item => {
+          if (filteredEvents.includes(item)) {
+            item.style.display = '';
+            
+            // Highlight search terms
+            if (searchTerm) {
+              const titleElement = item.querySelector('.event-title');
+              const venueElement = item.querySelector('.event-venue');
+              
+              highlightText(titleElement, searchTerm);
+              if (venueElement) highlightText(venueElement, searchTerm);
+            }
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Update counts
+        updateCounts();
+
+        // Show/hide no results message
+        if (filteredEvents.length === 0 && allEvents.length > 0) {
+          noResultsMessage && noResultsMessage.classList.remove('hidden');
+        } else {
+          noResultsMessage && noResultsMessage.classList.add('hidden');
+        }
+      }
+
+      // Update counts
+      function updateCounts() {
+        const visible = filteredEvents.length;
+        const total = allEvents.length;
+        
+        if (visibleCount) visibleCount.textContent = visible;
+        if (totalCount) totalCount.textContent = total;
+        if (eventCount) eventCount.textContent = visible;
+        if (eventPlural) eventPlural.textContent = visible !== 1 ? 's' : '';
+
+        // Update stats cards
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const oneWeekFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+        
+        let thisWeekCount = 0;
+        let todayCount = 0;
+        let venuesSet = new Set();
+
+        filteredEvents.forEach(item => {
+          const eventDate = new Date(parseInt(item.dataset.eventDate));
+          const venueName = item.dataset.venueName;
+          
+          if (eventDate >= today && eventDate <= oneWeekFromNow) thisWeekCount++;
+          if (eventDate.toDateString() === today.toDateString()) todayCount++;
+          if (venueName && venueName.trim() !== '') venuesSet.add(venueName);
+        });
+
+        const totalEventsCount = document.getElementById('totalEventsCount');
+        const thisWeekCountEl = document.getElementById('thisWeekCount');
+        const todayCountEl = document.getElementById('todayCount');
+        const venuesCountEl = document.getElementById('venuesCount');
+
+        if (totalEventsCount) totalEventsCount.textContent = visible;
+        if (thisWeekCountEl) thisWeekCountEl.textContent = thisWeekCount;
+        if (todayCountEl) todayCountEl.textContent = todayCount;
+        if (venuesCountEl) venuesCountEl.textContent = venuesSet.size;
+      }
+
+      // Event listeners
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          toggleClearButton();
+          // Real-time search with debounce
+          clearTimeout(this.searchTimeout);
+          this.searchTimeout = setTimeout(filterEvents, 300);
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            filterEvents();
+          }
+        });
+      }
+
+      if (searchButton) {
+        searchButton.addEventListener('click', filterEvents);
+      }
+
+      if (clearSearch) {
+        clearSearch.addEventListener('click', function() {
+          if (searchInput) {
+            searchInput.value = '';
+            toggleClearButton();
+            filterEvents();
+            searchInput.focus();
+          }
+        });
+      }
+
+      if (dateFilter) {
+        dateFilter.addEventListener('change', filterEvents);
+      }
+
+      if (venueFilter) {
+        venueFilter.addEventListener('change', filterEvents);
+      }
+
+      if (resetFilters) {
+        resetFilters.addEventListener('click', function() {
+          if (searchInput) searchInput.value = '';
+          if (dateFilter) dateFilter.value = '';
+          if (venueFilter) venueFilter.value = '';
+          toggleClearButton();
+          filterEvents();
+        });
+      }
+
+      // Initialize
+      toggleClearButton();
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'k') {
+          e.preventDefault();
+          if (searchInput) searchInput.focus();
+        }
+        if (e.key === 'Escape') {
+          if (searchInput && document.activeElement === searchInput) {
+            searchInput.blur();
+          }
+        }
+      });
+    });
+  </script>
+
+  <!-- Add custom styles for search highlighting -->
+  <style>
+    mark {
+      background-color: #fef08a !important;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .event-item {
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
+
 </div>
 </body>
 </html>

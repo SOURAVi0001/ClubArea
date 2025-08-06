@@ -1,4 +1,4 @@
-const register = require('../models/clubs');
+
 const updatesdb = require('../models/updates');
 const userdb=require('../models/user');
 const admindb=require('../models/clubadmin');
@@ -26,35 +26,56 @@ const form = async (req, res) => {
 
 
 exports.form=form;
+// controllers/clubController.js
+
+
+// Save or Update Club
+
+
+// routes/clubRoutes.js or similar
+
+
+// Render all clubs
+
+// controllers/home.js (or wherever your route handler is)
+ const Club = require('../models/clubs');  // Import the Mongoose model
 
 const clubs = (req, res) => {
-  register.fetchAll().then(([rows,fields]) => {
-      res.render("clubs/clublist",{
-            PageTitle: 'ClubDetails',
-            Register: rows
-      })
-  })
- };
-exports.clubs=clubs;
+  Club.find()
+    .then(clubs => {
+      res.render('clubs/clublist', {
+        PageTitle: 'ClubDetails',
+        Register: clubs  // You can rename 'Register' to 'clubs' in the template too
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error fetching clubs");
+    });
+};
+
+exports.clubs = clubs;
 
 
 const getclubdetail = (req, res) => {
+
   const ClubId = req.params.id;
+  console.log("REQ PARAM ID:", ClubId);
 
-  register.findById(ClubId).then(([club, fields]) => {
-    if (!club || club.length === 0) {
-      return res.status(404).send("Club not found");
-    }
-
-    res.render('clubs/clubdetails', {
-      PageTitle: 'ClubDetails',
-      club: club[0]  // if result is an array
+  Club.findOne({ id: ClubId })  // match with custom string id
+    .then(club => {
+      if (!club) return res.status(404).send("Club not found");
+      res.render('clubs/clubdetails', {
+        PageTitle: 'ClubDetails',
+        club: club
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error fetching club details");
     });
-  }).catch(err => {
-    console.error(err);
-    res.status(500).send("Error fetching club details");
-  });
 };
+
 exports.getclubdetail = getclubdetail;
 
 

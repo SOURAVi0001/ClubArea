@@ -1,57 +1,286 @@
 <%- include("./Partials/starter.ejs") %>
-    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-           <%- include("./Partials/header.ejs") %>
 
-           
-           <form action="/member_feedback" method="POST" class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<div class="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+  
+  <!-- Include the sidebar partial with proper parameters -->
+  <%- include('Partials/sidebar', { 
+    Member_Name: typeof Member_Name !== 'undefined' ? Member_Name : 'Member Name',
+    Club_Name: typeof Club_Name !== 'undefined' ? Club_Name : 'Club Name',
+    currentPage: 'feedback' 
+  }) %>
 
-  <!-- Page Heading -->
-  <div class="flex flex-wrap justify-between gap-3 p-4">
-    <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Feedback</p>
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="layout-container flex h-full grow flex-col">
+      <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+
+
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          
+          <!-- Enhanced Page Header -->
+          <header class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 class="text-4xl font-bold text-[#111518] mb-2">Submit Feedback</h1>
+                <p class="text-gray-600">Share your thoughts and suggestions with us</p>
+              </div>
+            </div>
+          </header>
+
+          <!-- Feedback Form Card -->
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mb-8">
+            <form action="/member_feedback" method="POST" class="space-y-6">
+              
+              <!-- Form Header -->
+              <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-2xl font-bold text-[#111518] mb-2 flex items-center gap-2">
+                  <div class="bg-blue-100 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                  </div>
+                  Your Feedback Matters
+                </h2>
+                <p class="text-gray-600">Help us improve by sharing your experience and suggestions.</p>
+              </div>
+
+              <!-- Title Input -->
+              <div class="space-y-2">
+                <label for="title" class="block text-sm font-semibold text-[#111518]">
+                  Feedback Title <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  required
+                  placeholder="Brief title summarizing your feedback"
+                  class="w-full rounded-xl border border-gray-300 bg-gray-50 p-4 text-[#111518] text-base placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:bg-white transition-all duration-200"
+                />
+                <p class="text-xs text-gray-500">Keep it concise and descriptive</p>
+              </div>
+
+              <!-- Description Textarea -->
+              <div class="space-y-2">
+                <label for="description" class="block text-sm font-semibold text-[#111518]">
+                  Detailed Feedback <span class="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  required
+                  placeholder="Please share your detailed thoughts, suggestions, or concerns here..."
+                  rows="8"
+                  class="w-full resize-none rounded-xl border border-gray-300 bg-gray-50 p-4 text-[#111518] text-base placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:bg-white transition-all duration-200"
+                ></textarea>
+                <p class="text-xs text-gray-500">Be as detailed as possible to help us understand your perspective</p>
+              </div>
+
+              <!-- Feedback Type (Optional Enhancement) -->
+              <div class="space-y-2">
+                <label for="feedback_type" class="block text-sm font-semibold text-[#111518]">
+                  Feedback Category
+                </label>
+                <select
+                  id="feedback_type"
+                  name="feedback_type"
+                  class="w-full rounded-xl border border-gray-300 bg-gray-50 p-4 text-[#111518] text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:bg-white transition-all duration-200"
+                >
+                  <option value="">Select a category (optional)</option>
+                  <option value="suggestion">Suggestion</option>
+                  <option value="complaint">Complaint</option>
+                  <option value="compliment">Compliment</option>
+                  <option value="event_feedback">Event Feedback</option>
+                  <option value="general">General</option>
+                </select>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
+                <button
+                  type="reset"
+                  class="flex-1 sm:flex-none px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
+                >
+                  Clear Form
+                </button>
+                <button
+                  type="submit"
+                  class="flex-1 px-8 py-3 bg-[#2a5298] hover:bg-[#1e3f7c] text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                  </svg>
+                  Submit Feedback
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Feedback Guidelines Card -->
+          <div class="bg-blue-50 rounded-xl border border-blue-200 p-6">
+            <h3 class="text-lg font-bold text-[#111518] mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Feedback Guidelines
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <h4 class="font-semibold text-[#111518] mb-2">✅ What to Include:</h4>
+                <ul class="space-y-1 list-disc list-inside">
+                  <li>Specific examples or situations</li>
+                  <li>Constructive suggestions for improvement</li>
+                  <li>Clear and respectful language</li>
+                  <li>Actionable recommendations</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-semibold text-[#111518] mb-2">❌ Please Avoid:</h4>
+                <ul class="space-y-1 list-disc list-inside">
+                  <li>Personal attacks or offensive language</li>
+                  <li>Vague or unclear complaints</li>
+                  <li>Unrelated or off-topic content</li>
+                  <li>Duplicate submissions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Previous Feedback Section -->
+          <div class="mt-8 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+  <h3 class="text-lg font-bold text-[#111518] mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    Recent Feedback
+  </h3>
+
+  <p class="text-gray-600 text-sm mb-4">Your recent feedback submissions and their status</p>
+
+  <!-- Dynamic feedback items -->
+  <div class="space-y-3">
+    <% if (prevfeedback && prevfeedback.length > 0) { %>
+      <% prevfeedback.forEach(function(feedback) { %>
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div>
+            <p class="font-medium text-[#111518]"><%= feedback.title %></p>
+            <p class="text-sm text-gray-600">Submitted on <%= new Date(feedback.date).toLocaleDateString() %></p>
+
+          </div>
+
+          <!-- Status badge (you can change the logic to reflect real status) -->
+          
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p class="text-gray-500 text-sm italic">No feedback submitted yet.</p>
+    <% } %>
   </div>
 
-  <!-- Title Input -->
-  <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-    <label class="flex flex-col min-w-40 flex-1">
-      <span class="mb-1 text-[#60768a] font-medium">Title</span>
-      <input
-        type="text"
-        name="title"
-        required
-        placeholder="Title of your feedback"
-        class="form-input w-full rounded-xl border border-[#dbe1e6] bg-white p-3 text-[#111518] text-base placeholder-[#60768a] focus:border-[#0b80ee] focus:outline-none"
-      />
-    </label>
+  <div class="mt-4 pt-4 border-t border-gray-200">
+   
   </div>
-
-  <!-- Description Textarea -->
-  <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-    <label class="flex flex-col min-w-40 flex-1">
-      <span class="mb-1 text-[#60768a] font-medium">Description</span>
-      <textarea
-        name="description"
-        required
-        placeholder="Enter your suggestions"
-        class="form-input w-full resize-none rounded-xl border border-[#dbe1e6] bg-white p-3 text-[#111518] text-base min-h-36 placeholder-[#60768a] focus:border-[#0b80ee] focus:outline-none"
-      ></textarea>
-    </label>
-  </div>
-
-  <!-- Submit Button -->
-  <div class="flex px-4 py-3 justify-end">
-    <button
-      type="submit"
-      class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center rounded-full h-10 px-4 bg-[#0b80ee] hover:bg-[#0964be] text-white text-sm font-bold transition"
-    >
-      <span class="truncate">Submit Feedback</span>
-    </button>
-  </div>
-
-</form>
+</div>
         </div>
       </div>
     </div>
-  </body>
+  </main>
+
+  <!-- JavaScript for Form Enhancement -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      const titleInput = document.getElementById('title');
+      const descriptionInput = document.getElementById('description');
+      const resetButton = document.querySelector('button[type="reset"]');
+
+      // Form validation
+      form.addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Title validation
+        if (titleInput.value.trim().length < 5) {
+          alert('Please enter a title with at least 5 characters.');
+          titleInput.focus();
+          isValid = false;
+        }
+        
+        // Description validation
+        if (descriptionInput.value.trim().length < 10) {
+          alert('Please provide a detailed description with at least 10 characters.');
+          descriptionInput.focus();
+          isValid = false;
+        }
+
+        if (!isValid) {
+          e.preventDefault();
+        }
+      });
+
+      // Character counter for description
+      const maxChars = 1000;
+      const counter = document.createElement('div');
+      counter.className = 'text-xs text-gray-500 mt-1';
+      descriptionInput.parentNode.appendChild(counter);
+
+      function updateCounter() {
+        const remaining = maxChars - descriptionInput.value.length;
+        counter.textContent = `${descriptionInput.value.length}/${maxChars} characters`;
+        
+        if (remaining < 50) {
+          counter.className = 'text-xs text-red-500 mt-1';
+        } else if (remaining < 100) {
+          counter.className = 'text-xs text-yellow-600 mt-1';
+        } else {
+          counter.className = 'text-xs text-gray-500 mt-1';
+        }
+      }
+
+      descriptionInput.addEventListener('input', updateCounter);
+      descriptionInput.setAttribute('maxlength', maxChars);
+      updateCounter();
+
+      // Reset button functionality
+      resetButton.addEventListener('click', function() {
+        setTimeout(updateCounter, 0); // Update counter after reset
+      });
+
+      // Auto-save to localStorage (optional)
+      function saveToLocalStorage() {
+        localStorage.setItem('feedback_draft', JSON.stringify({
+          title: titleInput.value,
+          description: descriptionInput.value,
+          timestamp: Date.now()
+        }));
+      }
+
+      function loadFromLocalStorage() {
+        const draft = localStorage.getItem('feedback_draft');
+        if (draft) {
+          const data = JSON.parse(draft);
+          // Only load if draft is less than 24 hours old
+          if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+            titleInput.value = data.title || '';
+            descriptionInput.value = data.description || '';
+            updateCounter();
+          }
+        }
+      }
+
+      // Load draft on page load
+      loadFromLocalStorage();
+
+      // Save draft every 30 seconds
+      titleInput.addEventListener('input', saveToLocalStorage);
+      descriptionInput.addEventListener('input', saveToLocalStorage);
+
+      // Clear draft after successful submission
+      form.addEventListener('submit', function() {
+        localStorage.removeItem('feedback_draft');
+      });
+    });
+  </script>
+
+</div>
+</body>
 </html>

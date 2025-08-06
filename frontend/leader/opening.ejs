@@ -3,187 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Openings ­– Leader Dashboard</title>
+    <title>Club Openings – Leader Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900&display=swap" />
 </head>
-<body class="min-h-screen bg-slate-100 antialiased">
+<body class="min-h-screen bg-gray-50 antialiased" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
 
-    <section class="max-w-7xl mx-auto px-6 py-10">
-        <!-- Card -->
-        <div class="bg-white/90 backdrop-blur rounded-2xl shadow-xl ring-1 ring-black/5 p-8">
-            <!-- Header -->
-            <header class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold tracking-tight text-slate-800 drop-shadow-sm">
-                        Club Openings Dashboard
-                    </h1>
-                    <p class="text-sm text-slate-500">
-                        Manage your active and closed recruitment rounds.
-                    </p>
+    <!-- Include the sidebar partial -->
+    <%- include('partials/sidebar', { 
+        Leader_Name: Leader_Name, 
+        Club_Name: Club_Name, 
+        currentPage: 'recruitment' 
+    }) %>
+
+    <!-- Main Content Area with margin for sidebar -->
+    <main class="ml-0 md:ml-80 min-h-screen">
+        <section class="max-w-7xl mx-auto px-6 py-10">
+            <!-- Enhanced Card -->
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+                <!-- Enhanced Header -->
+                <header class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
+                    <div>
+                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 mb-2">
+                             Club Openings Dashboard
+                        </h1>
+                        <p class="text-gray-600">
+                            Manage your active and closed recruitment rounds.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                      
+                        
+                        <button
+                            onclick="openCreateModal()"
+                            class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg hover:bg-blue-700 active:scale-95 transition transform duration-150"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Create Opening
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Enhanced Club Info -->
+                <div class="rounded-xl bg-blue-50 border border-blue-200 px-6 py-4 mb-10">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                        <p class="text-blue-800 font-medium">
+                            <strong>Club:</strong> <%= clubInfo.clubName %> (ID: <%= clubInfo.clubId %>) &nbsp;•&nbsp;
+                            <strong>Leader:</strong> <%= clubInfo.name %>
+                        </p>
+                    </div>
                 </div>
 
-                <button
-                    onclick="openCreateModal()"
-                    class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white shadow hover:bg-indigo-700 active:scale-95 transition transform duration-150"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Create Opening
-                </button>
-                 <a href="/leader/leader-events" class="flex items-center text-blue-600 hover:text-blue-800 font-medium transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to Leader Page
-    </a>
-            </header>
-
-            <!-- Club Info -->
-            <div class="rounded-md bg-indigo-50/60 border border-indigo-200 px-6 py-4 mb-10">
-                <p class="text-sm text-indigo-800">
-                    <strong>Club:</strong> <%= clubInfo.clubName %> (ID: <%= clubInfo.clubId %>) &nbsp;•&nbsp;
-                    <strong>Leader:</strong> <%= clubInfo.name %>
-                </p>
-            </div>
-
-            <!-- Active Openings -->
-            <section class="mb-12">
-                <h2 class="text-2xl font-semibold text-slate-700 mb-5">Active Openings</h2>
-
-                <% if (activeOpenings && activeOpenings.length > 0) { %>
-                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        <% activeOpenings.forEach(opening => { %>
-                            <div class="group relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:shadow-lg">
-                                <div class="p-6">
-                                    <div class="flex items-start justify-between">
-                                        <h3 class="text-lg font-semibold text-slate-800">
-                                            <%= opening.role %>
-                                        </h3>
-                                        <span class="rounded bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-                                            Active
-                                        </span>
-                                    </div>
-
-                                    <p class="mt-2 text-sm text-slate-600"><strong>Team:</strong> <%= opening.teamName %></p>
-                                    <p class="mt-2 text-sm text-slate-600 line-clamp-3"><%= opening.description %></p>
-                                    <p class="mt-4 text-xs text-slate-500">
-                                        Created: <%= new Date(opening.createdDate).toLocaleDateString() %>
-                                    </p>
-                                </div>
-
-                                <div class="flex items-center justify-between border-t bg-slate-50 px-4 py-3">
-                                    <span class="text-sm font-medium text-indigo-600">
-                                         Applicants
-                                    </span>
-                                    <div class="flex gap-2">
-                                        <a
-                                            href="/leader/opening/<%= opening._id %>/applicants"
-                                            class="rounded-md bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-indigo-600 focus:outline-none"
-                                        >
-                                            View
-                                        </a>
-                                        <button
-                                            onclick="closeOpening('<%= opening._id %>')"
-                                            class="rounded-md bg-rose-500 px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-rose-600 focus:outline-none"
-                                        >
-                                            Close
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }); %>
+                <!-- Enhanced Active Openings -->
+                <section class="mb-12">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900"> Active Openings</h2>
+                        <div class="text-sm text-gray-500">
+                            <%= activeOpenings ? activeOpenings.length : 0 %> active
+                        </div>
                     </div>
-                <% } else { %>
-                    <p class="text-center py-12 text-slate-500">
-                        No active openings found. Create your first opening to start recruiting!
-                    </p>
-                <% } %>
-            </section>
 
-            <!-- Closed Openings -->
-            <section>
-                <h2 class="text-2xl font-semibold text-slate-700 mb-5">Closed Openings</h2>
+                    <% if (activeOpenings && activeOpenings.length > 0) { %>
+                        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            <% activeOpenings.forEach(opening => { %>
+                                <div class="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition duration-200 hover:shadow-lg hover:border-blue-300">
+                                    <div class="p-6">
+                                        <div class="flex items-start justify-between mb-4">
+                                            <h3 class="text-lg font-semibold text-gray-900">
+                                                <%= opening.role %>
+                                            </h3>
+                                            <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 flex items-center gap-1">
+                                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                                Active
+                                            </span>
+                                        </div>
 
-                <% if (closedOpenings && closedOpenings.length > 0) { %>
-                    <div class="overflow-x-auto rounded-lg border border-slate-200">
-                        <table class="min-w-full divide-y divide-slate-200 text-sm">
-                            <thead class="bg-slate-50 text-slate-600">
-                                <tr>
-                                    <th class="whitespace-nowrap px-6 py-3 font-medium">Role</th>
-                                    <th class="whitespace-nowrap px-6 py-3 font-medium">Team</th>
-                                    <th class="whitespace-nowrap px-6 py-3 font-medium">Created</th>
-                                    <th class="whitespace-nowrap px-6 py-3 font-medium">Closed</th>
-                                    <th class="whitespace-nowrap px-6 py-3 font-medium">Applicants</th>
-                                    <th class="whitespace-nowrap px-6 py-3 font-medium">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 bg-white">
-                                <% closedOpenings.forEach(opening => { %>
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="px-6 py-4 font-medium text-slate-800"><%= opening.role %></td>
-                                        <td class="px-6 py-4 text-slate-700"><%= opening.teamName %></td>
-                                        <td class="px-6 py-4 text-slate-600"><%= new Date(opening.createdDate).toLocaleDateString() %></td>
-                                        <td class="px-6 py-4 text-slate-600"><%= new Date(opening.closedDate).toLocaleDateString() %></td>
-                                        <td class="px-6 py-4 text-slate-600"><%= opening.applicantCount || 0 %></td>
-                                        <td class="px-6 py-4">
+                                        <div class="space-y-2 mb-4">
+                                            <p class="text-sm text-gray-600 flex items-center gap-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                                </svg>
+                                                <strong>Team:</strong> <%= opening.teamName %>
+                                            </p>
+                                            <p class="text-sm text-gray-600 line-clamp-3"><%= opening.description %></p>
+                                        </div>
+                                        
+                                        <p class="text-xs text-gray-500 flex items-center gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                                            </svg>
+                                            Created: <%= new Date(opening.createdDate).toLocaleDateString() %>
+                                        </p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between border-t bg-gray-50 px-4 py-3">
+                                        <span class="text-sm font-medium text-blue-600 flex items-center gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 6.292 4 4 0 010-6.292zM15 21H3v-1a6 6 0 0112 0v1z"/>
+                                            </svg>
+                                            Applicants
+                                        </span>
+                                        <div class="flex gap-2">
                                             <a
                                                 href="/leader/opening/<%= opening._id %>/applicants"
-                                                class="text-indigo-600 hover:underline"
+                                                class="rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-blue-600 focus:outline-none transition-colors"
                                             >
-                                                View Details
+                                                👁️ View
                                             </a>
-                                        </td>
-                                    </tr>
-                                <% }); %>
-                            </tbody>
-                        </table>
-                    </div>
-                <% } else { %>
-                    <p class="text-center py-12 text-slate-500">No closed openings found.</p>
-                <% } %>
-            </section>
-        </div>
-    </section>
+                                            <button
+                                                onclick="closeOpening('<%= opening._id %>')"
+                                                class="rounded-lg bg-red-500 px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-red-600 focus:outline-none transition-colors"
+                                            >
+                                                ❌ Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M8 6v10a2 2 0 002 2h4a2 2 0 002-2V6"/>
+                            </svg>
+                            <p class="text-gray-500 text-lg">
+                                No active openings found. Create your first opening to start recruiting!
+                            </p>
+                        </div>
+                    <% } %>
+                </section>
 
-    <!-- Create Opening Modal -->
+                <!-- Enhanced Closed Openings -->
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900"> Closed Openings</h2>
+                        <div class="text-sm text-gray-500">
+                            <%= closedOpenings ? closedOpenings.length : 0 %> closed
+                        </div>
+                    </div>
+
+                    <% if (closedOpenings && closedOpenings.length > 0) { %>
+                        <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+                            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="whitespace-nowrap px-6 py-4 text-left font-semibold text-gray-900">Role</th>
+                                        <th class="whitespace-nowrap px-6 py-4 text-left font-semibold text-gray-900">Team</th>
+                                        <th class="whitespace-nowrap px-6 py-4 text-left font-semibold text-gray-900">Created</th>
+                                        <th class="whitespace-nowrap px-6 py-4 text-left font-semibold text-gray-900">Closed</th>
+                                        <th class="whitespace-nowrap px-6 py-4 text-left font-semibold text-gray-900">Applicants</th>
+                                        <th class="whitespace-nowrap px-6 py-4 text-left font-semibold text-gray-900">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 bg-white">
+                                    <% closedOpenings.forEach(opening => { %>
+                                        <tr class="hover:bg-gray-50 transition-colors">
+                                            <td class="px-6 py-4 font-medium text-gray-900"><%= opening.role %></td>
+                                            <td class="px-6 py-4 text-gray-700"><%= opening.teamName %></td>
+                                            <td class="px-6 py-4 text-gray-600"><%= new Date(opening.createdDate).toLocaleDateString() %></td>
+                                            <td class="px-6 py-4 text-gray-600"><%= new Date(opening.closedDate).toLocaleDateString() %></td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    <%= opening.applicantCount || 0 %> applicants
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <a
+                                                    href="/leader/opening/<%= opening._id %>/applicants"
+                                                    class="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors"
+                                                >
+                                                    View Details →
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                            <p class="text-gray-500">No closed openings found.</p>
+                        </div>
+                    <% } %>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Create Opening Modal -->
     <div
         id="createModal"
-        class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm"
     >
-        <div
-            class="relative mx-4 w-full max-w-xl origin-top-left scale-95 rounded-2xl bg-white p-6 shadow-2xl transition duration-200 ease-out"
-        >
-           <div class="flex items-center justify-between mb-6">
-    <!-- Back Button -->
-   
+        <div class="relative mx-4 w-full max-w-2xl origin-center scale-95 rounded-2xl bg-white shadow-2xl transition duration-200 ease-out">
+            <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+                <h3 class="text-xl font-bold text-gray-900">✨ Create New Opening</h3>
+                <button
+                    onclick="closeCreateModal()"
+                    class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
 
-    <!-- Heading + Close Button -->
-    <div class="flex items-center justify-between w-full">
-        <h3 class="text-lg font-semibold text-slate-800 ml-4">Create New Opening</h3>
-        <button
-            onclick="closeCreateModal()"
-            class="text-slate-400 hover:text-slate-600 transition"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-    </div>
-</div>
-
-            <!-- Form -->
-            <form id="createOpeningForm" class="space-y-5">
+            <!-- Enhanced Form -->
+            <form id="createOpeningForm" class="p-6 space-y-6">
                 <!-- Role -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-slate-700">Role *</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-900">Role *</label>
                     <select
                         id="roleSelect"
                         name="role"
                         required
-                        class="block w-full rounded-md border-slate-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        class="block w-full rounded-lg border border-gray-300 py-3 px-4 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                     >
-                        <option value="">Select Role</option>
+                        <option value="">Select a role...</option>
                         <% availableRoles.forEach(role => { %>
                             <option value="<%= role.role %>"><%= role.role %> (<%= role.teamName %>)</option>
                         <% }); %>
@@ -192,159 +238,164 @@
 
                 <!-- Team -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-slate-700">Team Name *</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-900">Team Name *</label>
                     <input
                         type="text"
                         id="teamName"
                         name="teamName"
                         required
                         readonly
-                        class="block w-full rounded-md border-slate-300 bg-slate-100 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        class="block w-full rounded-lg border border-gray-300 bg-gray-100 py-3 px-4 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                        placeholder="Auto-filled based on role selection"
                     />
                 </div>
 
                 <!-- Description -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-slate-700">Description *</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-900">Description *</label>
                     <textarea
                         name="description"
                         rows="4"
                         required
-                        class="block w-full rounded-md border-slate-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Describe the role and responsibilities…"
+                        class="block w-full rounded-lg border border-gray-300 py-3 px-4 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"
+                        placeholder="Describe the role, responsibilities, and what the successful candidate will be doing..."
                     ></textarea>
                 </div>
 
                 <!-- Requirements -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-slate-700">Requirements *</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-900">Requirements *</label>
                     <textarea
                         name="requirements"
                         rows="3"
                         required
-                        class="block w-full rounded-md border-slate-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="List the requirements and qualifications…"
+                        class="block w-full rounded-lg border border-gray-300 py-3 px-4 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"
+                        placeholder="List the required skills, qualifications, and experience..."
                     ></textarea>
                 </div>
 
                 <!-- Max Applicants -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-slate-700">Maximum Applicants</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-900">Maximum Applicants</label>
                     <input
                         type="number"
                         name="maxApplicants"
                         value="10"
                         min="1"
                         max="100"
-                        class="block w-full rounded-md border-slate-300 py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        class="block w-full rounded-lg border border-gray-300 py-3 px-4 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                     />
+                    <p class="mt-1 text-sm text-gray-500">Leave blank for unlimited applicants</p>
                 </div>
 
-                <!-- Buttons -->
-                <div class="flex justify-end gap-3 pt-2">
+                <!-- Enhanced Buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
                     <button
                         type="button"
                         onclick="closeCreateModal()"
-                        class="rounded-md bg-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-300"
+                        class="rounded-lg bg-gray-200 px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-300 transition-colors"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700"
+                        class="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white shadow hover:bg-blue-700 transition-colors"
                     >
-                        Create Opening
+                        🚀 Create Opening
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Existing JS (unchanged) -->
-<script>
-    
-
-    document.getElementById('roleSelect').addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-        const teamNameInput = document.getElementById('teamName');
-        
-        
-        
-        if (selectedOption.value && selectedOption.textContent) {
-            // Extract team name from "role (teamName)" format
-            const optionText = selectedOption.textContent.trim();
-            const teamMatch = optionText.match(/\(([^)]+)\)$/);
+    <!-- Enhanced JavaScript -->
+    <script>
+        document.getElementById('roleSelect').addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const teamNameInput = document.getElementById('teamName');
             
-            if (teamMatch && teamMatch[1]) {
-                const extractedTeam = teamMatch[1].trim();
-                teamNameInput.value = extractedTeam;
-                console.log('✅ Successfully extracted team:', extractedTeam);
+            if (selectedOption.value && selectedOption.textContent) {
+                // Extract team name from "role (teamName)" format
+                const optionText = selectedOption.textContent.trim();
+                const teamMatch = optionText.match(/\(([^)]+)\)$/);
+                
+                if (teamMatch && teamMatch[1]) {
+                    const extractedTeam = teamMatch[1].trim();
+                    teamNameInput.value = extractedTeam;
+                    console.log('✅ Successfully extracted team:', extractedTeam);
+                } else {
+                    console.log('⚠️ Could not extract team from:', optionText);
+                    teamNameInput.value = '';
+                }
             } else {
-                console.log('⚠️ Could not extract team from:', optionText);
                 teamNameInput.value = '';
+                console.log('🔄 Cleared team name (no selection)');
             }
-        } else {
-            teamNameInput.value = '';
-            console.log('🔄 Cleared team name (no selection)');
+        });
+
+        function openCreateModal() {
+            const modal = document.getElementById('createModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+            }, 10);
         }
-    });
 
-    // Keep all your other existing functions unchanged
-    function openCreateModal() {
-        const modal = document.getElementById('createModal');
-        modal.classList.remove('hidden');
-        modal.firstElementChild.classList.remove('scale-95');
-    }
-
-    function closeCreateModal() {
-        const modal = document.getElementById('createModal');
-        modal.firstElementChild.classList.add('scale-95');
-        setTimeout(() => modal.classList.add('hidden'), 150);
-        document.getElementById('createOpeningForm').reset();
-        document.getElementById('teamName').value = '';
-    }
-
-    document.getElementById('createOpeningForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch('/leader/create-opening', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            const result = await response.json();
-            if (response.ok) {
-                alert('Opening created successfully!');
-                location.reload();
-            } else {
-                alert('Error: ' + result.message);
-            }
-        } catch (error) {
-            alert('Error creating opening: ' + error.message);
+        function closeCreateModal() {
+            const modal = document.getElementById('createModal');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 150);
+            document.getElementById('createOpeningForm').reset();
+            document.getElementById('teamName').value = '';
         }
-    });
 
-    async function closeOpening(openingId) {
-        if (confirm('Are you sure you want to close this opening? This action cannot be undone.')) {
+        document.getElementById('createOpeningForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
             try {
-                const response = await fetch(`/leader/opening/${openingId}/close`, { method: 'POST' });
+                const response = await fetch('/leader/create-opening', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
                 const result = await response.json();
                 if (response.ok) {
-                    alert('Opening closed successfully!');
+                    alert('Opening created successfully! 🎉');
                     location.reload();
                 } else {
                     alert('Error: ' + result.message);
                 }
             } catch (error) {
-                alert('Error closing opening: ' + error.message);
+                alert('Error creating opening: ' + error.message);
+            }
+        });
+
+        async function closeOpening(openingId) {
+            if (confirm('Are you sure you want to close this opening? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/leader/opening/${openingId}/close`, { method: 'POST' });
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert('Opening closed successfully! ✅');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                } catch (error) {
+                    alert('Error closing opening: ' + error.message);
+                }
             }
         }
-    }
-</script>
 
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCreateModal();
+            }
+        });
+    </script>
 
 </body>
 </html>

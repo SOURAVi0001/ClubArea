@@ -1,159 +1,173 @@
-<html>
-  <head>
-    <title>Updates</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" />
-  </head>
-  <body style='font-family: Inter, "Noto Sans", sans-serif;'>
-    <div class="relative flex min-h-screen flex-col bg-white overflow-x-hidden">
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-          <%- include('partials/header.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Updates</title>
+  <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900" />
+</head>
+<body class="bg-gray-50 text-gray-800" style='font-family: Inter, "Noto Sans", sans-serif;'>
 
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <!-- Header -->
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <div class="flex min-w-72 flex-col gap-3">
-                <p class="text-[#111418] text-[32px] font-bold leading-tight">Updates</p>
-                <p class="text-[#60758a] text-sm">Share announcements, news, and updates with your Club_Members.</p>
-              </div>
-            </div>
+  <!-- Include the sidebar partial -->
+  <%- include('partials/sidebar', { 
+    Leader_Name: Leader_Name, 
+    Club_Name: Club_Name, 
+    currentPage: 'updates' 
+  }) %>
 
-            <!-- Post Form -->
-            <div class="flex items-center px-4 py-3 gap-3">
-              <form id="updateForm" method="POST" action="/leader/Post_Updates" class="flex flex-col w-full max-w-2xl bg-white border border-[#dbe0e6] rounded-lg overflow-hidden">
-                <div class="flex items-start p-4 gap-4">
-                  <div class="rounded-full bg-cover bg-center size-10 shrink-0"></div>
-                  <div class="flex flex-col flex-1 gap-2">
-                    <input type="text" name="title" placeholder="Enter post title" class="w-full px-3 py-2 border border-[#dbe0e6] rounded text-sm focus:outline-none" />
-                    <textarea name="content" placeholder="Write here?" class="w-full resize-none px-3 py-2 border border-[#dbe0e6] rounded text-sm focus:outline-none h-24" required></textarea>
-                  </div>
-                </div>
-                <div class="flex items-center justify-between px-4 py-2 border-t border-[#dbe0e6] bg-white">
-                  <div class="flex items-center gap-2">
-                    <button type="button" class="text-[#60758a]" title="Add Image">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"><path d="M216,40H40A16,16,0..." /></svg>
-                    </button>
-                    <button type="button" class="text-[#60758a]" title="Add Link">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"><path d="M137.54,186.36a8,8..." /></svg>
-                    </button>
-                    <select id="postType" name="postType" class="border border-[#dbe0e6] rounded px-2 py-1 text-sm text-[#111418] bg-white">
-                      <option value="club">Club Only</option>
-                      <option value="public">Public</option>
-                    </select>
-                  </div>
-                  <button type="submit" class="bg-[#0c7ff2] text-white text-sm font-medium px-4 py-1.5 rounded hover:bg-blue-600">Post</button>
-                </div>
-              </form>
-            </div>
-
-            <!-- JS to toggle form action -->
-            <script>
-              document.addEventListener('DOMContentLoaded', function () {
-                const form = document.getElementById('updateForm');
-                const postType = document.getElementById('postType');
-                postType.addEventListener('change', function () {
-                  form.action = postType.value === 'public' ? '/updates/public' : '/updates/club';
-                });
-              });
-            </script>
-
-            <!-- Recent Updates -->
-            <h2 class="text-[#111418] text-[22px] font-bold leading-tight px-4 pb-3 pt-5">Recent Updates</h2>
-            <div id="updates-container">
-              <% data.forEach((d) => { %>
-                <div class="flex w-full flex-row items-start justify-start gap-3 p-4">
-                  <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" style='background-image: url("<%= d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png" %>");'></div>
-                  <div class="flex h-full flex-1 flex-col items-start justify-start">
-                    <div class="flex w-full flex-row items-start justify-start gap-x-3">
-                      <p class="text-[#111418] text-sm font-bold"><%= d.posted_by %></p>
-                      <p class="text-[#111418] text-sm font-bold">(<%= d.title %>)</p>
-                      <p class="text-[#60758a] text-sm"><%= typeof d.ago === "function" ? d.ago() : "" %></p>
-                    </div>
-                    <p class="text-[#111418] text-sm"><%= d.description %></p>
-                    <div class="flex w-full flex-row items-center justify-start gap-9 pt-2">
-                      <div class="flex items-center gap-2">
-                        <svg width="20" height="20" fill="currentColor"><path d="..." /></svg>
-                        <p class="text-[#60758a] text-sm"><%= d.likes || 0 %></p>
-                      </div>
-                      <div class="flex items-center gap-2">
-                        <svg width="20" height="20" fill="currentColor"><path d="..." /></svg>
-                        <p class="text-[#60758a] text-sm"><%= d.dislikes || 0 %></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% }); %>
-            </div>
-
-            <!-- Pagination Buttons -->
-            <div class="flex justify-center gap-4 py-4">
-              <button id="prev-btn" class="bg-gray-200 px-4 py-2 rounded text-sm font-medium text-gray-800 disabled:opacity-50" disabled>Previous</button>
-              <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded text-sm font-medium disabled:opacity-50" <%= data.length < 5 ? "disabled" : "" %>>Next</button>
-            </div>
-
-            <!-- Pagination Script -->
-            <script>
-              let skip = 0;
-              const limit = 5;
-              const total = <%= totalCount %>;
-              const container = document.getElementById("updates-container");
-              const nextBtn = document.getElementById("next-btn");
-              const prevBtn = document.getElementById("prev-btn");
-
-              function renderUpdates(updates) {
-                container.innerHTML = "";
-                updates.forEach(d => {
-                  const div = document.createElement("div");
-                  div.className = "flex w-full flex-row items-start justify-start gap-3 p-4";
-                  div.innerHTML = `
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
-                      style='background-image: url("${d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}");'></div>
-                    <div class="flex h-full flex-1 flex-col items-start justify-start">
-                      <div class="flex w-full flex-row items-start justify-start gap-x-3">
-                        <p class="text-[#111418] text-sm font-bold">${d.posted_by}</p>
-                        <p class="text-[#111418] text-sm font-bold">(${d.title})</p>
-                      </div>
-                      <p class="text-[#111418] text-sm">${d.description}</p>
-                      <div class="flex w-full flex-row items-center justify-start gap-9 pt-2">
-                        <div class="flex items-center gap-2">
-                          <svg width="20" height="20" fill="currentColor"><path d="..." /></svg>
-                          <p class="text-[#60758a] text-sm">${d.likes || 0}</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                          <svg width="20" height="20" fill="currentColor"><path d="..." /></svg>
-                          <p class="text-[#60758a] text-sm">${d.dislikes || 0}</p>
-                        </div>
-                      </div>
-                    </div>
-                  `;
-                  container.appendChild(div);
-                });
-              }
-
-              async function loadUpdates() {
-                const res = await fetch(`/leader/updates/page?skip=${skip}`);
-                const { updates, totalCount } = await res.json();
-                renderUpdates(updates);
-                prevBtn.disabled = skip === 0;
-                nextBtn.disabled = skip + limit >= totalCount;
-              }
-
-              nextBtn.addEventListener("click", () => {
-                skip += limit;
-                loadUpdates();
-              });
-
-              prevBtn.addEventListener("click", () => {
-                skip = Math.max(0, skip - limit);
-                loadUpdates();
-              });
-            </script>
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="max-w-[960px] mx-auto px-6 py-8">
+      
+      <!-- Header -->
+      <header class="mb-8">
+        <div class="flex flex-wrap justify-between gap-3">
+          <div class="flex min-w-72 flex-col gap-3">
+            <h1 class="text-[#111418] text-[32px] font-bold leading-tight"> Updates</h1>
+            <p class="text-[#60758a] text-sm">Share announcements, news, and updates with your Club Members.</p>
           </div>
         </div>
+      </header>
+
+      <!-- Post Form -->
+      <div class="mb-8">
+        <form id="updateForm" method="POST" action="/leader/Post_Updates" class="bg-white border border-[#dbe0e6] rounded-lg overflow-hidden shadow-sm">
+          <div class="flex items-start p-4 gap-4">
+            <div class="rounded-full bg-cover bg-center size-10 shrink-0 bg-gray-200"></div>
+            <div class="flex flex-col flex-1 gap-2">
+              <input type="text" name="title" placeholder="Enter post title" class="w-full px-3 py-2 border border-[#dbe0e6] rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <textarea name="content" placeholder="Write here?" class="w-full resize-none px-3 py-2 border border-[#dbe0e6] rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" required></textarea>
+            </div>
+          </div>
+          <div class="flex items-center justify-between px-4 py-2 border-t border-[#dbe0e6] bg-gray-50">
+            <div class="flex items-center gap-2">
+              <button type="button" class="text-[#60758a] hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Add Image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+                  <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H216v92.69l-30.34-30.35a16,16,0,0,0-22.62,0L147.31,134.07,106.34,93.66a16,16,0,0,0-22.68,0L40,137.38ZM216,200H40V152.45l53.66-53.66L147.31,152.45a16,16,0,0,0,22.62,0L216,106.9Z" />
+                </svg>
+              </button>
+              <button type="button" class="text-[#60758a] hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Add Link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+                  <path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L70.21,106.57a8,8,0,0,1,11.32,11.31L59.69,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36ZM208,32a56.08,56.08,0,0,0-39.64,16.43L147.31,69.49a8,8,0,0,0,11.32,11.31l21.05-21.05a40,40,0,0,1,56.58,56.58L214.21,138.38a8,8,0,0,0,11.32,11.31L247.57,127.64A56,56,0,0,0,208,32Z" />
+                </svg>
+              </button>
+              <select id="postType" name="postType" class="border border-[#dbe0e6] rounded px-2 py-1 text-sm text-[#111418] bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="club">Club Only</option>
+                <option value="public">Public</option>
+              </select>
+            </div>
+            <button type="submit" class="bg-[#0c7ff2] text-white text-sm font-medium px-4 py-1.5 rounded hover:bg-blue-600 transition-colors">Post</button>
+          </div>
+        </form>
       </div>
+
+      <!-- JS to toggle form action -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const form = document.getElementById('updateForm');
+          const postType = document.getElementById('postType');
+          postType.addEventListener('change', function () {
+            form.action = postType.value === 'public' ? '/updates/public' : '/updates/club';
+          });
+        });
+      </script>
+
+      <!-- Recent Updates -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <!-- Section Header -->
+        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+          <h2 class="text-[#111418] text-[22px] font-bold leading-tight"> Recent Updates</h2>
+        </div>
+
+        <!-- Updates Container -->
+        <div id="updates-container">
+          <% data.forEach((d) => { %>
+            <div class="flex w-full flex-row items-start justify-start gap-3 p-6 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
+              <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" style='background-image: url("<%= d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png" %>");'></div>
+              <div class="flex h-full flex-1 flex-col items-start justify-start">
+                <div class="flex w-full flex-row items-start justify-start gap-x-3 mb-2">
+                  <p class="text-[#111418] text-sm font-bold"><%= d.posted_by %></p>
+                  <p class="text-[#111418] text-sm font-bold">(<%= d.title %>)</p>
+                  <p class="text-[#60758a] text-sm"><%= typeof d.ago === "function" ? d.ago() : "" %></p>
+                </div>
+                <p class="text-[#111418] text-sm mb-3 leading-relaxed"><%= d.description %></p>
+               
+              </div>
+            </div>
+          <% }); %>
+        </div>
+
+        <!-- Pagination Buttons -->
+        <div class="flex justify-center gap-4 p-6 bg-gray-50 border-t border-gray-200">
+          <button id="prev-btn" class="bg-gray-200 px-4 py-2 rounded text-sm font-medium text-gray-800 disabled:opacity-50 hover:bg-gray-300 transition-colors" disabled>Previous</button>
+          <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded text-sm font-medium disabled:opacity-50 hover:bg-blue-600 transition-colors" <%= data.length < 5 ? "disabled" : "" %>>Next</button>
+        </div>
+      </div>
+
+      <!-- Pagination Script -->
+      <script>
+        let skip = 0;
+        const limit = 5;
+        const total = <%= totalCount %>;
+        const container = document.getElementById("updates-container");
+        const nextBtn = document.getElementById("next-btn");
+        const prevBtn = document.getElementById("prev-btn");
+
+        function renderUpdates(updates) {
+          container.innerHTML = "";
+          updates.forEach(d => {
+            const div = document.createElement("div");
+            div.className = "flex w-full flex-row items-start justify-start gap-3 p-6 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors";
+            div.innerHTML = `
+              <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
+                style='background-image: url("${d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}");'></div>
+              <div class="flex h-full flex-1 flex-col items-start justify-start">
+                <div class="flex w-full flex-row items-start justify-start gap-x-3 mb-2">
+                  <p class="text-[#111418] text-sm font-bold">${d.posted_by}</p>
+                  <p class="text-[#111418] text-sm font-bold">(${d.title})</p>
+                </div>
+                <p class="text-[#111418] text-sm mb-3 leading-relaxed">${d.description}</p>
+                <div class="flex w-full flex-row items-center justify-start gap-9">
+                  <div class="flex items-center gap-2">
+                    <svg width="20" height="20" fill="currentColor" class="text-green-600">
+                      <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 004 14h4v7a1 1 0 001 1h6a1 1 0 001-1v-7h4a1.001 1.001 0 00.781-1.625l-8-10z"/>
+                    </svg>
+                    <p class="text-[#60758a] text-sm">${d.likes || 0}</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg width="20" height="20" fill="currentColor" class="text-red-600">
+                      <path d="M11.219 13.625c.381.475 1.181.475 1.562 0l8-10A1.001 1.001 0 0020 2h-4V-5a1 1 0 00-1-1H9a1 1 0 00-1 1v7H4a1.001 1.001 0 00-.781 1.625l8 10z"/>
+                    </svg>
+                    <p class="text-[#60758a] text-sm">${d.dislikes || 0}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            container.appendChild(div);
+          });
+        }
+
+        async function loadUpdates() {
+          const res = await fetch(`/leader/updates/page?skip=${skip}`);
+          const { updates, totalCount } = await res.json();
+          renderUpdates(updates);
+          prevBtn.disabled = skip === 0;
+          nextBtn.disabled = skip + limit >= totalCount;
+        }
+
+        nextBtn.addEventListener("click", () => {
+          skip += limit;
+          loadUpdates();
+        });
+
+        prevBtn.addEventListener("click", () => {
+          skip = Math.max(0, skip - limit);
+          loadUpdates();
+        });
+      </script>
     </div>
-  </body>
+  </main>
+
+</body>
 </html>

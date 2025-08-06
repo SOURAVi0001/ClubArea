@@ -1,71 +1,188 @@
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+  />
 
-    <title>Teams</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+  <title>Teams - Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-          <%- include('partials/header.ejs') %>
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <p class="text-[#111418] tracking-light text-[32px] font-bold leading-tight min-w-72">Teams</p>
-             
-            </div>
-            <div class="px-4 py-3 @container">
-              <div class="flex overflow-hidden rounded-lg border border-[#dbe0e6] bg-white">
-                <table class="flex-1">
-                  <thead>
-                    <tr class="bg-white">
-                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-120 px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-medium leading-normal">
-                        Team Name
-                      </th>
-                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-240 px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-medium leading-normal">Members</th>
-                      <th class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-360 px-4 py-3 text-left text-[#111418] w-[400px] text-sm font-medium leading-normal">
-                        Description
-                      </th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <%teamStats.forEach(({teamName,membercount})=>{%>
-                    <tr class="border-t border-t-[#dbe0e6]">
-                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-120 h-[72px] px-4 py-2 w-[400px] text-[#111418] text-sm font-normal leading-normal">
-                        <%= teamName%>
-                      </td>
-                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-240 h-[72px] px-4 py-2 w-[400px] text-[#60758a] text-sm font-normal leading-normal">
-                        <%= membercount%>
-                      </td>
-                      <td class="table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-360 h-[72px] px-4 py-2 w-[400px] text-[#60758a] text-sm font-normal leading-normal">
-                        Responsible for club promotions and outreach.
-                      </td>
-                      
-                    </tr>
-                    <%});%>
-                  </tbody>
-                </table>
-              </div>
-              <style>
-                          @container(max-width:120px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-120{display: none;}}
-                @container(max-width:240px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-240{display: none;}}
-                @container(max-width:360px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-360{display: none;}}
-                @container(max-width:480px){.table-dab750d9-36f6-461b-aff2-94c8f7021d1f-column-480{display: none;}}
-              </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body class="bg-gray-50 text-gray-800" style='font-family: Inter, "Noto Sans", sans-serif;'>
+  
+  <!-- Include the sidebar partial -->
+  <%- include('partials/sidebar', { 
+    Leader_Name: Leader_Name, 
+    Club_Name: Club_Name, 
+    currentPage: 'teams' 
+  }) %>
+
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="max-w-[960px] mx-auto px-6 py-8">
+      
+      <!-- Enhanced Page Header -->
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-[#111418] mb-2"> Teams Overview</h1>
+        <p class="text-gray-600">Manage and view all teams within your club</p>
+      </header>
+
+      <!-- Enhanced Teams Table -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <!-- Table Header -->
+        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900"> Team Statistics</h2>
+            <div class="text-sm text-gray-500">
+              <%= teamStats.length %> team<%= teamStats.length !== 1 ? 's' : '' %> total
             </div>
           </div>
         </div>
+
+        <!-- Table Content -->
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-6 py-4 text-left text-[#111418] font-semibold text-sm"> Team Name</th>
+                <th class="px-6 py-4 text-left text-[#111418] font-semibold text-sm"> Members</th>
+                <th class="px-6 py-4 text-left text-[#111418] font-semibold text-sm"> Description</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% teamStats.forEach(({ teamName, membercount }, index) => { %>
+                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                  <!-- Team Name -->
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span class="text-blue-600 font-bold text-sm">
+                          <%= teamName.charAt(0).toUpperCase() %>
+                        </span>
+                      </div>
+                      <div>
+                        <span class="font-semibold text-[#111418] text-base"><%= teamName %></span>
+                        <p class="text-gray-500 text-sm">Team #<%= index + 1 %></p>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <!-- Member Count -->
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                                   <%= membercount > 10 ? 'bg-green-100 text-green-800' : 
+                                       membercount > 5 ? 'bg-blue-100 text-blue-800' : 
+                                       membercount > 0 ? 'bg-yellow-100 text-yellow-800' : 
+                                       'bg-red-100 text-red-800' %>">
+                        <%= membercount %> member<%= membercount !== 1 ? 's' : '' %>
+                      </span>
+                    </div>
+                  </td>
+                  
+                  <!-- Description -->
+                  <td class="px-6 py-4">
+                    <p class="text-[#60758a] text-sm leading-relaxed">
+                      Responsible for club promotions and outreach.
+                    </p>
+                  </td>
+                  
+                  <!-- Actions -->
+                 
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Stats Cards -->
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-blue-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-1">Total Teams</h3>
+              <p class="text-2xl font-bold text-blue-600"><%= teamStats.length %></p>
+            </div>
+          </div>
+          <p class="text-gray-600 text-sm">Active teams in your club</p>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-green-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 6.292 4 4 0 010-6.292zM15 21H3v-1a6 6 0 0112 0v1z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-1">Total Members</h3>
+              <p class="text-2xl font-bold text-green-600">
+                <%= teamStats.reduce((total, team) => total + team.membercount, 0) %>
+              </p>
+            </div>
+          </div>
+          <p class="text-gray-600 text-sm">Across all teams</p>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-purple-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-1">Avg per Team</h3>
+              <p class="text-2xl font-bold text-purple-600">
+                <%= teamStats.length > 0 ? Math.round(teamStats.reduce((total, team) => total + team.membercount, 0) / teamStats.length) : 0 %>
+              </p>
+            </div>
+          </div>
+          <p class="text-gray-600 text-sm">Average team size</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4"> Quick Actions</h3>
+        <div class="flex flex-wrap gap-3">
+          <a href="/leader/leader-members" 
+             class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            View All Members
+          </a>
+          
+          <a href="/leader/leader-taskstatus" 
+             class="inline-flex items-center gap-2 px-4 py-2 bg-white text-green-600 rounded-lg border border-green-200 hover:bg-green-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h6m-6 4h6"/>
+            </svg>
+            Assign Tasks
+          </a>
+          
+          <a href="/leader/openings" 
+             class="inline-flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-lg border border-purple-200 hover:bg-purple-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Create Recruitment
+          </a>
+        </div>
       </div>
     </div>
-  </body>
+  </main>
+
+</body>
 </html>

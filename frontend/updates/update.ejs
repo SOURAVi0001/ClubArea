@@ -29,6 +29,7 @@
             boxShadow: {
               neon: '0 0 18px #5B96FF88',
               glow: '0 0 12px #EE46D366',
+              'search-active': '0 0 24px #5B96FF99, 0 0 8px #EE46D377',
             },
             borderRadius: {
               'xl2': '1.25rem',
@@ -48,7 +49,7 @@
         background: rgba(31, 38, 51, 0.55);
         backdrop-filter: blur(18px);
         border: 1px solid rgba(255, 255, 255, 0.06);
-        transition: 0.25s all ease-in-out;
+        transition: all 0.25s ease-in-out;
       }
 
       .glass-card:hover {
@@ -64,6 +65,76 @@
 
       .icon-bg {
         background: linear-gradient(135deg, #5B96FF, #EE46D3);
+      }
+
+      /* Search enhancements */
+      .search-container {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .search-active {
+        box-shadow: 0 0 24px #5B96FF99, 0 0 8px #EE46D377 !important;
+        border-color: #EE46D3 !important;
+        transform: scale(1.02);
+      }
+
+      .update-card {
+        transition: all 0.3s ease;
+      }
+
+      .update-card.hidden {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+        max-height: 0;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .update-card.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        max-height: none;
+      }
+
+      .search-suggestions {
+        background: rgba(26, 34, 53, 0.98);
+        border: 1px solid rgba(91, 150, 255, 0.3);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      }
+
+      .suggestion-item {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .suggestion-item:hover {
+        background: rgba(91, 150, 255, 0.1);
+        color: #5B96FF;
+      }
+
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+
+      .no-results {
+        background: rgba(31, 38, 51, 0.7);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 1.25rem;
+        padding: 3rem 2rem;
+        text-align: center;
+      }
+
+      /* Highlight styling */
+      .highlight {
+        background: rgba(238, 70, 211, 0.3);
+        color: #EE46D3;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-weight: 500;
       }
     </style>
   </head>
@@ -81,27 +152,55 @@
           <p class="text-sm text-gray-400 mt-1">Stay updated with your club's latest announcements and events.</p>
         </header>
 
-        <!-- 🔍 Search Bar -->
-        <div class="w-full max-w-xl mx-auto sm:mx-0">
-          <div class="flex items-center bg-tech-dark border border-tech-blue/50 rounded-full px-4 h-12 shadow-neon hover:shadow-glow transition duration-300">
-            <svg class="text-tech-blue mr-3" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 256 256">
+        <!-- 🔍 Enhanced Search Bar -->
+        <div class="w-full max-w-xl mx-auto sm:mx-0 search-container">
+          <div id="searchWrapper" class="flex items-center bg-tech-dark border border-tech-blue/50 rounded-full px-4 h-12 shadow-neon hover:shadow-glow transition duration-300">
+            <svg class="text-tech-blue mr-3 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 256 256">
               <path d="M229.66,218.34l-50.07-50.06A88.11,88.11 0 1 0 180 179l50.06 50.07a8 8 0 0 0 11.32-11.32ZM112 184a72 72 0 1 1 0-144 72 72 0 0 1 0 144Z"/>
             </svg>
             <input
+              id="searchInput"
               type="text"
               placeholder="Search updates..."
               class="flex-1 bg-transparent text-white text-sm placeholder:text-slate-400 focus:outline-none"
+              autocomplete="off"
             />
+            <!-- Clear button -->
+            <button id="clearSearch" class="text-gray-400 hover:text-white ml-2 opacity-0 transition-all duration-200 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Search Suggestions -->
+          <div id="searchSuggestions" class="absolute top-full left-0 right-0 mt-2 search-suggestions rounded-xl hidden z-50 max-h-60 overflow-y-auto">
+            <!-- Dynamic suggestions will be populated here -->
           </div>
         </div>
 
-        <!-- 🧩 Filter Tabs -->
-        
+        <!-- Search Results Info -->
+        <div id="searchResults" class="hidden">
+          <div class="flex items-center justify-between bg-tech-dark/50 border border-tech-blue/30 rounded-lg px-4 py-3">
+            <p class="text-sm text-gray-300">
+              Found <span id="resultsCount" class="text-tech-blue font-semibold">0</span> updates matching 
+              "<span id="searchTerm" class="text-tech-magenta font-medium"></span>"
+            </p>
+            <button id="clearResultsBtn" class="text-xs text-tech-blue hover:text-white transition-colors">
+              Clear Search
+            </button>
+          </div>
+        </div>
 
         <!-- 📢 Updates Feed -->
-        <div class="flex flex-col gap-6 pt-3">
-          <% updates.forEach(update => { %>
-          <div class="glass-card group flex items-start justify-between gap-5 px-6 py-5 rounded-xl2 shadow-md hover:shadow-neon transition duration-300">
+        <div id="updatesContainer" class="flex flex-col gap-6 pt-3">
+          <% updates.forEach((update, index) => { %>
+          <div class="update-card glass-card group flex items-start justify-between gap-5 px-6 py-5 rounded-xl2 shadow-md hover:shadow-neon transition duration-300 visible"
+               data-title="<%= update.title.toLowerCase() %>"
+               data-club="<%= update.clubName.toLowerCase() %>"
+               data-author="<%= update.posted_by.toLowerCase() %>"
+               data-description="<%= update.description.toLowerCase() %>"
+               data-index="<%= index %>">
             <!-- Icon -->
             <div class="icon-bg w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 text-white shadow">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 256 256">
@@ -111,11 +210,11 @@
 
             <!-- Content -->
             <div class="flex-1">
-              <p class="text-lg font-semibold mb-1 text-white"><%= update.title %></p>
-              <p class="text-tech-magenta text-sm font-medium mb-1">
-                Posted by: <%= update.clubName %> (<%= update.posted_by %>)
+              <p class="update-title text-lg font-semibold mb-1 text-white"><%= update.title %></p>
+              <p class="update-meta text-tech-magenta text-sm font-medium mb-1">
+                Posted by: <span class="update-club"><%= update.clubName %></span> (<span class="update-author"><%= update.posted_by %></span>)
               </p>
-              <p class="text-gray-300 text-sm"><%= update.description %></p>
+              <p class="update-description text-gray-300 text-sm"><%= update.description %></p>
             </div>
 
             <!-- Time -->
@@ -124,8 +223,283 @@
             </div>
           </div>
           <% }); %>
+
+          <!-- No Results Message -->
+          <div id="noResults" class="no-results hidden">
+            <div class="mb-6">
+              <svg class="mx-auto text-tech-blue/50 mb-4" width="48" height="48" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M229.66,218.34l-50.07-50.06A88.11,88.11 0 1 0 180 179l50.06 50.07a8 8 0 0 0 11.32-11.32ZM112 184a72 72 0 1 1 0-144 72 72 0 0 1 0 144Z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">No Updates Found</h3>
+            <p class="text-gray-400 mb-4">We couldn't find any updates matching your search criteria.</p>
+            <button id="clearSearchBtn" class="px-6 py-2 bg-gradient-to-r from-tech-blue to-tech-magenta hover:from-tech-magenta hover:to-tech-blue transition-all duration-300 rounded-lg font-medium">
+              Clear Search
+            </button>
+          </div>
         </div>
       </div>
     </div>
+
+    <script>
+      class UpdatesSearch {
+        constructor() {
+          this.searchInput = document.getElementById('searchInput');
+          this.searchWrapper = document.getElementById('searchWrapper');
+          this.clearButton = document.getElementById('clearSearch');
+          this.updateCards = document.querySelectorAll('.update-card');
+          this.updatesContainer = document.getElementById('updatesContainer');
+          this.noResults = document.getElementById('noResults');
+          this.searchResults = document.getElementById('searchResults');
+          this.resultsCount = document.getElementById('resultsCount');
+          this.searchTerm = document.getElementById('searchTerm');
+          this.searchSuggestions = document.getElementById('searchSuggestions');
+          this.clearSearchBtn = document.getElementById('clearSearchBtn');
+          this.clearResultsBtn = document.getElementById('clearResultsBtn');
+          
+          this.allUpdates = Array.from(this.updateCards).map(card => ({
+            element: card,
+            title: card.dataset.title,
+            club: card.dataset.club,
+            author: card.dataset.author,
+            description: card.dataset.description,
+            index: parseInt(card.dataset.index)
+          }));
+          
+          this.searchHistory = JSON.parse(localStorage.getItem('updatesSearchHistory')) || [];
+          this.isSearching = false;
+          
+          this.init();
+        }
+
+        init() {
+          this.bindEvents();
+          this.generateSuggestions();
+        }
+
+        bindEvents() {
+          // Search input events
+          this.searchInput.addEventListener('input', this.debounce(this.handleSearch.bind(this), 300));
+          this.searchInput.addEventListener('focus', this.handleSearchFocus.bind(this));
+          this.searchInput.addEventListener('blur', this.handleSearchBlur.bind(this));
+          this.searchInput.addEventListener('keydown', this.handleKeyDown.bind(this));
+          
+          // Clear button events
+          this.clearButton.addEventListener('click', this.clearSearch.bind(this));
+          this.clearSearchBtn.addEventListener('click', this.clearSearch.bind(this));
+          this.clearResultsBtn.addEventListener('click', this.clearSearch.bind(this));
+          
+          // Outside click to hide suggestions
+          document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+              this.hideSuggestions();
+            }
+          });
+        }
+
+        handleSearch(e) {
+          const query = e.target.value.trim().toLowerCase();
+          
+          if (query.length === 0) {
+            this.clearSearch();
+            return;
+          }
+
+          this.isSearching = true;
+          this.searchWrapper.classList.add('search-active');
+          this.clearButton.style.opacity = '1';
+          
+          const results = this.searchUpdates(query);
+          this.displayResults(results, query);
+          this.updateSearchHistory(query);
+        }
+
+        handleSearchFocus() {
+          if (this.searchInput.value.trim()) {
+            this.searchWrapper.classList.add('search-active');
+          }
+          this.showSuggestions();
+        }
+
+        handleSearchBlur() {
+          setTimeout(() => {
+            if (!this.searchInput.value.trim() && !this.isSearching) {
+              this.searchWrapper.classList.remove('search-active');
+            }
+          }, 150);
+        }
+
+        handleKeyDown(e) {
+          if (e.key === 'Escape') {
+            this.clearSearch();
+            this.searchInput.blur();
+          } else if (e.key === 'Enter') {
+            this.hideSuggestions();
+          }
+        }
+
+        searchUpdates(query) {
+          return this.allUpdates.filter(update => {
+            return update.title.includes(query) || 
+                   update.club.includes(query) || 
+                   update.author.includes(query) || 
+                   update.description.includes(query);
+          });
+        }
+
+        displayResults(results, query) {
+          // Hide all cards first
+          this.updateCards.forEach(card => {
+            this.hideCard(card);
+          });
+
+          // Show matching results after a brief delay
+          setTimeout(() => {
+            if (results.length > 0) {
+              this.noResults.classList.add('hidden');
+              
+              results.forEach((update, index) => {
+                setTimeout(() => {
+                  this.showCard(update.element);
+                  this.highlightText(update.element, query);
+                }, index * 50);
+              });
+
+              this.updateResultsInfo(results.length, query);
+            } else {
+              this.noResults.classList.remove('hidden');
+              this.searchResults.classList.add('hidden');
+            }
+          }, 150);
+        }
+
+        showCard(card) {
+          card.classList.remove('hidden');
+          card.classList.add('visible');
+        }
+
+        hideCard(card) {
+          card.classList.remove('visible');
+          card.classList.add('hidden');
+        }
+
+        highlightText(element, query) {
+          if (!query) return;
+
+          const titleEl = element.querySelector('.update-title');
+          const clubEl = element.querySelector('.update-club');
+          const authorEl = element.querySelector('.update-author');
+          const descEl = element.querySelector('.update-description');
+          
+          [titleEl, clubEl, authorEl, descEl].forEach(el => {
+            if (el && el.textContent) {
+              el.innerHTML = this.highlight(el.textContent, query);
+            }
+          });
+        }
+
+        highlight(text, query) {
+          if (!query) return text;
+          const regex = new RegExp(`(${query})`, 'gi');
+          return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        updateResultsInfo(count, query) {
+          this.resultsCount.textContent = count;
+          this.searchTerm.textContent = query;
+          this.searchResults.classList.remove('hidden');
+        }
+
+        clearSearch() {
+          this.searchInput.value = '';
+          this.isSearching = false;
+          this.searchWrapper.classList.remove('search-active');
+          this.clearButton.style.opacity = '0';
+          this.searchResults.classList.add('hidden');
+          this.noResults.classList.add('hidden');
+          this.hideSuggestions();
+
+          // Show all cards
+          this.updateCards.forEach((card, index) => {
+            // Remove highlights
+            const titleEl = card.querySelector('.update-title');
+            const clubEl = card.querySelector('.update-club');
+            const authorEl = card.querySelector('.update-author');
+            const descEl = card.querySelector('.update-description');
+            
+            [titleEl, clubEl, authorEl, descEl].forEach(el => {
+              if (el && el.innerHTML.includes('highlight')) {
+                el.innerHTML = el.textContent;
+              }
+            });
+
+            // Show all cards
+            setTimeout(() => {
+              this.showCard(card);
+            }, index * 20);
+          });
+        }
+
+        generateSuggestions() {
+          const popularSearches = ['announcement', 'event', 'meeting', 'workshop', 'competition'];
+          const suggestions = [...new Set([
+            ...this.searchHistory.slice(0, 3),
+            ...popularSearches
+          ])].slice(0, 6);
+          
+          this.searchSuggestions.innerHTML = suggestions
+            .map(suggestion => `
+              <div class="suggestion-item px-4 py-3 cursor-pointer text-sm text-gray-300"
+                   onclick="updatesSearchInstance.selectSuggestion('${suggestion}')">
+                <svg class="inline mr-2 text-tech-blue/70" width="14" height="14" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-68a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,148Z"/>
+                </svg>
+                ${suggestion}
+              </div>
+            `).join('');
+        }
+
+        selectSuggestion(suggestion) {
+          this.searchInput.value = suggestion;
+          this.handleSearch({ target: { value: suggestion } });
+          this.hideSuggestions();
+        }
+
+        showSuggestions() {
+          if (!this.isSearching && this.searchInput.value.length === 0) {
+            this.searchSuggestions.classList.remove('hidden');
+          }
+        }
+
+        hideSuggestions() {
+          this.searchSuggestions.classList.add('hidden');
+        }
+
+        updateSearchHistory(query) {
+          if (query.length < 2) return;
+          
+          this.searchHistory = [query, ...this.searchHistory.filter(h => h !== query)].slice(0, 8);
+          localStorage.setItem('updatesSearchHistory', JSON.stringify(this.searchHistory));
+          this.generateSuggestions();
+        }
+
+        debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
+      }
+
+      // Initialize search when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        window.updatesSearchInstance = new UpdatesSearch();
+      });
+    </script>
   </body>
 </html>

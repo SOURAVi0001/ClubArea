@@ -45,7 +45,7 @@
         border: 2px solid #675BF755;
         border-radius: 1.25rem;
         box-shadow: 0 2px 20px #5B96FF70, 0 0 6px #EE46D390;
-        transition: box-shadow 0.25s, border 0.25s, transform 0.17s;
+        transition: all 0.3s ease;
         backdrop-filter: blur(16px) saturate(1.22);
       }
       .card-futuristic:hover, .card-futuristic:focus-visible {
@@ -74,6 +74,52 @@
         0% { opacity:0.27;}
         100%{opacity:0.7;}
       }
+
+      /* Search animations */
+      .search-active {
+        box-shadow: 0 0 40px #5B96FF88, 0 0 20px #EE46D366 !important;
+        border-color: #EE46D3 !important;
+      }
+
+      .fade-out {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: all 0.3s ease;
+      }
+
+      .fade-in {
+        opacity: 1;
+        transform: scale(1);
+        transition: all 0.3s ease;
+      }
+
+      /* No results styling */
+      .no-results {
+        background: rgba(24,27,37,0.95);
+        border: 2px solid #675BF755;
+        border-radius: 1rem;
+        padding: 3rem 2rem;
+        text-align: center;
+        backdrop-filter: blur(16px);
+      }
+
+      /* Search suggestions */
+      .search-suggestions {
+        background: rgba(24,27,37,0.98);
+        border: 1px solid #675BF755;
+        border-radius: 0.75rem;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      }
+
+      .suggestion-item {
+        transition: all 0.2s ease;
+      }
+
+      .suggestion-item:hover {
+        background: rgba(91, 150, 255, 0.1);
+        color: #5B96FF;
+      }
     </style>
   </head>
   <body class="text-white overflow-x-hidden">
@@ -91,71 +137,329 @@
           <h1 class="text-4xl md:text-5xl font-techno font-extrabold uppercase tracking-tight text-tech-blue drop-shadow mb-2">CLUB NEXUS</h1>
           <p class="text-xl md:text-2xl text-gray-300 font-medium mb-4 tracking-wide">Connect. Create. Collab.<br><span class="text-tech-blue font-semibold">Tech-driven communities, visually discovered.</span></p>
         </div>
-        <!-- Search Bar -->
-        <div class="flex justify-center mb-14">
-          <div class="pulse-border-tech flex items-center w-full max-w-lg bg-glass-dark border border-tech-blue rounded-xl shadow-tech-drift px-5 h-14 focus-within:ring-2 focus-within:ring-tech-magenta">
-            <svg class="text-tech-blue mr-3 shrink-0" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 256 256">
-              <path fill="currentColor"
-                d="M229.7 218.3l-50.1-50a88 88 0 1 0-11.3 11.3l50 50.1a8 8 0 0 0 11.4-11.4ZM40 112a72 72 0 1 1 72 72a72.1 72.1 0 0 1-72-72Z" />
-            </svg>
-            <input
-              placeholder="Search for clubs"
-              class="w-full h-10 bg-transparent text-lg font-medium text-white placeholder:text-gray-400 focus:outline-none"
-            />
-          </div>
-        </div>
 
-        <!-- Featured Clubs -->
-        <h2 class="text-[1.32rem] font-techno uppercase text-tech-blue tracking-wide mb-4 pl-2">Featured Clubs</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
-          <% Register.forEach(function(club) { %>
-          <a href="/club/<%= club.id %>" class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4 group transition-all shadow-lg">
-            <div class="aspect-square rounded-xl bg-center bg-cover border-2 border-tech-magenta shadow-lg mb-3" style='background-image: url("<%= club.image %>");'></div>
-            <div>
-              <h3 class="text-lg md:text-xl font-techno font-semibold text-white group-hover:text-tech-blue transition truncate mb-1"><%= club.name %></h3>
-              <p class="text-sm md:text-base text-gray-300 group-hover:text-tech-magenta/90">
-                <%= club.description.split(" ").slice(0, 13).join(" ") %><%= club.description.split(" ").length > 25 ? "..." : "" %>
-              </p>
+        <!-- Search Bar with Suggestions -->
+        <div class="flex justify-center mb-14 relative">
+          <div class="w-full max-w-lg relative">
+            <div id="searchContainer" class="pulse-border-tech flex items-center bg-glass-dark border border-tech-blue rounded-xl shadow-tech-drift px-5 h-14 focus-within:ring-2 focus-within:ring-tech-magenta transition-all duration-300">
+              <svg class="text-tech-blue mr-3 shrink-0" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 256 256">
+                <path fill="currentColor" d="M229.7 218.3l-50.1-50a88 88 0 1 0-11.3 11.3l50 50.1a8 8 0 0 0 11.4-11.4ZM40 112a72 72 0 1 1 72 72a72.1 72.1 0 0 1-72-72Z" />
+              </svg>
+              <input
+                id="searchInput"
+                placeholder="Search for clubs..."
+                class="w-full h-10 bg-transparent text-lg font-medium text-white placeholder:text-gray-400 focus:outline-none"
+                autocomplete="off"
+              />
+              <!-- Clear button -->
+              <button id="clearSearch" class="text-gray-400 hover:text-white ml-2 opacity-0 transition-opacity duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 256 256">
+                  <path fill="currentColor" d="M205.7 194.3a8 8 0 0 1-11.4 11.4L128 139.3l-66.3 66.4a8 8 0 0 1-11.4-11.4L116.7 128 50.3 61.7a8 8 0 0 1 11.4-11.4L128 116.7l66.3-66.4a8 8 0 0 1 11.4 11.4L139.3 128Z"/>
+                </svg>
+              </button>
             </div>
-          </a>
-          <% }); %>
+
+            <!-- Search Suggestions -->
+            <div id="searchSuggestions" class="absolute top-full left-0 right-0 mt-2 search-suggestions hidden z-50 max-h-60 overflow-y-auto">
+              <!-- Dynamic suggestions will be populated here -->
+            </div>
+          </div>
         </div>
 
-        <!-- All Clubs Example Grid (static cards, replace/add your own dynamic rendering as needed) -->
-        <h2 class="text-[1.32rem] font-techno uppercase text-tech-magenta tracking-wide mb-4 pl-2">All Clubs</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-12">
-          <div class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4">
-            <div class="aspect-square rounded-xl bg-center bg-cover" style='background-image: url("https://source.unsplash.com/random/300x300?photography");'></div>
-            <h3 class="text-lg font-techno font-semibold text-white mb-1">Photography Enthusiasts</h3>
-            <p class="text-sm text-gray-300">Capture stunning moments and share your photographic journey.</p>
+        <!-- Search Results Count -->
+        <div id="searchResults" class="mb-6 pl-2 hidden">
+          <p class="text-gray-300 font-medium">
+            Found <span id="resultsCount" class="text-tech-blue font-semibold">0</span> clubs matching "<span id="searchTerm" class="text-tech-magenta"></span>"
+          </p>
+        </div>
+
+        <!-- Featured/All Clubs Section -->
+        <div id="clubsSection">
+          <h2 id="sectionTitle" class="text-[1.32rem] font-techno uppercase text-tech-blue tracking-wide mb-4 pl-2">Featured Clubs</h2>
+          
+          <!-- Clubs Grid -->
+          <div id="clubsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
+            <% Register.forEach(function(club, index) { %>
+            <a href="/club/<%= club.id %>" 
+               class="club-card card-futuristic pulse-border-tech p-4 flex flex-col gap-4 group transition-all shadow-lg fade-in" 
+               data-club-name="<%= club.name.toLowerCase() %>"
+               data-club-description="<%= club.description.toLowerCase() %>"
+               data-club-id="<%= club.id %>"
+               data-index="<%= index %>">
+              <div class="aspect-square rounded-xl bg-center bg-cover border-2 border-tech-magenta shadow-lg mb-3" 
+                   style='background-image: url("<%= club.image %>");'></div>
+              <div>
+                <h3 class="club-name text-lg md:text-xl font-techno font-semibold text-white group-hover:text-tech-blue transition truncate mb-1">
+                  <%= club.name %>
+                </h3>
+                <p class="club-description text-sm md:text-base text-gray-300 group-hover:text-tech-magenta/90">
+                  <%= club.description.split(" ").slice(0, 13).join(" ") %><%= club.description.split(" ").length > 25 ? "..." : "" %>
+                </p>
+              </div>
+            </a>
+            <% }); %>
           </div>
-          <div class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4">
-            <div class="aspect-square rounded-xl bg-center bg-cover" style='background-image: url("https://source.unsplash.com/random/300x300?music");'></div>
-            <h3 class="text-lg font-techno font-semibold text-white mb-1">Music Lovers Society</h3>
-            <p class="text-sm text-gray-300">Connect with fellow music enthusiasts and explore diverse genres.</p>
-          </div>
-          <div class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4">
-            <div class="aspect-square rounded-xl bg-center bg-cover" style='background-image: url("https://source.unsplash.com/random/300x300?gaming");'></div>
-            <h3 class="text-lg font-techno font-semibold text-white mb-1">Gaming Guild</h3>
-            <p class="text-sm text-gray-300">Join forces with gamers and conquer virtual worlds together.</p>
-          </div>
-          <div class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4">
-            <div class="aspect-square rounded-xl bg-center bg-cover" style='background-image: url("https://source.unsplash.com/random/300x300?travel");'></div>
-            <h3 class="text-lg font-techno font-semibold text-white mb-1">Travel Buddies</h3>
-            <p class="text-sm text-gray-300">Plan and embark on exciting travel adventures with like-minded individuals.</p>
-          </div>
-          <div class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4">
-            <div class="aspect-square rounded-xl bg-center bg-cover" style='background-image: url("https://source.unsplash.com/random/300x300?film");'></div>
-            <h3 class="text-lg font-techno font-semibold text-white mb-1">Film Buffs Club</h3>
-            <p class="text-sm text-gray-300">Discuss and analyze films, from classics to contemporary masterpieces.</p>
-          </div>
-          <div class="card-futuristic pulse-border-tech p-4 flex flex-col gap-4">
-            <div class="aspect-square rounded-xl bg-center bg-cover" style='background-image: url("https://source.unsplash.com/random/300x300?environment");'></div>
-            <h3 class="text-lg font-techno font-semibold text-white mb-1">Environmental Advocates</h3>
-            <p class="text-sm text-gray-300">Make a positive impact on the environment through collective action.</p>
+
+          <!-- No Results Message -->
+          <div id="noResults" class="no-results hidden">
+            <div class="mb-6">
+              <svg class="mx-auto text-tech-blue/50 mb-4" width="64" height="64" fill="none" viewBox="0 0 256 256">
+                <path fill="currentColor" d="M229.7 218.3l-50.1-50a88 88 0 1 0-11.3 11.3l50 50.1a8 8 0 0 0 11.4-11.4ZM40 112a72 72 0 1 1 72 72a72.1 72.1 0 0 1-72-72Z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-techno font-bold text-white mb-2">No Clubs Found</h3>
+            <p class="text-gray-400 mb-4">We couldn't find any clubs matching your search.</p>
+            <button id="clearSearchBtn" class="px-6 py-2 bg-tech-blue hover:bg-tech-violet transition-colors rounded-lg font-semibold">
+              Clear Search
+            </button>
           </div>
         </div>
       </div>
     </section>
+
+    <script>
+      class ClubSearch {
+        constructor() {
+          this.searchInput = document.getElementById('searchInput');
+          this.searchContainer = document.getElementById('searchContainer');
+          this.clearButton = document.getElementById('clearSearch');
+          this.clubCards = document.querySelectorAll('.club-card');
+          this.clubsGrid = document.getElementById('clubsGrid');
+          this.noResults = document.getElementById('noResults');
+          this.searchResults = document.getElementById('searchResults');
+          this.resultsCount = document.getElementById('resultsCount');
+          this.searchTerm = document.getElementById('searchTerm');
+          this.sectionTitle = document.getElementById('sectionTitle');
+          this.searchSuggestions = document.getElementById('searchSuggestions');
+          this.clearSearchBtn = document.getElementById('clearSearchBtn');
+          
+          this.allClubs = Array.from(this.clubCards).map(card => ({
+            element: card,
+            name: card.dataset.clubName,
+            description: card.dataset.clubDescription,
+            id: card.dataset.clubId
+          }));
+          
+          this.searchHistory = JSON.parse(localStorage.getItem('clubSearchHistory')) || [];
+          this.isSearching = false;
+          
+          this.init();
+        }
+
+        init() {
+          this.bindEvents();
+          this.generateSuggestions();
+        }
+
+        bindEvents() {
+          // Search input events
+          this.searchInput.addEventListener('input', this.debounce(this.handleSearch.bind(this), 300));
+          this.searchInput.addEventListener('focus', this.handleSearchFocus.bind(this));
+          this.searchInput.addEventListener('blur', this.handleSearchBlur.bind(this));
+          this.searchInput.addEventListener('keydown', this.handleKeyDown.bind(this));
+          
+          // Clear button events
+          this.clearButton.addEventListener('click', this.clearSearch.bind(this));
+          this.clearSearchBtn.addEventListener('click', this.clearSearch.bind(this));
+          
+          // Outside click to hide suggestions
+          document.addEventListener('click', (e) => {
+            if (!e.target.closest('#searchContainer') && !e.target.closest('#searchSuggestions')) {
+              this.hideSuggestions();
+            }
+          });
+        }
+
+        handleSearch(e) {
+          const query = e.target.value.trim().toLowerCase();
+          
+          if (query.length === 0) {
+            this.clearSearch();
+            return;
+          }
+
+          this.isSearching = true;
+          this.searchContainer.classList.add('search-active');
+          this.clearButton.style.opacity = '1';
+          
+          const results = this.searchClubs(query);
+          this.displayResults(results, query);
+          this.updateSearchHistory(query);
+        }
+
+        handleSearchFocus() {
+          if (this.searchInput.value.trim()) {
+            this.searchContainer.classList.add('search-active');
+          }
+          this.showSuggestions();
+        }
+
+        handleSearchBlur() {
+          setTimeout(() => {
+            if (!this.searchInput.value.trim() && !this.isSearching) {
+              this.searchContainer.classList.remove('search-active');
+            }
+          }, 150);
+        }
+
+        handleKeyDown(e) {
+          if (e.key === 'Escape') {
+            this.clearSearch();
+            this.searchInput.blur();
+          } else if (e.key === 'Enter') {
+            this.hideSuggestions();
+          }
+        }
+
+        searchClubs(query) {
+          return this.allClubs.filter(club => {
+            return club.name.includes(query) || club.description.includes(query);
+          });
+        }
+
+        displayResults(results, query) {
+          // Hide all cards first
+          this.clubCards.forEach(card => {
+            card.classList.add('fade-out');
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 150);
+          });
+
+          // Show matching results after fade out
+          setTimeout(() => {
+            if (results.length > 0) {
+              this.noResults.classList.add('hidden');
+              this.clubsGrid.classList.remove('hidden');
+              
+              results.forEach((club, index) => {
+                setTimeout(() => {
+                  club.element.style.display = 'flex';
+                  club.element.classList.remove('fade-out');
+                  club.element.classList.add('fade-in');
+                  this.highlightText(club.element, query);
+                }, index * 50);
+              });
+
+              this.updateResultsInfo(results.length, query);
+            } else {
+              this.clubsGrid.classList.add('hidden');
+              this.noResults.classList.remove('hidden');
+              this.searchResults.classList.add('hidden');
+            }
+          }, 200);
+        }
+
+        highlightText(element, query) {
+          const nameEl = element.querySelector('.club-name');
+          const descEl = element.querySelector('.club-description');
+          
+          if (nameEl) {
+            nameEl.innerHTML = this.highlight(nameEl.textContent, query);
+          }
+          if (descEl) {
+            descEl.innerHTML = this.highlight(descEl.textContent, query);
+          }
+        }
+
+        highlight(text, query) {
+          if (!query) return text;
+          const regex = new RegExp(`(${query})`, 'gi');
+          return text.replace(regex, '<mark class="bg-tech-magenta/30 text-tech-magenta rounded px-1">$1</mark>');
+        }
+
+        updateResultsInfo(count, query) {
+          this.resultsCount.textContent = count;
+          this.searchTerm.textContent = query;
+          this.searchResults.classList.remove('hidden');
+          this.sectionTitle.textContent = 'Search Results';
+        }
+
+        clearSearch() {
+          this.searchInput.value = '';
+          this.isSearching = false;
+          this.searchContainer.classList.remove('search-active');
+          this.clearButton.style.opacity = '0';
+          this.searchResults.classList.add('hidden');
+          this.noResults.classList.add('hidden');
+          this.clubsGrid.classList.remove('hidden');
+          this.sectionTitle.textContent = 'Featured Clubs';
+          this.hideSuggestions();
+
+          // Show all clubs with animation
+          this.clubCards.forEach((card, index) => {
+            setTimeout(() => {
+              card.style.display = 'flex';
+              card.classList.remove('fade-out');
+              card.classList.add('fade-in');
+              // Remove highlights
+              const nameEl = card.querySelector('.club-name');
+              const descEl = card.querySelector('.club-description');
+              if (nameEl) nameEl.innerHTML = nameEl.textContent;
+              if (descEl) descEl.innerHTML = descEl.textContent;
+            }, index * 30);
+          });
+        }
+
+        generateSuggestions() {
+          const suggestions = [...new Set([
+            ...this.searchHistory.slice(0, 5),
+            'Programming', 'Design', 'Gaming', 'AI', 'Web Development'
+          ])];
+          
+          this.searchSuggestions.innerHTML = suggestions
+            .map(suggestion => `
+              <div class="suggestion-item px-4 py-3 cursor-pointer text-sm font-medium text-gray-300 border-b border-gray-700/50 last:border-b-0"
+                   onclick="clubSearchInstance.selectSuggestion('${suggestion}')">
+                <svg class="inline mr-2 text-tech-blue/70" width="16" height="16" fill="none" viewBox="0 0 256 256">
+                  <path fill="currentColor" d="M128 24a104 104 0 1 0 104 104A104.1 104.1 0 0 0 128 24zm0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88zm32-88a8 8 0 0 1-8 8h-56a8 8 0 0 1 0-16h56a8 8 0 0 1 8 8z"/>
+                </svg>
+                ${suggestion}
+              </div>
+            `).join('');
+        }
+
+        selectSuggestion(suggestion) {
+          this.searchInput.value = suggestion;
+          this.handleSearch({ target: { value: suggestion } });
+          this.hideSuggestions();
+        }
+
+        showSuggestions() {
+          if (!this.isSearching) {
+            this.searchSuggestions.classList.remove('hidden');
+          }
+        }
+
+        hideSuggestions() {
+          this.searchSuggestions.classList.add('hidden');
+        }
+
+        updateSearchHistory(query) {
+          if (query.length < 2) return;
+          
+          this.searchHistory = [query, ...this.searchHistory.filter(h => h !== query)].slice(0, 10);
+          localStorage.setItem('clubSearchHistory', JSON.stringify(this.searchHistory));
+          this.generateSuggestions();
+        }
+
+        debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
+      }
+
+      // Initialize search when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        window.clubSearchInstance = new ClubSearch();
+      });
+    </script>
   </body>
 </html>

@@ -239,12 +239,14 @@ const description = req.body?.description || '';
 
       await feedback.save();
     }
-
+const prevfeedback=await feedbackdb.find({email});
+console.log("prevfeedback.  ",prevfeedback);
     res.render("Club_Member/Feedback", {
       PageTitle: "Feedback",
       Member_Name: name,
       Club_Name: clubName,
-      Curr: "Feedback"
+      Curr: "Feedback",
+      prevfeedback
     });
   } 
   else {

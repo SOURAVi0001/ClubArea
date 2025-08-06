@@ -1,131 +1,196 @@
-<html>
-  <head>
-    <title>Manage Events</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900&display=swap" />
-  </head>
-  <body style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
-    <div class="relative flex min-h-screen flex-col bg-white overflow-x-hidden">
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <%- include('partials/header.ejs') %>
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <!-- Header -->
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">Manage Events</p>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Manage Events</title>
+  <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900&display=swap" />
+</head>
+<body class="bg-gray-50 text-gray-800" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+  
+  <!-- Include the sidebar partial -->
+  <%- include('partials/sidebar', { 
+    Leader_Name: Leader_Name, 
+    Club_Name: Club_Name, 
+    currentPage: 'events' 
+  }) %>
 
-            <!-- Form -->
-            <form action="/Post_event" method="POST">
-              <h3 class="text-[#111518] text-lg font-bold px-4 pb-2 pt-4">Add Event</h3>
-              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
-                <label class="flex flex-col min-w-40 flex-1">
-                  <p class="text-base font-medium pb-2">Event Title</p>
-                  <input name="title" placeholder="Enter event title" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
-                </label>
-              </div>
-              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
-                <label class="flex flex-col min-w-40 flex-1">
-                  <p class="text-base font-medium pb-2">Event Date</p>
-                  <input type="date" name="date" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
-                </label>
-              </div>
-              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
-                <label class="flex flex-col min-w-40 flex-1">
-                  <p class="text-base font-medium pb-2">Event Time</p>
-                  <input type="time" name="time" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
-                </label>
-              </div>
-              <div class="flex flex-wrap gap-4 px-4 py-3 max-w-[480px]">
-                <label class="flex flex-col min-w-40 flex-1">
-                  <p class="text-base font-medium pb-2">Event Venue</p>
-                  <input name="venue" placeholder="Enter venue" class="form-input h-14 p-4 bg-[#f0f2f5] rounded-xl" />
-                </label>
-              </div>
-              <div class="flex justify-end px-4 py-3">
-                <button type="submit" class="bg-[#0b80ee] text-white rounded-full px-4 h-10 font-bold">Add Event</button>
-              </div>
-            </form>
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="max-w-[960px] mx-auto px-6 py-8">
+      <!-- Page Header -->
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-[#111518] mb-2">Manage Events</h1>
+        <p class="text-gray-600">Create and organize club events</p>
+      </header>
 
-            <!-- Event List -->
-            <h3 class="text-lg font-bold px-4 pb-2 pt-4">Upcoming Events</h3>
-            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2">
-              <div class="flex flex-col gap-4 mt-6 w-full" id="events-container">
-                <% data.forEach(item => { %>
-                  <div class="flex items-start gap-4 p-4 border border-gray-200 rounded-xl shadow-sm">
-                    <div class="flex-shrink-0">
-                      <svg class="text-gray-500" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M3.5 0a.5.5 0...z"/>
-                      </svg>
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="text-[#111518] font-medium"><%= item.title %></p>
-                      <p class="text-[#60768a] text-sm"><%= new Date(item.date).toLocaleDateString('en-GB') %></p>
-                      <p class="text-[#60768a] text-sm">
-                        <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %>
-                      </p>
-                      <p class="text-[#60768a] text-sm">Venue: <%= item.venue?.trim() || 'Not provided' %></p>
-                    </div>
-                  </div>
-                <% }) %>
-              </div>
-            </div>
+      <!-- Add Event Form -->
+      <form action="/Post_event" method="POST" class="bg-white rounded-xl border border-gray-200 p-6 mb-8 shadow-sm">
+        <h3 class="text-[#111518] text-xl font-bold mb-6"> Add New Event</h3>
+        
+        <div class="space-y-6">
+          <div class="grid gap-6 md:grid-cols-2">
+            <label class="block">
+              <span class="block text-base font-medium mb-2 text-gray-700">Event Title</span>
+              <input 
+                name="title" 
+                placeholder="Enter event title" 
+                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+              />
+            </label>
 
-            <!-- Pagination Buttons -->
-            <div class="flex justify-center gap-4 py-4">
-              <button id="prev-btn" class="bg-gray-200 px-4 py-2 rounded text-sm text-gray-800 disabled:opacity-50" disabled>Previous</button>
-              <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded text-sm disabled:opacity-50" <%= data.length < 5 ? "disabled" : "" %>>Next</button>
-            </div>
+            <label class="block">
+              <span class="block text-base font-medium mb-2 text-gray-700">Event Venue</span>
+              <input 
+                name="venue" 
+                placeholder="Enter venue" 
+                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+              />
+            </label>
+          </div>
 
-            <!-- Pagination Script -->
-            <script>
-              let skip = 0;
-              const limit = 5;
-              const container = document.getElementById("events-container");
-              const nextBtn = document.getElementById("next-btn");
-              const prevBtn = document.getElementById("prev-btn");
+          <div class="grid gap-6 md:grid-cols-2">
+            <label class="block">
+              <span class="block text-base font-medium mb-2 text-gray-700">Event Date</span>
+              <input 
+                type="date" 
+                name="date" 
+                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+              />
+            </label>
 
-              async function loadEvents() {
-                const res = await fetch(`/leader/events/page?skip=${skip}`);
-                const { events, totalCount } = await res.json();
-
-                container.innerHTML = "";
-                events.forEach(item => {
-                  const div = document.createElement("div");
-                  div.className = "flex items-start gap-4 p-4 border border-gray-200 rounded-xl shadow-sm";
-                  div.innerHTML = `
-                    <div class="flex-shrink-0">
-                      <svg class="text-gray-500" width="32" height="32" fill="currentColor"><path d="M3.5 0a.5.5 0...z"/></svg>
-                    </div>
-                    <div class="flex flex-col">
-                      <p class="text-[#111518] font-medium">${item.title}</p>
-                      <p class="text-[#60768a] text-sm">${new Date(item.date).toLocaleDateString('en-GB')}</p>
-                      <p class="text-[#60768a] text-sm">${new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
-                      <p class="text-[#60768a] text-sm">Venue: ${item.venue?.trim() || 'Not provided'}</p>
-                    </div>
-                  `;
-                  container.appendChild(div);
-                });
-
-                prevBtn.disabled = skip === 0;
-                nextBtn.disabled = skip + limit >= totalCount;
-              }
-
-              nextBtn.addEventListener("click", () => {
-                skip += limit;
-                loadEvents();
-              });
-
-              prevBtn.addEventListener("click", () => {
-                skip = Math.max(0, skip - limit);
-                loadEvents();
-              });
-            </script>
+            <label class="block">
+              <span class="block text-base font-medium mb-2 text-gray-700">Event Time</span>
+              <input 
+                type="time" 
+                name="time" 
+                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+              />
+            </label>
           </div>
         </div>
-      </div>
+
+        <div class="text-right mt-6">
+          <button 
+            type="submit" 
+            class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg"
+          >
+             Add Event
+          </button>
+        </div>
+      </form>
+
+      <!-- Events List Section -->
+      <section>
+        <h2 class="text-2xl font-bold text-[#111518] mb-6"> Upcoming Events</h2>
+        
+        <div id="events-container" class="space-y-4">
+          <% data.forEach(item => { %>
+            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300">
+              <div class="flex items-start gap-4">
+                <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                  <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-[#111518] mb-2"><%= item.title %></h3>
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-1">
+                    <span class="flex items-center gap-1">
+                      📅 <%= new Date(item.date).toLocaleDateString('en-GB') %>
+                    </span>
+                    <span class="flex items-center gap-1">
+                      🕐 <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %>
+                    </span>
+                    <span class="flex items-center gap-1">
+                      📍 <%= item.venue?.trim() || 'Venue TBA' %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <!-- Enhanced Pagination -->
+        <div class="mt-8 flex justify-center gap-3">
+          <button 
+            id="prev-btn" 
+            class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+            disabled
+          >
+            ← Previous
+          </button>
+          <button 
+            id="next-btn" 
+            class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            <%= data.length < 5 ? 'disabled' : '' %>
+          >
+            Next →
+          </button>
+        </div>
+      </section>
     </div>
-  </body>
+  </main>
+
+  <!-- Enhanced Pagination Script -->
+  <script>
+    let skip = 0;
+    const limit = 5;
+    const container = document.getElementById("events-container");
+    const nextBtn = document.getElementById("next-btn");
+    const prevBtn = document.getElementById("prev-btn");
+
+    async function loadEvents() {
+      try {
+        // Add loading state
+        container.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>';
+        
+        const res = await fetch(`/leader/events/page?skip=${skip}`);
+        const { events, totalCount } = await res.json();
+
+        container.innerHTML = "";
+        events.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300";
+          div.innerHTML = `
+            <div class="flex items-start gap-4">
+              <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-[#111518] mb-2">${item.title}</h3>
+                <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-1">
+                  <span class="flex items-center gap-1">📅 ${new Date(item.date).toLocaleDateString('en-GB')}</span>
+                  <span class="flex items-center gap-1">🕐 ${new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                  <span class="flex items-center gap-1">📍 ${item.venue?.trim() || 'Venue TBA'}</span>
+                </div>
+              </div>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+
+        prevBtn.disabled = skip === 0;
+        nextBtn.disabled = skip + limit >= totalCount;
+      } catch (error) {
+        container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading events</div>';
+        console.error('Error loading events:', error);
+      }
+    }
+
+    nextBtn.addEventListener("click", () => {
+      skip += limit;
+      loadEvents();
+    });
+
+    prevBtn.addEventListener("click", () => {
+      skip = Math.max(0, skip - limit);
+      loadEvents();
+    });
+  </script>
+</body>
 </html>

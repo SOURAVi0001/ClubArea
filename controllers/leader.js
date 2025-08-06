@@ -99,7 +99,9 @@ const getOpeningsDashboard = async (req, res) => {
             activeOpenings,
             closedOpenings,
             availableRoles,
-            InterviewApplication
+            InterviewApplication:InterviewApplication,
+             Club_Name:clubName,
+                Leader_Name: leaderName
         });
     } catch (error) {
         console.error('Error fetching openings dashboard:', error);
@@ -661,6 +663,7 @@ const feedback = async (req, res) => {
         search,
         userType,
         limit,
+        sortBy: req.query.sortBy || '',
         hasMore: data.length === limit
       });
     } catch (err) {

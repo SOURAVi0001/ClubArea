@@ -1,35 +1,18 @@
-const db=require('../Utils/database');
+// models/Club.js
+const mongoose = require('mongoose');
 
-module.exports=class register{
+const clubSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  description: String,
+  photo: String
+}, { timestamps: true });
 
-constructor(id,name,description,photo){
-      this.id=id;
-      this.name=name;
-      this.description=description;
-      this.photo=photo;
-}
-
-save() {
-        if(this.id){
-        return db.execute(
-          'UPDATE clubs SET name=?,description=?,photo=? WHERE id=?',
-          [ this.name , this.description , this.photo , this.id ] 
-        );
-        }
-    else{
-        return db.execute(
-          'INSERT INTO clubs(id,name,description,photo) VALUES(? , ? , ? ,?)',
-          [this.id,this.name,this.description,this.photo]
-        );
-        }
-}
-
-static fetchAll(){
-  return db.execute('select * from clubs')
-}
-
-static findById(id){
-  return db.execute('SELECT * FROM clubs WHERE clubs.id = ?', [id]);
-}
-
-};
+module.exports = mongoose.model('Club', clubSchema);

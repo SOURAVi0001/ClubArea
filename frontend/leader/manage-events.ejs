@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Manage Events · ClubArea</title>
+  <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" />
+
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Fixed Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background: white;
+      border-right: 1px solid #e5e7eb;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Main content with left margin for sidebar */
+    .main-content {
+      margin-left: 320px;
+      min-height: 100vh;
+      background: #f9fafb;
+    }
+
+    /* Enhanced sidebar navigation */
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      margin: 4px 8px;
+      border-radius: 8px;
+      color: #374151;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background: #f3f4f6;
+      color: #1f2937;
+      transform: translateX(4px);
+    }
+
+    .nav-item.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-left: 3px solid #3b82f6;
+    }
+
+    /* Card styles */
+    .dash-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .dash-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 280px;
+      }
+      .main-content {
+        margin-left: 280px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .mobile-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+      }
+      
+      .mobile-overlay.active {
+        display: block;
+      }
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- Fixed Left Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="p-6">
+      <!-- User Profile Section -->
+      <div class="flex items-center gap-3 mb-8 p-4 bg-gray-50 rounded-xl">
+        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-12 h-12"
+             style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTINofuvng1wVuWdUGzeZ6-_XHbkvxLy0aJjL6EjivosnxReZhAnjrUVjhxlOqXcERdeL33_DTIIGwlv-f_zAgFz5ZpfH6q7k3BxZTKc9I97Ld7XrnEm2-1AV4vD921V3B_AEpEyddkvs9IhKe6SjoHvgM7RBmmgZpHerQySSRhjzHPjQtT2hpf2L4KEx39_KsGz-5MahqHod96ojv6QU77BaG-cmbgNh8ee2v1oDlT8KyoJ7mXxCpRWPfDLwTbdcLmKJap3aEbx0");'>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h1 class="text-lg font-semibold text-gray-900 truncate"><%= Leader_Name || 'Leader Name' %></h1>
+          <p class="text-sm text-gray-600 truncate">Admin (<%= Club_Name || 'Club Name' %>)</p>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="space-y-2">
+        <a href="/leader/leader-events" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"></path>
+          </svg>
+          <span>Events</span>
+        </a>
+
+        <a href="/leader/leader-updates" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"></path>
+          </svg>
+          <span>Updates</span>
+        </a>
+
+        <a href="/leader/leader-teams" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
+          </svg>
+          <span>Teams</span>
+        </a>
+
+        <a href="/leader/manage-events" class="nav-item active">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"></path>
+          </svg>
+          <span>Event Gallery</span>
+        </a>
+
+        <a href="/leader/leader-members" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
+          </svg>
+          <span>Members</span>
+        </a>
+
+        <a href="/leader/leader-chat" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128ZM84,116a12,12,0,1,0,12,12A12,12,0,0,0,84,116Zm88,0a12,12,0,1,0,12,12A12,12,0,0,0,172,116Zm60,12A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"></path>
+          </svg>
+          <span>Chat</span>
+        </a>
+
+        <a href="/leader/leader-taskstatus" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128ZM128,72h88a8,8,0,0,0,0-16H128a8,8,0,0,0,0,16Zm88,112H128a8,8,0,0,0,0,16h88a8,8,0,0,0,0-16ZM82.34,42.34,56,68.69,45.66,58.34A8,8,0,0,0,34.34,69.66l16,16a8,8,0,0,0,11.32,0l32-32A8,8,0,0,0,82.34,42.34Zm0,64L56,132.69,45.66,122.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Zm0,64L56,196.69,45.66,186.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Z"></path>
+          </svg>
+          <span>Task Status</span>
+        </a>
+
+        <a href="/leader/openings" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
+          </svg>
+          <span>Recruitment</span>
+        </a>
+
+        <a href="/leader/leader-feedback" class="nav-item">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"></path>
+          </svg>
+          <span>Feedback</span>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+      <!-- Page Header -->
+      <header class="mb-8 flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Event Gallery Manager</h1>
+          <p class="text-gray-600">Create and showcase your club's memorable moments</p>
+        </div>
+        
+      </header>
+
+      <!-- Add Event Form -->
+      <form action="/leader/events_gallery" method="POST" enctype="multipart/form-data" class="dash-card mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-6"> Add New Event</h2>
+
+        <div class="space-y-6">
+          <div class="grid gap-6 md:grid-cols-2">
+            <label class="block">
+              <span class="block text-sm font-medium mb-2 text-gray-700">Event Title *</span>
+              <input name="title" required placeholder="Enter event title" 
+                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+            </label>
+
+            <label class="block">
+              <span class="block text-sm font-medium mb-2 text-gray-700">Venue</span>
+              <input name="venue" placeholder="Event location" 
+                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+            </label>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <label class="block">
+              <span class="block text-sm font-medium mb-2 text-gray-700">Date *</span>
+              <input type="date" name="date" required 
+                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+            </label>
+
+            <label class="block">
+              <span class="block text-sm font-medium mb-2 text-gray-700">Time *</span>
+              <input type="time" name="time" required 
+                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+            </label>
+          </div>
+
+          <label class="block">
+            <span class="block text-sm font-medium mb-2 text-gray-700"> Event Photos (max 5)</span>
+            <input type="file" name="photos" accept="image/*" multiple
+                   class="file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white
+                          file:py-3 file:px-6 file:text-sm file:font-semibold 
+                          hover:file:bg-blue-700 file:transition-all w-full border border-gray-200 rounded-lg p-2" />
+          </label>
+
+          <label class="block">
+            <span class="block text-sm font-medium mb-2 text-gray-700">Description</span>
+            <textarea name="description" rows="4" placeholder="Tell us about this amazing event..."
+                      class="form-textarea w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"></textarea>
+          </label>
+        </div>
+
+        <div class="text-right mt-6">
+          <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold 
+                                       hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
+            Create Event
+          </button>
+        </div>
+      </form>
+
+      <!-- Events Gallery -->
+      <section>
+        <h2 class="text-2xl font-bold mb-6 text-gray-900"> Events Gallery</h2>
+
+        <div id="events-container" class="space-y-6">
+          <% events.forEach(ev => { %>
+            <article class="dash-card">
+              <div class="flex items-start gap-4 mb-4">
+                <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                  <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2"><%= ev.title %></h3>
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-2">
+                    <span class="flex items-center gap-1">
+                      📅 <%= new Date(ev.date).toLocaleDateString('en-GB') %>
+                    </span>
+                    <span class="flex items-center gap-1">
+                      🕐 <%= new Date('1970-01-01T' + ev.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) %>
+                    </span>
+                    <% if (ev.venue) { %>
+                      <span class="flex items-center gap-1">
+                        📍 <%= ev.venue %>
+                      </span>
+                    <% } %>
+                  </div>
+                  <% if (ev.description) { %>
+                    <p class="text-gray-700 leading-relaxed mb-4"><%= ev.description %></p>
+                  <% } %>
+
+                  <!-- Photo Gallery -->
+                  <% if (ev.photos && ev.photos.length) { %>
+                    <div class="border-t border-gray-200 pt-4">
+                      <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        Event Photos (<%= ev.photos.length %>)
+                      </h4>
+                      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <% ev.photos.forEach((src, index) => { %>
+                          <a href="<%= src %>" target="_blank" class="group block">
+                            <img src="<%= src %>" alt="<%= ev.title %> photo <%= index + 1 %>" 
+                                 class="w-full h-20 object-cover rounded-lg transition-transform group-hover:scale-105 shadow-sm"
+                                 loading="lazy" 
+                                 onerror="this.parentElement.innerHTML='<div class=\\'w-full h-20 bg-gray-200 rounded-lg flex items-center justify-center\\'>📷</div>'" />
+                          </a>
+                        <% }) %>
+                      </div>
+                    </div>
+                  <% } else { %>
+                    <div class="border-t border-gray-200 pt-4">
+                      <p class="text-gray-500 text-sm italic">No photos uploaded for this event</p>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center gap-3">
+          <button id="prev-btn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium 
+                                       hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+                  disabled>
+            ← Previous
+          </button>
+          <button id="next-btn" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium 
+                                       hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  <%= events.length < 5 ? 'disabled' : '' %>>
+            Next →
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      
+      sidebar.classList.toggle('mobile-open');
+      overlay.classList.toggle('active');
+    }
+
+    // Pagination functionality
+    const limit = 5;
+    let skip = 0;
+    const container = document.getElementById('events-container');
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+
+    async function loadPage() {
+      try {
+        container.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>';
+        
+        const res = await fetch(`/leader/events/page?skip=${skip}`);
+        const { events, totalCount } = await res.json();
+
+        container.innerHTML = '';
+        events.forEach(ev => {
+          const photosHtml = ev.photos && ev.photos.length ? 
+            `<div class="border-t border-gray-200 pt-4">
+              <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                 Event Photos (${ev.photos.length})
+              </h4>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                ${ev.photos.map((src, index) => `
+                  <a href="${src}" target="_blank" class="group block">
+                    <img src="${src}" alt="${ev.title} photo ${index + 1}" 
+                         class="w-full h-20 object-cover rounded-lg transition-transform group-hover:scale-105 shadow-sm"
+                         loading="lazy" 
+                         onerror="this.parentElement.innerHTML='<div class=\\'w-full h-20 bg-gray-200 rounded-lg flex items-center justify-center\\'>📷</div>'" />
+                  </a>
+                `).join('')}
+              </div>
+            </div>` : 
+            '<div class="border-t border-gray-200 pt-4"><p class="text-gray-500 text-sm italic">No photos uploaded for this event</p></div>';
+
+          container.insertAdjacentHTML('beforeend', `
+            <article class="dash-card">
+              <div class="flex items-start gap-4 mb-4">
+                <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                  <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">${ev.title}</h3>
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-2">
+                    <span class="flex items-center gap-1">📅 ${new Date(ev.date).toLocaleDateString('en-GB')}</span>
+                    <span class="flex items-center gap-1">🕐 ${new Date('1970-01-01T' + ev.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})}</span>
+                    ${ev.venue ? `<span class="flex items-center gap-1">📍 ${ev.venue}</span>` : ''}
+                  </div>
+                  ${ev.description ? `<p class="text-gray-700 leading-relaxed mb-4">${ev.description}</p>` : ''}
+                  ${photosHtml}
+                </div>
+              </div>
+            </article>
+          `);
+        });
+
+        prevBtn.disabled = skip === 0;
+        nextBtn.disabled = skip + limit >= totalCount;
+      } catch (error) {
+        container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading events</div>';
+      }
+    }
+
+    nextBtn.addEventListener('click', () => { skip += limit; loadPage(); });
+    prevBtn.addEventListener('click', () => { skip = Math.max(0, skip - limit); loadPage(); });
+
+    // Close mobile menu when clicking on nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          toggleMobileMenu();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

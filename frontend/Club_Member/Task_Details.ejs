@@ -1,57 +1,356 @@
 <%- include("./Partials/starter.ejs") %>
-<div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
-  <div class="layout-container flex h-full grow flex-col">
-    <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-      <%- include("./Partials/header.ejs") %>
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <div class="flex min-w-72 flex-col gap-3">
-                <p class="text-[#181111] tracking-light text-[32px] font-bold leading-tight">Task Details</p>
-                <p class="text-[#886363] text-sm font-normal leading-normal">Review and manage the details of the assigned task.</p>
+
+<div class="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+  
+  <!-- Include the sidebar partial with proper parameters -->
+  <%- include('Partials/sidebar', { 
+    Member_Name: typeof Member_Name !== 'undefined' ? Member_Name : 'Member Name',
+    Club_Name: typeof Club_Name !== 'undefined' ? Club_Name : 'Club Name',
+    currentPage: 'tasks' 
+  }) %>
+
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="layout-container flex h-full grow flex-col">
+      <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+
+        
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          
+          <!-- Enhanced Page Header -->
+          <header class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 class="text-4xl font-bold text-[#181111] mb-2">Task Details</h1>
+                <p class="text-gray-600">Review and manage the details of the assigned task.</p>
+              </div>
+              <div class="flex gap-3">
+                <a href="/member_Task_Status" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                  ← Back to Tasks
+                </a>
               </div>
             </div>
-            <div class="p-4">
-              <div
-                class="bg-cover bg-center flex flex-col items-stretch justify-end rounded-lg pt-[132px]"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuARDIX8jI7zAFRCvZRRaSYrqgTbnDadd2YGc3C1gqDpnWUoUqDuiTcBTXeRgOBXrbHzLHwCN5JS9h7iLogSU4y2_DWpMmInXmyQWSMeSbNNoOL2w0vn8K08dXn_xtUOIAXJ394qayvmj3Z6ofl8jFYFLqWA3MMv7WvqlLEX4ECwpfUokY6fmfzo2Re7nYwIA31lLh3WxuQXzNCRAbtsTc9e2v-_CSRvTQzzFjKD2aR5R1QIrOoYGCHhybQcDcMMpDWFGp3l5pDiY9M");'
-              >
-                <div class="flex w-full items-end justify-between gap-4 p-4">
-                  <div class="flex max-w-[440px] flex-1 flex-col gap-1">
-                    <p class="text-white tracking-light text-2xl font-bold leading-tight max-w-[440px]"><%=task.title%></p>
-                    <p class="text-white text-base font-medium leading-normal"></p>
+          </header>
+
+          <!-- Task Hero Section -->
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+            <div
+              class="bg-cover bg-center flex flex-col items-stretch justify-end pt-32 relative"
+              style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuARDIX8jI7zAFRCvZRRaSYrqgTbnDadd2YGc3C1gqDpnWUoUqDuiTcBTXeRgOBXrbHzLHwCN5JS9h7iLogSU4y2_DWpMmInXmyQWSMeSbNNoOL2w0vn8K08dXn_xtUOIAXJ394qayvmj3Z6ofl8jFYFLqWA3MMv7WvqlLEX4ECwpfUokY6fmfzo2Re7nYwIA31lLh3WxuQXzNCRAbtsTc9e2v-_CSRvTQzzFjKD2aR5R1QIrOoYGCHhybQcDcMMpDWFGp3l5pDiY9M");'
+            >
+              <div class="flex w-full items-end justify-between gap-4 p-6">
+                <div class="flex max-w-[440px] flex-1 flex-col gap-2">
+                  <h2 class="text-white tracking-light text-3xl font-bold leading-tight"><%=task.title%></h2>
+                  <div class="flex items-center gap-2 text-white/80 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Task Details
                   </div>
+                </div>
+                
+                <!-- Task Status Badge -->
+                <div class="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                  <% 
+                    let statusClass = 'bg-gray-100 text-gray-700';
+                    let statusText = 'Pending';
+                    if (typeof task.task_status !== 'undefined') {
+                      if (task.task_status >= 100) {
+                        statusClass = 'bg-green-100 text-green-700';
+                        statusText = 'Completed';
+                      } else if (task.task_status > 0) {
+                        statusClass = 'bg-yellow-100 text-yellow-700';
+                        statusText = 'In Progress';
+                      }
+                    }
+                  %>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <%= statusClass %>">
+                    <%= statusText %>
+                  </span>
                 </div>
               </div>
             </div>
-            <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#e5dcdc] py-5">
-                <p class="text-[#886363] text-sm font-normal leading-normal">Description</p>
-                <p class="text-[#181111] text-sm font-normal leading-normal">
-                  <%=task.description%> </p>
+          </div>
+
+          <!-- Task Information Section -->
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mb-8">
+            <h3 class="text-2xl font-bold text-[#181111] mb-6 flex items-center gap-2">
+              <div class="bg-blue-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
               </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#e5dcdc] py-5">
-                <p class="text-[#886363] text-sm font-normal leading-normal">Last Completion Date</p>
-                <p class="text-[#181111] text-sm font-normal leading-normal"><%=task.task_completion_date%></p>
+              Task Information
+            </h3>
+
+            <div class="space-y-6">
+              <!-- Description -->
+              <div class="border-b border-gray-200 pb-6">
+                <div class="grid md:grid-cols-4 gap-4">
+                  <div class="md:col-span-1">
+                    <p class="text-gray-600 text-sm font-semibold">Description</p>
+                  </div>
+                  <div class="md:col-span-3">
+                    <p class="text-[#181111] text-base leading-relaxed">
+                      <%=task.description%>
+                    </p>
+                  </div>
+                </div>
               </div>
+
+              <!-- Due Date -->
+              <div class="border-b border-gray-200 pb-6">
+                <div class="grid md:grid-cols-4 gap-4">
+                  <div class="md:col-span-1">
+                    <p class="text-gray-600 text-sm font-semibold">Due Date</p>
+                  </div>
+                  <div class="md:col-span-3">
+                    <div class="flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                      </svg>
+                      <p class="text-[#181111] text-base">
+                        <%= typeof task.task_completion_date !== 'undefined' ? 
+                            (task.task_completion_date.toDateString ? task.task_completion_date.toDateString() : task.task_completion_date) 
+                            : 'Not specified' %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Progress (if available) -->
+              <% if (typeof task.task_status !== 'undefined') { %>
+              <div class="border-b border-gray-200 pb-6">
+                <div class="grid md:grid-cols-4 gap-4">
+                  <div class="md:col-span-1">
+                    <p class="text-gray-600 text-sm font-semibold">Progress</p>
+                  </div>
+                  <div class="md:col-span-3">
+                    <div class="flex items-center gap-4">
+                      <div class="flex-1 bg-gray-200 rounded-full h-3 max-w-xs">
+                        <div class="h-3 rounded-full transition-all duration-300
+                                    <%= task.task_status >= 100 ? 'bg-green-500' : 
+                                        task.task_status >= 75 ? 'bg-blue-500' : 
+                                        task.task_status >= 50 ? 'bg-yellow-500' : 
+                                        task.task_status >= 25 ? 'bg-orange-500' : 'bg-red-500' %>"
+                             style="width: <%= Math.min(task.task_status, 100) %>%">
+                        </div>
+                      </div>
+                      <span class="text-base font-bold
+                                   <%= task.task_status >= 100 ? 'text-green-600' : 
+                                       task.task_status >= 75 ? 'text-blue-600' : 
+                                       task.task_status >= 50 ? 'text-yellow-600' : 
+                                       task.task_status >= 25 ? 'text-orange-600' : 'text-red-600' %>">
+                        <%= task.task_status %>%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+
+              <!-- Assigned To (if available) -->
+              <% if (typeof task.assigned_to !== 'undefined') { %>
+              <div>
+                <div class="grid md:grid-cols-4 gap-4">
+                  <div class="md:col-span-1">
+                    <p class="text-gray-600 text-sm font-semibold">Assigned To</p>
+                  </div>
+                  <div class="md:col-span-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span class="text-blue-600 font-medium text-sm">
+                          <%= task.assigned_to.charAt(0).toUpperCase() %>
+                        </span>
+                      </div>
+                      <p class="text-[#181111] text-base font-medium"><%= task.assigned_to %></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
             </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
+          </div>
+
+          <!-- Completion Proof Section -->
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+            <form action="/submit_task_proof" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="task_id" value="<%= typeof task.id !== 'undefined' ? task.id : '' %>">
+              
+              <!-- Form Header -->
+              <div class="border-b border-gray-200 pb-6 mb-6">
+                <h3 class="text-2xl font-bold text-[#181111] mb-2 flex items-center gap-2">
+                  <div class="bg-green-100 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  Submit Proof of Completion
+                </h3>
+                <p class="text-gray-600">Provide evidence that you have completed this task.</p>
+              </div>
+
+              <!-- Proof Description -->
+              <div class="space-y-2 mb-6">
+                <label for="proof_description" class="block text-sm font-semibold text-[#181111]">
+                  Completion Description <span class="text-red-500">*</span>
+                </label>
                 <textarea
-                  placeholder="Add proof of completion"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#181111] focus:outline-0 focus:ring-0 border border-[#e5dcdc] bg-white focus:border-[#e5dcdc] min-h-36 placeholder:text-[#886363] p-[15px] text-base font-normal leading-normal"
+                  id="proof_description"
+                  name="proof_description"
+                  required
+                  placeholder="Describe how you completed this task, what you accomplished, and any relevant details..."
+                  rows="6"
+                  class="w-full resize-none rounded-xl border border-gray-300 bg-gray-50 p-4 text-[#181111] text-base placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:bg-white transition-all duration-200"
                 ></textarea>
-              </label>
-            </div>
-            <div class="flex px-4 py-3 justify-end">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e51919] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Submit</span>
-              </button>
-            </div>
+                <p class="text-xs text-gray-500">Be specific about what you accomplished and any challenges you overcame</p>
+              </div>
+
+              <!-- File Upload (Optional) -->
+              <div class="space-y-2 mb-6">
+                <label for="proof_files" class="block text-sm font-semibold text-[#181111]">
+                  Supporting Files (Optional)
+                </label>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
+                  <input
+                    type="file"
+                    id="proof_files"
+                    name="proof_files"
+                    multiple
+                    accept="image/*,.pdf,.doc,.docx,.txt"
+                    class="hidden"
+                  >
+                  <label for="proof_files" class="cursor-pointer">
+                    <div class="flex flex-col items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                      </svg>
+                      <span class="text-gray-600 font-medium">Click to upload files</span>
+                      <span class="text-gray-400 text-sm">Images, PDFs, or documents</span>
+                    </div>
+                  </label>
+                </div>
+                <div id="file-list" class="mt-2 space-y-1"></div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
+                <button
+                  type="reset"
+                  class="flex-1 sm:flex-none px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
+                >
+                  Clear Form
+                </button>
+                <button
+                  type="submit"
+                  class="flex-1 px-8 py-3 bg-[#2a5298] hover:bg-[#1e3f7c] text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Submit Proof
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </main>
+
+  <!-- JavaScript for Form Enhancement -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      const proofDescription = document.getElementById('proof_description');
+      const fileInput = document.getElementById('proof_files');
+      const fileList = document.getElementById('file-list');
+      const submitButton = document.querySelector('button[type="submit"]');
+
+      // Form validation
+      form.addEventListener('submit', function(e) {
+        if (proofDescription.value.trim().length < 10) {
+          alert('Please provide a detailed description with at least 10 characters.');
+          proofDescription.focus();
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // Character counter for description
+      const maxChars = 1000;
+      const counter = document.createElement('div');
+      counter.className = 'text-xs text-gray-500 mt-1';
+      proofDescription.parentNode.appendChild(counter);
+
+      function updateCounter() {
+        const remaining = maxChars - proofDescription.value.length;
+        counter.textContent = `${proofDescription.value.length}/${maxChars} characters`;
+        
+        if (remaining < 50) {
+          counter.className = 'text-xs text-red-500 mt-1';
+        } else if (remaining < 100) {
+          counter.className = 'text-xs text-yellow-600 mt-1';
+        } else {
+          counter.className = 'text-xs text-gray-500 mt-1';
+        }
+      }
+
+      proofDescription.addEventListener('input', updateCounter);
+      proofDescription.setAttribute('maxlength', maxChars);
+      updateCounter();
+
+      // File upload handling
+      fileInput.addEventListener('change', function() {
+        fileList.innerHTML = '';
+        
+        if (this.files.length > 0) {
+          Array.from(this.files).forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'flex items-center justify-between bg-gray-50 p-2 rounded-lg';
+            fileItem.innerHTML = `
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span class="text-sm text-gray-700">${file.name}</span>
+                <span class="text-xs text-gray-500">(${(file.size / 1024).toFixed(1)} KB)</span>
+              </div>
+              <button type="button" class="text-red-500 hover:text-red-700" onclick="removeFile(${index})">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            `;
+            fileList.appendChild(fileItem);
+          });
+        }
+      });
+
+      // Remove file function
+      window.removeFile = function(index) {
+        const dt = new DataTransfer();
+        const files = Array.from(fileInput.files);
+        files.splice(index, 1);
+        files.forEach(file => dt.items.add(file));
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('change'));
+      };
+
+      // Progress bar animation (if exists)
+      const progressBar = document.querySelector('[style*="width:"]');
+      if (progressBar) {
+        const width = progressBar.style.width;
+        progressBar.style.width = '0%';
+        setTimeout(() => {
+          progressBar.style.width = width;
+          progressBar.style.transition = 'width 1s ease-in-out';
+        }, 500);
+      }
+    });
+  </script>
+
+</div>
+</body>
 </html>

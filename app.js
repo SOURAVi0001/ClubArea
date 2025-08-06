@@ -34,6 +34,7 @@ const leaderupdates=require('./route/leader/updates');
 const leaderevents=require('./route/leader/events');
 const leaderclubsettings=require('./route/leader/clubsetting');
 const leadertaskstatus=require('./route/leader/chat');
+const leadergallery=require('./route/leader/gallery');
 const leaderchat=require('./route/leader/taskstatus');
 const leaderrecuriment=require('./route/leader/recuriment');
 const Interview=require('./route/Interview');
@@ -65,6 +66,9 @@ db.execute("Select * from clubs").then(([rows,fields]) =>{
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend'));
+app.use('/public', express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const memberData = {
@@ -143,6 +147,7 @@ app.use(leadertaskstatus);
 app.use(leaderupdates);
 app.use(leaderclubsettings);
 app.use(leaderchat);
+app.use(leadergallery);
 app.use(leaderrecuriment);
 app.use(leaderevents);
 

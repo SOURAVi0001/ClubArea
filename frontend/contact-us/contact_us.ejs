@@ -1,75 +1,880 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
     <link
       rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@300;400;500;600;700;900&family=Spline+Sans:wght@400;500;600;700"
     />
-
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
-
+    
+    <title>Contact Usn</title>
+    <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
+    
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  </head>
-  <body>
-      <%- include( '../partials/navbar' )%>
-    <div
-      class="relative flex size-full min-h-screen flex-col bg-[#171118] dark group/design-root overflow-x-hidden"
-      style='--select-button-svg: url(&apos;data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(180,157,185)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e&apos;); font-family: "Spline Sans", "Noto Sans", sans-serif;'
-    >
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <div class="flex min-w-72 flex-col gap-3">
-                <p class="text-white tracking-light text-[32px] font-bold leading-tight">Contact Us</p>
-                <p class="text-[#b49db9] text-sm font-normal leading-normal">We're here to help! Please fill out the form below, and we'll get back to you as soon as possible.</p>
-              </div>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-white text-base font-medium leading-normal pb-2">Email Address</p>
-                <input
-                  placeholder="your.email@example.com"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4f3b54] bg-[#251c27] focus:border-[#4f3b54] h-14 placeholder:text-[#b49db9] p-[15px] text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-white text-base font-medium leading-normal pb-2">Topic</p>
-                <select
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4f3b54] bg-[#251c27] focus:border-[#4f3b54] h-14 bg-[image:--select-button-svg] placeholder:text-[#b49db9] p-[15px] text-base font-normal leading-normal"
-                >
-                  <option value="one"></option>
-                  <option value="two">two</option>
-                  <option value="three">three</option>
-                </select>
-              </label>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-white text-base font-medium leading-normal pb-2">Message</p>
-                <textarea
-                  placeholder="Please describe your inquiry in detail"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4f3b54] bg-[#251c27] focus:border-[#4f3b54] min-h-36 placeholder:text-[#b49db9] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <div class="flex px-4 py-3 justify-end">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#c827ec] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Get Help</span>
-              </button>
-            </div>
-            <p class="text-[#b49db9] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">By submitting, you agree to our &lt;a href="#"&gt;Privacy Policy&lt;/a&gt;</p>
-          </div>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#c827ec',
+              'primary-dark': '#a21cc4',
+              'bg-dark': '#171118',
+              'bg-card': '#251c27',
+              'border-color': '#4f3b54',
+              'text-muted': '#b49db9',
+              'success': '#10b981',
+              'error': '#ef4444',
+            },
+            boxShadow: {
+              'glow': '0 0 20px rgba(200, 39, 236, 0.3)',
+              'glow-hover': '0 0 30px rgba(200, 39, 236, 0.5)',
+              'card': '0 10px 40px rgba(0, 0, 0, 0.3)',
+              'modal': '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
+            },
+            animation: {
+              'fadeIn': 'fadeIn 0.6s ease-in-out',
+              'slideUp': 'slideUp 0.5s ease-out',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'modalIn': 'modalIn 0.3s ease-out',
+              'modalOut': 'modalOut 0.3s ease-in',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' }
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(20px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' }
+              },
+              modalIn: {
+                '0%': { opacity: '0', transform: 'scale(0.95) translateY(20px)' },
+                '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+              },
+              modalOut: {
+                '0%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+                '100%': { opacity: '0', transform: 'scale(0.95) translateY(20px)' }
+              }
+            }
+          }
+        }
+      };
+    </script>
+    
+    <style>
+      body {
+        font-family: 'Inter', 'Spline Sans', sans-serif;
+        background: linear-gradient(135deg, #171118 0%, #2a1f3d 50%, #171118 100%);
+        background-attachment: fixed;
+      }
+      
+      .form-field {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+      
+      .form-field:focus-within {
+        transform: translateY(-2px);
+      }
+      
+      .form-input {
+        transition: all 0.3s ease;
+        background: rgba(37, 28, 39, 0.8);
+        backdrop-filter: blur(10px);
+      }
+      
+      .form-input:focus {
+        border-color: #c827ec !important;
+        box-shadow: 0 0 0 3px rgba(200, 39, 236, 0.1), 0 0 20px rgba(200, 39, 236, 0.2);
+        background: rgba(37, 28, 39, 0.95);
+      }
+      
+      .form-input:valid {
+        border-color: #10b981;
+      }
+      
+      .form-input:invalid:not(:placeholder-shown) {
+        border-color: #ef4444;
+      }
+      
+      .submit-btn {
+        background: linear-gradient(135deg, #c827ec 0%, #a21cc4 100%);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(200, 39, 236, 0.4);
+      }
+      
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+      
+      .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: all 0.5s;
+      }
+      
+      .submit-btn:hover::before {
+        left: 100%;
+      }
+      
+      .floating-label {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        padding: 0 5px;
+        color: #b49db9;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      
+      .form-input:focus + .floating-label,
+      .form-input:not(:placeholder-shown) + .floating-label {
+        top: 0;
+        font-size: 12px;
+        color: #c827ec;
+        background: #251c27;
+      }
+      
+      .error-message {
+        font-size: 12px;
+        color: #ef4444;
+        margin-top: 5px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+      
+      .error-message.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      .success-message {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        display: none;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .contact-card {
+        background: rgba(37, 28, 39, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(79, 59, 84, 0.5);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      }
+      
+      .contact-icon {
+        background: linear-gradient(135deg, #c827ec, #a21cc4);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 10px 30px rgba(200, 39, 236, 0.3);
+      }
+
+      /* Modal Styles */
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .modal.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+      }
+
+      .modal-content {
+        position: relative;
+        background: rgba(37, 28, 39, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(79, 59, 84, 0.8);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        max-width: 700px;
+        width: 100%;
+        max-height: 90vh;
+        overflow: hidden;
+        transform: scale(0.95) translateY(20px);
+        transition: all 0.3s ease;
+      }
+
+      .modal.show .modal-content {
+        transform: scale(1) translateY(0);
+      }
+
+      .modal-header {
+        background: linear-gradient(135deg, #c827ec, #a21cc4);
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: between;
+        gap: 1rem;
+      }
+
+      .modal-body {
+        padding: 2rem;
+        overflow-y: auto;
+        max-height: calc(90vh - 120px);
+      }
+
+      .close-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        margin-left: auto;
+      }
+
+      .close-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1);
+      }
+
+      .privacy-section {
+        margin-bottom: 2rem;
+      }
+
+      .privacy-section h3 {
+        color: #c827ec;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .privacy-section p, .privacy-section li {
+        color: #b49db9;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+      }
+
+      .privacy-section ul {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .privacy-section li {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Custom scrollbar for modal */
+      .modal-body::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .modal-body::-webkit-scrollbar-track {
+        background: rgba(79, 59, 84, 0.3);
+        border-radius: 3px;
+      }
+
+      .modal-body::-webkit-scrollbar-thumb {
+        background: rgba(200, 39, 236, 0.6);
+        border-radius: 3px;
+      }
+
+      .modal-body::-webkit-scrollbar-thumb:hover {
+        background: rgba(200, 39, 236, 0.8);
+      }
+      
+      @media (max-width: 768px) {
+        .contact-card {
+          margin: 1rem;
+          padding: 1.5rem;
+        }
+        
+        .modal-content {
+          margin: 0.5rem;
+          max-height: 95vh;
+        }
+        
+        .modal-header {
+          padding: 1rem 1.5rem;
+        }
+        
+        .modal-body {
+          padding: 1.5rem;
+          max-height: calc(95vh - 100px);
+        }
+      }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <%- include('../partials/navbar') %>
+    
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden pt-20">
+        <!-- Background decorative elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow"></div>
         </div>
-      </div>
+        
+        <div class="relative flex-1 flex items-center justify-center px-4 py-12">
+            <div class="w-full max-w-2xl">
+                <!-- Contact Card -->
+                <div class="contact-card rounded-3xl p-8 md:p-12 animate-fadeIn">
+                    <!-- Header -->
+                    <div class="text-center mb-10">
+                        <div class="contact-icon animate-slideUp">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 256 256">
+                                <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/>
+                            </svg>
+                        </div>
+                        <h1 class="text-white text-4xl md:text-5xl font-bold mb-4 animate-slideUp">Contact Us</h1>
+                        <p class="text-text-muted text-lg leading-relaxed max-w-md mx-auto animate-slideUp">
+                            We're here to help! Fill out the form below and we'll get back to you as soon as possible.
+                        </p>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="success-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/>
+                        </svg>
+                        <span>Thank you! Your message has been sent successfully.</span>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <form id="contactForm" class="space-y-8">
+                        <!-- Email Field -->
+                        <div class="form-field">
+                            <div class="relative">
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder=" "
+                                    required
+                                    class="form-input w-full h-14 px-4 pt-6 pb-2 rounded-xl border border-border-color bg-bg-card text-white text-base font-medium focus:outline-none focus:ring-0"
+                                />
+                                <label for="email" class="floating-label">Email Address</label>
+                            </div>
+                            <div id="emailError" class="error-message">Please enter a valid email address</div>
+                        </div>
+
+                        <!-- Topic Field -->
+                        <div class="form-field">
+                            <div class="relative">
+                                <select
+                                    id="topic"
+                                    name="topic"
+                                    required
+                                    class="form-input w-full h-14 px-4 rounded-xl border border-border-color bg-bg-card text-white text-base font-medium focus:outline-none focus:ring-0 appearance-none cursor-pointer"
+                                >
+                                    <option value="" disabled selected>Select a topic</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="billing">Billing & Payments</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <!-- Custom dropdown arrow -->
+                                <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#b49db9" viewBox="0 0 256 256">
+                                        <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="topicError" class="error-message">Please select a topic</div>
+                        </div>
+
+                        <!-- Message Field -->
+                        <div class="form-field">
+                            <div class="relative">
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    placeholder=" "
+                                    required
+                                    rows="6"
+                                    class="form-input w-full px-4 pt-6 pb-2 rounded-xl border border-border-color bg-bg-card text-white text-base font-medium focus:outline-none focus:ring-0 resize-none"
+                                ></textarea>
+                                <label for="message" class="floating-label">Message</label>
+                            </div>
+                            <div id="messageError" class="error-message">Please enter your message (minimum 10 characters)</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-center pt-6">
+                            <button
+                                type="submit"
+                                id="submitBtn"
+                                class="submit-btn px-8 py-4 rounded-full text-white font-bold text-lg tracking-wide min-w-[200px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <span id="btnText">Send Message</span>
+                                <span id="btnLoader" class="hidden">
+                                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Sending...
+                                </span>
+                            </button>
+                        </div>
+
+                        <!-- Privacy Policy -->
+                        <p class="text-text-muted text-sm text-center pt-4">
+                            By submitting, you agree to our 
+                            <button type="button" id="privacyPolicyBtn" class="text-primary hover:text-primary-dark underline transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 rounded">
+                                Privacy Policy
+                            </button>
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Contact Info Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mt-12 animate-slideUp">
+                    <div class="bg-bg-card/50 backdrop-blur-lg border border-border-color/50 rounded-2xl p-6 text-center hover:bg-bg-card/70 transition-all duration-300">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#c827ec" viewBox="0 0 256 256">
+                                <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">Email</h3>
+                        <p class="text-text-muted text-sm">hello@Clubarea.com</p>
+                    </div>
+
+                    <div class="bg-bg-card/50 backdrop-blur-lg border border-border-color/50 rounded-2xl p-6 text-center hover:bg-bg-card/70 transition-all duration-300">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#c827ec" viewBox="0 0 256 256">
+                                <path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">Phone</h3>
+                        <p class="text-text-muted text-sm">+91 90500 XXXXX</p>
+                    </div>
+
+                    <div class="bg-bg-card/50 backdrop-blur-lg border border-border-color/50 rounded-2xl p-6 text-center hover:bg-bg-card/70 transition-all duration-300">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#c827ec" viewBox="0 0 256 256">
+                                <path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128ZM176,16H80A64,64,0,0,0,16,80v96a64,64,0,0,0,64,64h96a64,64,0,0,0,64-64V80A64,64,0,0,0,176,16Zm48,160a48,48,0,0,1-48,48H80a48,48,0,0,1-48-48V80A48,48,0,0,1,80,32h96a48,48,0,0,1,48,48ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">Follow Us</h3>
+                        <p class="text-text-muted text-sm">@ClubArea</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </body>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 256 256">
+                            <path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Zm-68-56a8,8,0,0,1-8,8H124a8,8,0,0,1,0-16h8A8,8,0,0,1,140,152Z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-white text-xl font-bold">Privacy Policy</h2>
+                </div>
+                <button class="close-btn" id="closeModal" aria-label="Close modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-section">
+                    <p class="text-white mb-6 text-lg">
+                        <strong>Effective Date:</strong> December 2024
+                    </p>
+                    <p class="mb-6">
+                        At Stitch Design, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M224,152a8,8,0,0,1-8,8H192v16a8,8,0,0,1-16,0V160H152a8,8,0,0,1,0-16h24V128a8,8,0,0,1,16,0v16h24A8,8,0,0,1,224,152ZM56,112H72a8,8,0,0,0,0-16H56a8,8,0,0,0,0,16Zm88,0a8,8,0,0,0-8-8H88a8,8,0,0,0,0,16h48A8,8,0,0,0,144,112Zm0,32a8,8,0,0,0-8-8H56a8,8,0,0,0,0,16h80A8,8,0,0,0,144,144ZM216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H216V184H40Z"/>
+                        </svg>
+                        Information We Collect
+                    </h3>
+                    <p><strong>Personal Information:</strong> We may collect personal information that you voluntarily provide when you:</p>
+                    <ul>
+                        <li>Contact us through our contact form</li>
+                        <li>Subscribe to our newsletter</li>
+                        <li>Create an account on our platform</li>
+                        <li>Use our design services</li>
+                    </ul>
+                    <p>This may include your name, email address, phone number, company name, and any message content you provide.</p>
+                    
+                    <p><strong>Automatically Collected Information:</strong> We may automatically collect certain information when you visit our website, including:</p>
+                    <ul>
+                        <li>IP address and browser information</li>
+                        <li>Device and operating system details</li>
+                        <li>Pages visited and time spent on our site</li>
+                        <li>Referring website information</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z"/>
+                        </svg>
+                        How We Use Your Information
+                    </h3>
+                    <p>We use the information we collect to:</p>
+                    <ul>
+                        <li>Respond to your inquiries and provide customer support</li>
+                        <li>Process and fulfill service requests</li>
+                        <li>Send you updates about our services (with your consent)</li>
+                        <li>Improve our website and user experience</li>
+                        <li>Analyze website usage and trends</li>
+                        <li>Comply with legal obligations</li>
+                        <li>Protect our rights and prevent fraud</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"/>
+                        </svg>
+                        Information Sharing and Disclosure
+                    </h3>
+                    <p>We do not sell, trade, or otherwise transfer your personal information to third parties, except in the following circumstances:</p>
+                    <ul>
+                        <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us in operating our website and conducting our business</li>
+                        <li><strong>Legal Requirements:</strong> We may disclose information when required by law or to protect our rights, property, or safety</li>
+                        <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction</li>
+                        <li><strong>Consent:</strong> We may share information with your explicit consent</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/>
+                        </svg>
+                        Data Security
+                    </h3>
+                    <p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:</p>
+                    <ul>
+                        <li>Encryption of data in transit and at rest</li>
+                        <li>Regular security assessments and updates</li>
+                        <li>Access controls and authentication protocols</li>
+                        <li>Employee training on data protection practices</li>
+                    </ul>
+                    <p>However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/>
+                        </svg>
+                        Your Rights and Choices
+                    </h3>
+                    <p>Depending on your location, you may have certain rights regarding your personal information:</p>
+                    <ul>
+                        <li><strong>Access:</strong> Request access to the personal information we hold about you</li>
+                        <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information</li>
+                        <li><strong>Deletion:</strong> Request deletion of your personal information under certain circumstances</li>
+                        <li><strong>Portability:</strong> Request a copy of your information in a structured, machine-readable format</li>
+                        <li><strong>Objection:</strong> Object to the processing of your personal information for certain purposes</li>
+                        <li><strong>Opt-out:</strong> Unsubscribe from marketing communications at any time</li>
+                    </ul>
+                    <p>To exercise these rights, please contact us using the information provided below.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M128,216a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM128,56a72,72,0,1,0,72,72A72.08,72.08,0,0,0,128,56Zm0,120a8,8,0,0,1-8-8V96a8,8,0,0,1,16,0v64h8a8,8,0,0,1,0,16Z"/>
+                        </svg>
+                        Data Retention
+                    </h3>
+                    <p>We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. When we no longer need your information, we will securely delete or anonymize it.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM32,64H224V88H32ZM32,104H224v88H32Z"/>
+                        </svg>
+                        Cookies and Tracking Technologies
+                    </h3>
+                    <p>We use cookies and similar tracking technologies to enhance your experience on our website. Cookies are small text files stored on your device that help us:</p>
+                    <ul>
+                        <li>Remember your preferences and settings</li>
+                        <li>Analyze website performance and usage</li>
+                        <li>Provide personalized content and recommendations</li>
+                        <li>Enable certain website features and functionality</li>
+                    </ul>
+                    <p>You can control cookie settings through your browser preferences, but disabling cookies may affect website functionality.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M224,152a8,8,0,0,1-8,8H192v16a8,8,0,0,1-16,0V160H152a8,8,0,0,1,0-16h24V128a8,8,0,0,1,16,0v16h24A8,8,0,0,1,224,152ZM144,112a8,8,0,0,0-8-8H88a8,8,0,0,0,0,16h48A8,8,0,0,0,144,112Zm0,32a8,8,0,0,0-8-8H56a8,8,0,0,0,0,16h80A8,8,0,0,0,144,144ZM40,184H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM216,200H40V56H216V200Z"/>
+                        </svg>
+                        Changes to This Privacy Policy
+                    </h3>
+                    <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any material changes by posting the updated policy on our website with a new effective date.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/>
+                        </svg>
+                        Contact Us
+                    </h3>
+                    <p>If you have any questions about this Privacy Policy or our data practices, please contact us:</p>
+                    <div class="bg-bg-card/50 rounded-lg p-4 mt-4 border border-border-color/30">
+                        <p><strong>Email:</strong> privacy@Clubarea.com</p>
+                        <p><strong>Phone:</strong> +91 90500 XXXXX </p>
+                        <p><strong>Address:</strong> 123 Design Street, Creative City, CC 12345</p>
+                    </div>
+                </div>
+
+                <div class="privacy-section">
+                    <p class="text-center text-text-muted border-t border-border-color/30 pt-6">
+                        <strong>Last Updated:</strong> December 2024<br>
+                        This Privacy Policy is effective as of the date stated above and will remain in effect except with respect to any changes in its provisions in the future.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ContactForm {
+            constructor() {
+                this.form = document.getElementById('contactForm');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.btnText = document.getElementById('btnText');
+                this.btnLoader = document.getElementById('btnLoader');
+                this.successMessage = document.getElementById('successMessage');
+                this.privacyModal = document.getElementById('privacyModal');
+                this.privacyBtn = document.getElementById('privacyPolicyBtn');
+                this.closeModalBtn = document.getElementById('closeModal');
+                this.modalBackdrop = document.getElementById('modalBackdrop');
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.setupFloatingLabels();
+            }
+
+            bindEvents() {
+                this.form.addEventListener('submit', this.handleSubmit.bind(this));
+                
+                // Real-time validation
+                this.form.querySelectorAll('input, select, textarea').forEach(field => {
+                    field.addEventListener('blur', () => this.validateField(field));
+                    field.addEventListener('input', () => this.clearFieldError(field));
+                });
+
+                // Privacy policy modal events
+                this.privacyBtn.addEventListener('click', this.openModal.bind(this));
+                this.closeModalBtn.addEventListener('click', this.closeModal.bind(this));
+                this.modalBackdrop.addEventListener('click', this.closeModal.bind(this));
+                
+                // Close modal on escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.privacyModal.classList.contains('show')) {
+                        this.closeModal();
+                    }
+                });
+            }
+
+            setupFloatingLabels() {
+                // Handle pre-filled values
+                this.form.querySelectorAll('input, textarea').forEach(field => {
+                    if (field.value) {
+                        field.classList.add('has-value');
+                    }
+                });
+            }
+
+            openModal() {
+                this.privacyModal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+
+            closeModal() {
+                this.privacyModal.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+
+            validateField(field) {
+                const value = field.value.trim();
+                let isValid = true;
+                let errorMessage = '';
+
+                switch (field.type) {
+                    case 'email':
+                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                        errorMessage = 'Please enter a valid email address';
+                        break;
+                    case 'select-one':
+                        isValid = value !== '';
+                        errorMessage = 'Please select a topic';
+                        break;
+                    default:
+                        if (field.tagName === 'TEXTAREA') {
+                            isValid = value.length >= 10;
+                            errorMessage = 'Please enter your message (minimum 10 characters)';
+                        } else {
+                            isValid = value !== '';
+                            errorMessage = 'This field is required';
+                        }
+                }
+
+                this.showFieldError(field, isValid ? '' : errorMessage);
+                return isValid;
+            }
+
+            showFieldError(field, message) {
+                const errorEl = document.getElementById(field.id + 'Error');
+                if (errorEl) {
+                    if (message) {
+                        errorEl.textContent = message;
+                        errorEl.classList.add('show');
+                        field.classList.add('border-error');
+                    } else {
+                        errorEl.classList.remove('show');
+                        field.classList.remove('border-error');
+                    }
+                }
+            }
+
+            clearFieldError(field) {
+                const errorEl = document.getElementById(field.id + 'Error');
+                if (errorEl) {
+                    errorEl.classList.remove('show');
+                    field.classList.remove('border-error');
+                }
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                // Validate all fields
+                const fields = this.form.querySelectorAll('input, select, textarea');
+                let isFormValid = true;
+                
+                fields.forEach(field => {
+                    if (!this.validateField(field)) {
+                        isFormValid = false;
+                    }
+                });
+
+                if (!isFormValid) {
+                    return;
+                }
+
+                // Show loading state
+                this.setLoadingState(true);
+
+                try {
+                    // Simulate API call
+                    await this.simulateSubmission();
+                    
+                    // Show success message
+                    this.showSuccess();
+                    
+                    // Reset form
+                    this.form.reset();
+                    
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    // Handle error (you can add error message display here)
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            setLoadingState(loading) {
+                if (loading) {
+                    this.submitBtn.disabled = true;
+                    this.btnText.classList.add('hidden');
+                    this.btnLoader.classList.remove('hidden');
+                } else {
+                    this.submitBtn.disabled = false;
+                    this.btnText.classList.remove('hidden');
+                    this.btnLoader.classList.add('hidden');
+                }
+            }
+
+            async simulateSubmission() {
+                // Simulate API delay
+                return new Promise(resolve => setTimeout(resolve, 2000));
+            }
+
+            showSuccess() {
+                this.successMessage.style.display = 'flex';
+                this.successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    this.successMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Initialize form when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new ContactForm();
+        });
+    </script>
+</body>
 </html>

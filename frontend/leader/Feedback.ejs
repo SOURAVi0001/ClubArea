@@ -1,120 +1,561 @@
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Lexend%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?display=swap&family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+  />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+  <title>Feedback</title>
+  <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: Lexend, "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-            <%- include('./partials/header.ejs') %>
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#161212] tracking-light text-[32px] font-bold leading-tight min-w-72">Feedback</p></div>
-            <div class="px-4 py-3">
-              <label class="flex flex-col min-w-40 h-12 w-full">
-                <div class="flex w-full flex-1 items-stretch rounded-xl h-full">
-                  <div
-                    class="text-[#816a6a] flex border-none bg-[#f4f1f1] items-center justify-center pl-4 rounded-l-xl border-r-0"
-                    data-icon="MagnifyingGlass"
-                    data-size="24px"
-                    data-weight="regular"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                      <path
-                        d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    placeholder="Search feedback"
-                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#161212] focus:outline-0 focus:ring-0 border-none bg-[#f4f1f1] focus:border-none h-full placeholder:text-[#816a6a] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
-                    value=""
-                  />
-                </div>
-              </label>
-            </div>
-            <div class="flex gap-3 p-3 flex-wrap pr-4">
-              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#f4f1f1] pl-4 pr-2">
-                <p class="text-[#161212] text-sm font-medium leading-normal">Members</p>
-                <div class="text-[#161212]" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body class="bg-gray-50 text-gray-800" style='font-family: Lexend, "Noto Sans", sans-serif;'>
+  
+  <!-- Include the sidebar partial -->
+  <%- include('partials/sidebar', { 
+    Leader_Name: Leader_Name, 
+    Club_Name: Club_Name, 
+    currentPage: 'feedback' 
+  }) %>
+
+  <!-- Main Content Area with margin for sidebar -->
+  <main class="ml-0 md:ml-80 min-h-screen">
+    <div class="max-w-[960px] mx-auto px-6 py-8">
+      
+      <!-- Page Header -->
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-[#161212] mb-2"> Feedback Management</h1>
+        <p class="text-gray-600">Review and manage feedback from club members</p>
+      </header>
+
+      <!-- Enhanced Search & Filter Section -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+        <div class="space-y-4">
+          <!-- Search Input -->
+          <div class="flex items-center gap-4">
+            <div class="flex-1 relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <input
+                id="searchInput"
+                type="text"
+                placeholder="Search feedback by title, author, email, or content..."
+                class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#181111] 
+                       placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                       focus:bg-white transition-all duration-200"
+                value="<%= typeof search !== 'undefined' ? search : '' %>"
+              />
+              <!-- Clear Button -->
+              <button
+                id="clearSearch"
+                type="button"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
               </button>
             </div>
+            
+            <!-- Search Button -->
+            <button
+              id="searchButton"
+              type="button"
+              class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 
+                     transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              Search
+            </button>
+          </div>
 
+          <!-- Advanced Filters -->
+          <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
+            <span class="text-sm font-medium text-gray-700">Filter by:</span>
+            
+            <!-- User Type Filter -->
+            <select id="userTypeFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+              <option value="">All User Types</option>
+              <option value="Student">Students</option>
+              <option value="Faculty">Faculty</option>
+              <option value="Alumni">Alumni</option>
+              <option value="Staff">Staff</option>
+            </select>
 
-          <% data.forEach(function(item) { %>
-  <div class="flex w-full max-w-3xl flex-col gap-3 rounded-xl bg-white px-6 py-5 shadow-sm hover:shadow-md transition sm:flex-row sm:items-start sm:gap-6">
-    <!-- Icon Section -->
-    <div class="flex items-center justify-center rounded-xl bg-[#fff4f4] text-[#e63946] w-14 h-14 shrink-0">
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 256 256">
-        <path
-          d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"
-        ></path>
-      </svg>
-    </div>
+            <!-- Author Filter -->
+            <select id="authorFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+              <option value="">All Authors</option>
+              <% 
+              const uniqueAuthors = [...new Set(data.map(feedback => feedback.posted_by))];
+              uniqueAuthors.forEach(author => { 
+              %>
+                <option value="<%= author %>"><%= author %></option>
+              <% }); %>
+            </select>
 
-    <!-- Content Section -->
-    <div class="flex flex-1 flex-col justify-center gap-2 text-sm text-[#161212]">
-      <!-- Header Row -->
-      <div class="flex flex-wrap justify-between gap-2">
-        <h3 class="text-lg font-bold text-[#0d47a1]"><%= item.title %></h3>
-        <span class="text-xs text-[#666]">Posted on <strong><%= new Date(item.date).toLocaleString('en-IN', {
-  dateStyle: 'medium',
-  timeStyle: 'short',
-  hour12: true
-}) %></strong></span>
+            <!-- Date Filter -->
+            <select id="dateFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+              <option value="">All Dates</option>
+              <option value="recent">Recent (Last 7 days)</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+            </select>
+
+            <!-- Reset Filters -->
+            <button
+              id="resetFilters"
+              type="button"
+              class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              Reset Filters
+            </button>
+
+            <!-- Results Count -->
+            <div class="ml-auto">
+              <span id="resultsCount" class="text-sm text-gray-500">
+                Showing <span id="visibleCount"><%= data.length %></span> of <span id="totalCount"><%= data.length %></span> feedback entries
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Metadata Row -->
-      <div class="flex flex-wrap items-center gap-2 text-[#444]">
-        <span class="font-medium text-[#333]">Posted by : </span>
-        <span class="text-[#555]"><%= item.posted_by %></span>
-        <span class="text-[#888]">|</span>
-        <a href="mailto:<%= item.email %>" class="text-blue-600 underline hover:text-blue-800">
-          <%= item.email %>
-        </a>
-        <span class="text-[#888]">|</span>
-        <span class="text-[#555] italic"><%= item.user_type %></span>
-      </div>
+      <!-- Feedback Cards Section -->
+      <section>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-[#161212]"> Feedback List</h2>
+          <div class="text-sm text-gray-500">
+            <span id="feedbackCount"><%= data.length %></span> feedback entr<span id="feedbackPlural"><%= data.length !== 1 ? 'ies' : 'y' %></span> found
+          </div>
+        </div>
 
-      <!-- Feedback Text -->
-      <p class="mt-1 text-[#444] leading-relaxed">
-        <%= item.description %>
-      </p>
-    </div>
-  </div>
-<% }) %>
-          <div class="flex justify-center gap-4 mt-6">
-  <% if (limit > 5) { %>
-    <a href="/leader/leader-feedback?<% if (search) { %>search=<%= search %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=5"
-      class="text-blue-600 underline hover:text-blue-800 transition">
-      Show Less
-    </a>
-  <% } %>
+        <div id="feedbackContainer" class="space-y-4">
+          <% if (data.length === 0) { %>
+            <div id="noFeedbackRow" class="text-center py-12 bg-white rounded-xl border border-gray-200">
+              <div class="text-gray-400 mb-4">
+                <svg class="mx-auto w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-600 mb-2">No feedback found</h3>
+              <p class="text-gray-500">No feedback has been submitted yet.</p>
+            </div>
+          <% } else { %>
+            <% data.forEach(function(item, index) { %>
+              <div class="feedback-item bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+                   data-feedback-title="<%= item.title.toLowerCase() %>"
+                   data-feedback-author="<%= item.posted_by.toLowerCase() %>"
+                   data-feedback-email="<%= item.email.toLowerCase() %>"
+                   data-feedback-content="<%= item.description.toLowerCase() %>"
+                   data-feedback-usertype="<%= item.user_type %>"
+                   data-feedback-date="<%= new Date(item.date).getTime() %>"
+                   data-author-name="<%= item.posted_by %>">
+                <div class="flex gap-4">
+                  <!-- Icon Section -->
+                  <div class="flex items-center justify-center rounded-xl bg-[#fff4f4] text-[#e63946] w-14 h-14 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"></path>
+                    </svg>
+                  </div>
 
-  <% if (hasMore) { %>
-    <a href="/leader/leader-feedback?<% if (search) { %>search=<%= search %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=<%= limit + 5 %>"
-      class="text-blue-600 underline hover:text-blue-800 transition">
-      Show More
-    </a>
-  <% } %>
-</div>  
+                  <!-- Content Section -->
+                  <div class="flex-1">
+                    <!-- Header Row -->
+                    <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+                      <h3 class="text-xl font-bold text-[#0d47a1] hover:text-blue-600 transition-colors feedback-title">
+                        <%= item.title %>
+                      </h3>
+                      <span class="text-xs text-[#666] bg-gray-100 px-2 py-1 rounded-full">
+                        <%= new Date(item.date).toLocaleString('en-IN', {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                          hour12: true
+                        }) %>
+                      </span>
+                    </div>
+
+                    <!-- Metadata Row -->
+                    <div class="flex flex-wrap items-center gap-3 text-sm text-[#444] mb-3">
+                      <div class="flex items-center gap-1">
+                        <span class="font-medium text-[#333]">👤 Posted by:</span>
+                        <span class="text-[#555] font-medium feedback-author"><%= item.posted_by %></span>
+                      </div>
+                      <span class="text-[#ccc]">•</span>
+                      <a href="mailto:<%= item.email %>" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="feedback-email"><%= item.email %></span>
+                      </a>
+                      <span class="text-[#ccc]">•</span>
+                      <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">
+                        <%= item.user_type %>
+                      </span>
+                    </div>
+
+                    <!-- Feedback Content -->
+                    <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-400">
+                      <p class="text-[#444] leading-relaxed feedback-content">
+                        <%= item.description %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResultsMessage" class="hidden text-center py-12 bg-white rounded-xl border border-gray-200">
+          <div class="flex flex-col items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <div>
+              <p class="text-gray-500 text-lg font-medium">No matching feedback found</p>
+              <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination Section -->
+        <div class="flex justify-center items-center gap-4 mt-8 bg-white rounded-lg border border-gray-200 p-4">
+          <% if (typeof limit !== 'undefined' && limit > 5) { %>
+            <a href="/leader/leader-feedback?<% if (search) { %>search=<%= encodeURIComponent(search) %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=5"
+              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+              ← Show Less
+            </a>
+          <% } %>
+
+          <span class="text-gray-600">
+            Showing <%= typeof limit !== 'undefined' ? Math.min(limit, data.length) : data.length %> of <%= data.length %> entries
+          </span>
+
+          <% if (typeof hasMore !== 'undefined' && hasMore) { %>
+            <a href="/leader/leader-feedback?<% if (search) { %>search=<%= encodeURIComponent(search) %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=<%= (typeof limit !== 'undefined' ? limit : 5) + 5 %>"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+              Show More →
+            </a>
+          <% } %>
+        </div>
+      </section>
+
+      <!-- Quick Stats Cards -->
+      <div class="mt-8 grid gap-6 md:grid-cols-4">
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-blue-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Total Feedback</p>
+              <p id="totalFeedbackCount" class="text-2xl font-bold text-gray-900"><%= data.length %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Students</p>
+              <p id="studentFeedbackCount" class="text-2xl font-bold text-gray-900">
+                <%= data.filter(feedback => feedback.user_type === 'Student').length %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-yellow-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Faculty</p>
+              <p id="facultyFeedbackCount" class="text-2xl font-bold text-gray-900">
+                <%= data.filter(feedback => feedback.user_type === 'Faculty').length %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="bg-purple-100 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm">Alumni</p>
+              <p id="alumniFeedbackCount" class="text-2xl font-bold text-gray-900">
+                <%= data.filter(feedback => feedback.user_type === 'Alumni').length %>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </main>
+
+  <!-- Enhanced JavaScript with Search Functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const clearSearch = document.getElementById('clearSearch');
+      const searchButton = document.getElementById('searchButton');
+      const userTypeFilter = document.getElementById('userTypeFilter');
+      const authorFilter = document.getElementById('authorFilter');
+      const dateFilter = document.getElementById('dateFilter');
+      const resetFilters = document.getElementById('resetFilters');
+      const feedbackItems = document.querySelectorAll('.feedback-item');
+      const noResultsMessage = document.getElementById('noResultsMessage');
+      const resultsCount = document.getElementById('resultsCount');
+      const visibleCount = document.getElementById('visibleCount');
+      const totalCount = document.getElementById('totalCount');
+      const feedbackCount = document.getElementById('feedbackCount');
+      const feedbackPlural = document.getElementById('feedbackPlural');
+      
+      let allFeedback = Array.from(feedbackItems);
+      let filteredFeedback = [...allFeedback];
+
+      // Show/hide clear button
+      function toggleClearButton() {
+        if (searchInput.value.length > 0) {
+          clearSearch.classList.remove('hidden');
+        } else {
+          clearSearch.classList.add('hidden');
+        }
+      }
+
+      // Highlight search terms
+      function highlightText(element, searchTerm) {
+        if (!searchTerm) return;
+        
+        const text = element.textContent;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        if (regex.test(text)) {
+          element.innerHTML = text.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+        }
+      }
+
+      // Remove highlights
+      function removeHighlights() {
+        const highlights = document.querySelectorAll('mark');
+        highlights.forEach(mark => {
+          const parent = mark.parentNode;
+          parent.replaceChild(document.createTextNode(mark.textContent), mark);
+          parent.normalize();
+        });
+      }
+
+      // Filter feedback
+      function filterFeedback() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const userTypeValue = userTypeFilter.value;
+        const authorValue = authorFilter.value;
+        const dateValue = dateFilter.value;
+
+        // Remove previous highlights
+        removeHighlights();
+
+        const now = new Date();
+        const oneWeekAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        filteredFeedback = allFeedback.filter(item => {
+          const title = item.dataset.feedbackTitle;
+          const author = item.dataset.feedbackAuthor;
+          const email = item.dataset.feedbackEmail;
+          const content = item.dataset.feedbackContent;
+          const userType = item.dataset.feedbackUsertype;
+          const authorName = item.dataset.authorName;
+          const feedbackDate = new Date(parseInt(item.dataset.feedbackDate));
+
+          // Text search
+          const matchesSearch = !searchTerm || 
+            title.includes(searchTerm) || 
+            author.includes(searchTerm) || 
+            email.includes(searchTerm) || 
+            content.includes(searchTerm);
+
+          // User type filter
+          const matchesUserType = !userTypeValue || userType === userTypeValue;
+
+          // Author filter
+          const matchesAuthor = !authorValue || authorName === authorValue;
+
+          // Date filter
+          let matchesDate = true;
+          if (dateValue) {
+            switch (dateValue) {
+              case 'recent':
+                matchesDate = feedbackDate >= oneWeekAgo;
+                break;
+              case 'week':
+                matchesDate = feedbackDate >= startOfWeek;
+                break;
+              case 'month':
+                matchesDate = feedbackDate >= startOfMonth;
+                break;
+            }
+          }
+
+          return matchesSearch && matchesUserType && matchesAuthor && matchesDate;
+        });
+
+        // Show/hide items
+        allFeedback.forEach(item => {
+          if (filteredFeedback.includes(item)) {
+            item.style.display = '';
+            
+            // Highlight search terms
+            if (searchTerm) {
+              const titleElement = item.querySelector('.feedback-title');
+              const authorElement = item.querySelector('.feedback-author');
+              const emailElement = item.querySelector('.feedback-email');
+              const contentElement = item.querySelector('.feedback-content');
+              
+              highlightText(titleElement, searchTerm);
+              highlightText(authorElement, searchTerm);
+              highlightText(emailElement, searchTerm);
+              highlightText(contentElement, searchTerm);
+            }
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Update counts
+        updateCounts();
+
+        // Show/hide no results message
+        if (filteredFeedback.length === 0 && allFeedback.length > 0) {
+          noResultsMessage.classList.remove('hidden');
+        } else {
+          noResultsMessage.classList.add('hidden');
+        }
+      }
+
+      // Update counts
+      function updateCounts() {
+        const visible = filteredFeedback.length;
+        const total = allFeedback.length;
+        
+        visibleCount.textContent = visible;
+        totalCount.textContent = total;
+        feedbackCount.textContent = visible;
+        feedbackPlural.textContent = visible !== 1 ? 'ies' : 'y';
+
+        // Update stats cards
+        let studentCount = 0;
+        let facultyCount = 0;
+        let alumniCount = 0;
+
+        filteredFeedback.forEach(item => {
+          const userType = item.dataset.feedbackUsertype;
+          if (userType === 'Student') studentCount++;
+          else if (userType === 'Faculty') facultyCount++;
+          else if (userType === 'Alumni') alumniCount++;
+        });
+
+        document.getElementById('totalFeedbackCount').textContent = visible;
+        document.getElementById('studentFeedbackCount').textContent = studentCount;
+        document.getElementById('facultyFeedbackCount').textContent = facultyCount;
+        document.getElementById('alumniFeedbackCount').textContent = alumniCount;
+      }
+
+      // Event listeners
+      searchInput.addEventListener('input', function() {
+        toggleClearButton();
+        // Real-time search with debounce
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(filterFeedback, 300);
+      });
+
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          filterFeedback();
+        }
+      });
+
+      searchButton.addEventListener('click', filterFeedback);
+
+      clearSearch.addEventListener('click', function() {
+        searchInput.value = '';
+        toggleClearButton();
+        filterFeedback();
+        searchInput.focus();
+      });
+
+      userTypeFilter.addEventListener('change', filterFeedback);
+      authorFilter.addEventListener('change', filterFeedback);
+      dateFilter.addEventListener('change', filterFeedback);
+
+      resetFilters.addEventListener('click', function() {
+        searchInput.value = '';
+        userTypeFilter.value = '';
+        authorFilter.value = '';
+        dateFilter.value = '';
+        toggleClearButton();
+        filterFeedback();
+      });
+
+      // Initialize
+      toggleClearButton();
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+        if (e.key === 'Escape') {
+          if (document.activeElement === searchInput) {
+            searchInput.blur();
+          }
+        }
+      });
+    });
+  </script>
+
+  <!-- Add custom styles for search highlighting -->
+  <style>
+    mark {
+      background-color: #fef08a !important;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .feedback-item {
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
+
+</body>
 </html>
