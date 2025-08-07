@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
   />
 
-  <title>Assign Task - Stitch Design</title>
+  <title>Assign Task </title>
   <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -21,210 +23,294 @@
     currentPage: 'tasks' 
   }) %>
 
-  <!-- Main Content Area with margin for sidebar -->
-  <main class="ml-0 md:ml-80 min-h-screen">
-    <div class="max-w-[960px] mx-auto px-6 py-8">
-      
-      <!-- Page Header -->
-      <header class="mb-8">
-        <h1 class="text-4xl font-bold text-[#161212] mb-2"> Assign Task</h1>
-        <p class="text-gray-600">Create and assign tasks to club members with deadlines</p>
-      </header>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen transition-all duration-300">
+    <div class="max-w-[960px] mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        
+        <!-- Page Header -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold text-[#161212] mb-2">Assign Task</h1>
+          <p class="text-gray-600">Create and assign tasks to club members with deadlines</p>
+        </header>
 
-      <!-- Enhanced Task Assignment Form -->
-      <div class="bg-white rounded-2xl border border-gray-200 shadow-lg p-8">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="bg-blue-100 p-3 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-            </svg>
+        <!-- Quick Stats Cards -->
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Active Tasks</p>
+                <p class="text-xl font-bold text-gray-900">12</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <h2 class="text-2xl font-bold text-[#161212]"> Create New Task</h2>
-            <p class="text-gray-600 text-sm">Fill out the form below to assign a task to a team member</p>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-green-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Completed</p>
+                <p class="text-xl font-bold text-gray-900">8</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-orange-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Pending</p>
+                <p class="text-xl font-bold text-gray-900">4</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-purple-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Team Members</p>
+                <p class="text-xl font-bold text-gray-900"><%= member ? member.length : 0 %></p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <form method="POST" action="/leader-Create-Task" class="space-y-6">
-          
-          <!-- Member Selection -->
-          <div class="space-y-2">
-            <label class="block text-base font-semibold text-[#161212]">
-               Assign to Member *
-            </label>
-            <select
-              name="assigned_to"
-              required
-              class="w-full h-14 px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212] 
-                     focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
-                     text-base font-medium appearance-none cursor-pointer"
-            >
-              <option value="">Select a member...</option>
-              <% member.forEach(m => { %>
-                <option value="<%= m.name %>"><%= m.name %></option>
-              <% }) %>
-            </select>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        <!-- Enhanced Task Assignment Form -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 md:p-8">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="bg-blue-100 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
               </svg>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-[#161212]">Create New Task</h2>
+              <p class="text-gray-600 text-sm">Fill out the form below to assign a task to a team member</p>
             </div>
           </div>
 
-          <!-- Task Title -->
-          <div class="space-y-2">
-            <label class="block text-base font-semibold text-[#161212]">
-               Task Title *
-            </label>
-            <input
-              name="task_title"
-              required
-              placeholder="Enter a clear, descriptive task title..."
-              class="w-full h-14 px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212]
-                     focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
-                     placeholder:text-gray-500 text-base font-medium"
-            />
-          </div>
-
-          <!-- Task Description -->
-          <div class="space-y-2">
-            <label class="block text-base font-semibold text-[#161212]">
-               Task Description *
-            </label>
-            <textarea
-              name="task_description"
-              required
-              rows="5"
-              placeholder="Provide detailed instructions, requirements, and expectations for this task..."
-              class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212]
-                     focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
-                     placeholder:text-gray-500 text-base font-medium resize-none"
-            ></textarea>
-          </div>
-
-          <!-- Due Date -->
-          <div class="space-y-2">
-            <label class="block text-base font-semibold text-[#161212]">
-               Due Date *
-            </label>
-            <input
-              name="task_completion_date"
-              type="date"
-              required
-              class="w-full h-14 px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212]
-                     focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
-                     text-base font-medium"
-            />
-            <p class="text-sm text-gray-500 flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              Choose a realistic deadline for task completion
-            </p>
-          </div>
-
-          <!-- Priority & Warning -->
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
-            <label class="flex items-start gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                name="warning"
-                class="mt-1 h-5 w-5 rounded border-amber-300 text-amber-600 
-                       focus:ring-amber-500 focus:ring-2 transition-all"
-              />
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-base font-semibold text-amber-800">⚠️ High Priority Task</span>
-                </div>
-                <p class="text-sm text-amber-700">
-                  Enable this option to mark the task as high priority. The member will receive 
-                  additional notifications and the task will be highlighted in their dashboard.
-                </p>
-              </div>
-            </label>
-          </div>
-
-          <!-- Form Actions -->
-          <div class="flex justify-between items-center pt-6 border-t border-gray-200">
-            <a href="/leader/leader-taskstatus" 
-               class="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              Back to Tasks
-            </a>
+          <form method="POST" action="/leader-Create-Task" class="space-y-6" id="taskForm">
             
-            <div class="flex gap-3">
-              <button
-                type="button"
-                onclick="document.querySelector('form').reset()"
-                class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium 
-                       hover:bg-gray-50 transition-colors duration-200"
-              >
-                Clear Form
-              </button>
-              
-              <button
-                type="submit"
-                class="flex items-center gap-2 px-8 py-3 rounded-lg bg-blue-600 text-white font-bold
-                       hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200
-                       transform hover:scale-105 shadow-lg"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                </svg>
-                Assign Task
-              </button>
+            <!-- Member Selection -->
+            <div class="space-y-2">
+              <label class="block text-base font-semibold text-[#161212]">
+                Assign to Member *
+              </label>
+              <div class="relative">
+                <select
+                  name="assigned_to"
+                  required
+                  class="w-full h-14 px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212] 
+                         focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
+                         text-base font-medium appearance-none cursor-pointer"
+                >
+                  <option value="">Select a member...</option>
+                  <% if (member && member.length > 0) { %>
+                    <% member.forEach(m => { %>
+                      <option value="<%= m.name || 'Unknown' %>"><%= m.name || 'Unknown Member' %></option>
+                    <% }) %>
+                  <% } else { %>
+                    <option value="" disabled>No members available</option>
+                  <% } %>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
 
-      <!-- Additional Task Management Options -->
-      <div class="mt-8 grid gap-6 md:grid-cols-3">
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="bg-green-100 p-2 rounded-lg">
+            <!-- Task Title -->
+            <div class="space-y-2">
+              <label class="block text-base font-semibold text-[#161212]">
+                Task Title *
+              </label>
+              <input
+                name="task_title"
+                required
+                placeholder="Enter a clear, descriptive task title..."
+                class="w-full h-14 px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212]
+                       focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
+                       placeholder:text-gray-500 text-base font-medium"
+              />
+            </div>
+
+            <!-- Task Description -->
+            <div class="space-y-2">
+              <label class="block text-base font-semibold text-[#161212]">
+                Task Description *
+              </label>
+              <textarea
+                name="task_description"
+                required
+                rows="5"
+                placeholder="Provide detailed instructions, requirements, and expectations for this task..."
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212]
+                       focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
+                       placeholder:text-gray-500 text-base font-medium resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Due Date -->
+            <div class="space-y-2">
+              <label class="block text-base font-semibold text-[#161212]">
+                Due Date *
+              </label>
+              <input
+                name="task_completion_date"
+                type="date"
+                required
+                class="w-full h-14 px-4 py-3 rounded-xl border border-gray-300 bg-white text-[#161212]
+                       focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200
+                       text-base font-medium"
+              />
+              <p class="text-sm text-gray-500 flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Choose a realistic deadline for task completion
+              </p>
+            </div>
+
+            <!-- Priority & Warning -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="warning"
+                  class="mt-1 h-5 w-5 rounded border-amber-300 text-amber-600 
+                         focus:ring-amber-500 focus:ring-2 transition-all"
+                />
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-base font-semibold text-amber-800">⚠️ High Priority Task</span>
+                  </div>
+                  <p class="text-sm text-amber-700">
+                    Enable this option to mark the task as high priority. The member will receive 
+                    additional notifications and the task will be highlighted in their dashboard.
+                  </p>
+                </div>
+              </label>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-200">
+              <a href="/leader/leader-taskstatus" 
+                 class="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Back to Tasks
+              </a>
+              
+              <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onclick="document.getElementById('taskForm').reset(); resetFormValidation()"
+                  class="w-full sm:w-auto px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium 
+                         hover:bg-gray-50 transition-colors duration-200"
+                >
+                  Clear Form
+                </button>
+                
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-blue-600 text-white font-bold
+                         hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200
+                         transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                  </svg>
+                  Assign Task
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Additional Task Management Options -->
+        <div class="mt-8 grid gap-6 sm:grid-cols-1 md:grid-cols-3">
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="bg-green-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900">View All Tasks</h3>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">Monitor progress and status of all assigned tasks</p>
+            <a href="/leader/leader-taskstatus" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
+              View Tasks →
+            </a>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="bg-purple-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900">Manage Members</h3>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">View and manage club members and their roles</p>
+            <a href="/leader/leader-members" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
+              Manage Members →
+            </a>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="bg-orange-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900">Task Analytics</h3>
+            </div>
+            <p class="text-gray-600 text-sm mb-4">View completion rates and performance metrics</p>
+            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
+              View Analytics →
+            </a>
+          </div>
+        </div>
+
+        <!-- Success Message Template -->
+        <div id="successMessage" class="hidden mt-6 bg-green-50 border border-green-200 rounded-xl p-4">
+          <div class="flex items-center gap-3">
+            <div class="bg-green-100 p-2 rounded-full">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
-            <h3 class="font-semibold text-gray-900">View All Tasks</h3>
-          </div>
-          <p class="text-gray-600 text-sm mb-4">Monitor progress and status of all assigned tasks</p>
-          <a href="/leader/leader-taskstatus" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-            View Tasks →
-          </a>
-        </div>
-
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="bg-purple-100 p-2 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
+            <div>
+              <h3 class="text-green-800 font-semibold">Task Assigned Successfully!</h3>
+              <p class="text-green-700 text-sm">The task has been assigned and the member will be notified.</p>
             </div>
-            <h3 class="font-semibold text-gray-900">Manage Members</h3>
           </div>
-          <p class="text-gray-600 text-sm mb-4">View and manage club members and their roles</p>
-          <a href="/leader/leader-members" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-            Manage Members →
-          </a>
-        </div>
-
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="bg-orange-100 p-2 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-            <h3 class="font-semibold text-gray-900">Task Analytics</h3>
-          </div>
-          <p class="text-gray-600 text-sm mb-4">View completion rates and performance metrics</p>
-          <a href="#" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-            View Analytics →
-          </a>
         </div>
       </div>
     </div>
@@ -239,24 +325,49 @@
       dateInput.setAttribute('min', today);
       
       // Add form validation feedback
-      const form = document.querySelector('form');
+      const form = document.getElementById('taskForm');
       const inputs = form.querySelectorAll('input, select, textarea');
       
       inputs.forEach(input => {
         input.addEventListener('blur', function() {
-          if (this.checkValidity()) {
+          if (this.checkValidity() && this.value.trim()) {
             this.classList.remove('border-red-300');
             this.classList.add('border-green-300');
-          } else {
+          } else if (this.value.trim()) {
             this.classList.remove('border-green-300');
             this.classList.add('border-red-300');
+          }
+        });
+
+        input.addEventListener('input', function() {
+          if (this.classList.contains('border-red-300') || this.classList.contains('border-green-300')) {
+            this.classList.remove('border-red-300', 'border-green-300');
           }
         });
       });
 
       // Form submission enhancement
       form.addEventListener('submit', function(e) {
-        const submitBtn = this.querySelector('button[type="submit"]');
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalContent = submitBtn.innerHTML;
+        
+        // Validation check
+        let isValid = true;
+        inputs.forEach(input => {
+          if (input.required && !input.value.trim()) {
+            input.classList.add('border-red-300');
+            isValid = false;
+          }
+        });
+
+        if (!isValid) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        // Loading state
         submitBtn.innerHTML = `
           <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -265,7 +376,37 @@
           Assigning...
         `;
         submitBtn.disabled = true;
+
+        // Simulate form submission (replace with actual form submission)
+        setTimeout(() => {
+          // For demo purposes - replace with actual form submission
+          this.submit();
+        }, 1000);
       });
+    });
+
+    function resetFormValidation() {
+      const inputs = document.querySelectorAll('#taskForm input, #taskForm select, #taskForm textarea');
+      inputs.forEach(input => {
+        input.classList.remove('border-red-300', 'border-green-300');
+      });
+    }
+
+    // Auto-hide success message
+    function showSuccessMessage() {
+      const successMessage = document.getElementById('successMessage');
+      successMessage.classList.remove('hidden');
+      setTimeout(() => {
+        successMessage.classList.add('hidden');
+      }, 5000);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('taskForm').dispatchEvent(new Event('submit'));
+      }
     });
   </script>
 

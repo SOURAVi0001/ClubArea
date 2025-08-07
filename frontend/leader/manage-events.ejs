@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Events · ClubArea</title>
   <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -39,367 +41,536 @@
       border-color: #3b82f6;
       ring: 2px solid rgba(59, 130, 246, 0.2);
     }
+
+    /* Mobile table responsiveness */
+    @media (max-width: 640px) {
+      .dash-card {
+        padding: 16px;
+      }
+      
+      .grid {
+        gap: 12px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .dash-card {
+      animation: fadeIn 0.3s ease-out;
+    }
   </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800" style='font-family: "Plus Jakarta Sans", sans-serif;'>
   
-  <!-- Mobile Menu Button - Right Side -->
-  <button class="fixed top-5 right-5 z-[60] p-3 rounded-lg bg-white border border-gray-200 shadow-lg lg:hidden transition-all hover:bg-gray-50" onclick="toggleMobileMenu()">
-    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-    </svg>
-  </button>
+  <!-- Include the sidebar partial -->
+  <%- include('partials/sidebar', { 
+    Leader_Name: Leader_Name, 
+    Club_Name: Club_Name, 
+    currentPage: 'gallery' 
+  }) %>
 
-  <!-- Mobile Overlay -->
-  <div class="fixed inset-0 z-[40] bg-black bg-opacity-50 hidden mobile-overlay" onclick="toggleMobileMenu()"></div>
-
-  <!-- Right Sidebar -->
-  <aside class="fixed top-0 right-0 w-80 h-screen bg-white border-l border-gray-200 shadow-xl z-[50] overflow-y-auto transition-transform duration-300 translate-x-full lg:translate-x-0" id="sidebar">
-    <div class="p-6">
-      <!-- Close Button for Mobile -->
-      <div class="flex justify-between items-center mb-4 lg:hidden">
-        <h2 class="text-lg font-semibold text-gray-900">Menu</h2>
-        <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-gray-100">
-          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-
-      <!-- User Profile Section -->
-      <div class="flex items-center gap-3 mb-8 p-4 bg-gray-50 rounded-xl shadow-sm">
-        <div class="w-12 h-12 rounded-full bg-center bg-cover bg-no-repeat flex-shrink-0"
-             style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTINofuvng1wVuWdUGzeZ6-_XHbkvxLy0aJjL6EjivosnxReZhAnjrUVjhxlOqXcERdeL33_DTIIGwlv-f_zAgFz5ZpfH6q7k3BxZTKc9I97Ld7XrnEm2-1AV4vD921V3B_AEpEyddkvs9IhKe6SjoHvgM7RBmmgZpHerQySSRhjzHPjQtT2hpf2L4KEx39_KsGz-5MahqHod96ojv6QU77BaG-cmbgNh8ee2v1oDlT8KyoJ7mXxCpRWPfDLwTbdcLmKJap3aEbx0");'>
-        </div>
-        <div class="flex-1 min-w-0">
-          <h1 class="text-lg font-semibold text-gray-900 truncate"><%= Leader_Name || 'Leader Name' %></h1>
-          <p class="text-sm text-gray-600 truncate">Admin (<%= Club_Name || 'Club Name' %>)</p>
-        </div>
-      </div>
-
-      <!-- Navigation Menu -->
-      <nav class="space-y-2">
-        <a href="/leader/leader-events" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"></path>
-          </svg>
-          <span>Events</span>
-        </a>
-
-        <a href="/leader/leader-updates" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"></path>
-          </svg>
-          <span>Updates</span>
-        </a>
-
-        <a href="/leader/leader-teams" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
-          </svg>
-          <span>Teams</span>
-        </a>
-
-        <a href="/leader/manage-events" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1 bg-blue-50 text-blue-600 border-l-4 border-blue-600">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"></path>
-          </svg>
-          <span>Event Gallery</span>
-        </a>
-
-        <a href="/leader/leader-members" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"></path>
-          </svg>
-          <span>Members</span>
-        </a>
-
-        <a href="/leader/leader-chat" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128ZM84,116a12,12,0,1,0,12,12A12,12,0,0,0,84,116Zm88,0a12,12,0,1,0,12,12A12,12,0,0,0,172,116Zm60,12A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"></path>
-          </svg>
-          <span>Chat</span>
-        </a>
-
-        <a href="/leader/leader-taskstatus" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M224,128a8,8,0,0,1-8,8H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128ZM128,72h88a8,8,0,0,0,0-16H128a8,8,0,0,0,0,16Zm88,112H128a8,8,0,0,0,0,16h88a8,8,0,0,0,0-16ZM82.34,42.34,56,68.69,45.66,58.34A8,8,0,0,0,34.34,69.66l16,16a8,8,0,0,0,11.32,0l32-32A8,8,0,0,0,82.34,42.34Zm0,64L56,132.69,45.66,122.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Zm0,64L56,196.69,45.66,186.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Z"></path>
-          </svg>
-          <span>Task Status</span>
-        </a>
-
-        <a href="/leader/openings" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
-          </svg>
-          <span>Recruitment</span>
-        </a>
-
-        <a href="/leader/leader-feedback" class="flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg text-gray-700 font-medium transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1">
-          <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 256 256">
-            <path d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"></path>
-          </svg>
-          <span>Feedback</span>
-        </a>
-      </nav>
-    </div>
-  </aside>
-
-  <!-- Main Content Area with Right Margin for Sidebar -->
-  <main class="min-h-screen mr-0 lg:mr-80 transition-all duration-300">
-    <!-- Content Container with proper spacing for mobile toggle -->
-    <div class="max-w-6xl mx-auto px-6 py-8 pt-20 lg:pt-8">
-      <!-- Page Header -->
-      <header class="mb-8 flex items-center justify-between">
-        <div>
-          <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Event Gallery Manager</h1>
-          <p class="text-gray-600">Create and showcase your club's memorable moments</p>
-        </div>
-      </header>
-
-      <!-- Add Event Form -->
-      <form action="/leader/events_gallery" method="POST" enctype="multipart/form-data" class="dash-card mb-8">
-        <h2 class="text-xl font-bold text-gray-900 mb-6"> Add New Event</h2>
-
-        <div class="space-y-6">
-          <div class="grid gap-6 md:grid-cols-2">
-            <label class="block">
-              <span class="block text-sm font-medium mb-2 text-gray-700">Event Title *</span>
-              <input name="title" required placeholder="Enter event title" 
-                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-            </label>
-
-            <label class="block">
-              <span class="block text-sm font-medium mb-2 text-gray-700">Venue</span>
-              <input name="venue" placeholder="Event location" 
-                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-            </label>
-          </div>
-
-          <div class="grid gap-6 md:grid-cols-2">
-            <label class="block">
-              <span class="block text-sm font-medium mb-2 text-gray-700">Date *</span>
-              <input type="date" name="date" required 
-                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-            </label>
-
-            <label class="block">
-              <span class="block text-sm font-medium mb-2 text-gray-700">Time *</span>
-              <input type="time" name="time" required 
-                     class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-            </label>
-          </div>
-
-          <label class="block">
-            <span class="block text-sm font-medium mb-2 text-gray-700"> Event Photos (max 5)</span>
-            <input type="file" name="photos" accept="image/*" multiple
-                   class="file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white
-                          file:py-3 file:px-6 file:text-sm file:font-semibold 
-                          hover:file:bg-blue-700 file:transition-all w-full border border-gray-200 rounded-lg p-2" />
-          </label>
-
-          <label class="block">
-            <span class="block text-sm font-medium mb-2 text-gray-700">Description</span>
-            <textarea name="description" rows="4" placeholder="Tell us about this amazing event..."
-                      class="form-textarea w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"></textarea>
-          </label>
-        </div>
-
-        <div class="text-right mt-6">
-          <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold 
-                                       hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
-            ✨ Create Event
-          </button>
-        </div>
-      </form>
-
-      <!-- Events Gallery -->
-      <section>
-        <h2 class="text-2xl font-bold mb-6 text-gray-900"> Events Gallery</h2>
-
-        <div id="events-container" class="space-y-6">
-          <% events.forEach(ev => { %>
-            <article class="dash-card">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
-                  </svg>
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-xl font-bold text-gray-900 mb-2"><%= ev.title %></h3>
-                  <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-2">
-                    <span class="flex items-center gap-1">
-                      📅 <%= new Date(ev.date).toLocaleDateString('en-GB') %>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      🕐 <%= new Date('1970-01-01T' + ev.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) %>
-                    </span>
-                    <% if (ev.venue) { %>
-                      <span class="flex items-center gap-1">
-                        📍 <%= ev.venue %>
-                      </span>
-                    <% } %>
-                  </div>
-                  <% if (ev.description) { %>
-                    <p class="text-gray-700 leading-relaxed mb-4"><%= ev.description %></p>
-                  <% } %>
-
-                  <!-- Photo Gallery -->
-                  <% if (ev.photos && ev.photos.length) { %>
-                    <div class="border-t border-gray-200 pt-4">
-                      <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                        📸 Event Photos (<%= ev.photos.length %>)
-                      </h4>
-                      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                        <% ev.photos.forEach((src, index) => { %>
-                          <a href="<%= src %>" target="_blank" class="group block">
-                            <img src="<%= src %>" alt="<%= ev.title %> photo <%= index + 1 %>" 
-                                 class="w-full h-20 object-cover rounded-lg transition-transform group-hover:scale-105 shadow-sm"
-                                 loading="lazy" 
-                                 onerror="this.parentElement.innerHTML='<div class=\\'w-full h-20 bg-gray-200 rounded-lg flex items-center justify-center\\'>📷</div>'" />
-                          </a>
-                        <% }) %>
-                      </div>
-                    </div>
-                  <% } else { %>
-                    <div class="border-t border-gray-200 pt-4">
-                      <p class="text-gray-500 text-sm italic">No photos uploaded for this event</p>
-                    </div>
-                  <% } %>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        
+        <!-- Enhanced Page Header -->
+        <header class="mb-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Event Gallery Manager</h1>
+              <p class="text-gray-600">Create and showcase your club's memorable moments</p>
+            </div>
+            
+            <!-- Header Stats -->
+            <div class="flex items-center gap-3">
+              <div class="bg-white rounded-lg border border-gray-200 px-4 py-2 shadow-sm">
+                <div class="text-center">
+                  <div class="text-lg font-bold text-blue-600"><%= events ? events.length : 0 %></div>
+                  <div class="text-xs text-gray-500">Events</div>
                 </div>
               </div>
-            </article>
-          <% }) %>
+            </div>
+          </div>
+        </header>
+
+        <!-- Quick Stats Cards -->
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Total Events</p>
+                <p class="text-xl font-bold text-gray-900"><%= events ? events.length : 0 %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">This Month</p>
+                <p class="text-xl font-bold text-gray-900">+3</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-purple-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Total Photos</p>
+                <p class="text-xl font-bold text-gray-900">
+                  <%= events ? events.reduce((total, event) => total + (event.photos ? event.photos.length : 0), 0) : 0 %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-orange-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Engagement</p>
+                <p class="text-xl font-bold text-gray-900">High</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-8 flex justify-center gap-3">
-          <button id="prev-btn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium 
-                                       hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
-                  disabled>
-            ← Previous
-          </button>
-          <button id="next-btn" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium 
-                                       hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  <%= events.length < 5 ? 'disabled' : '' %>>
-            Next →
-          </button>
+        <!-- Add Event Form -->
+        <form action="/leader/events_gallery" method="POST" enctype="multipart/form-data" class="dash-card mb-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="bg-blue-100 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 4.5v15m7.5-7.5h-15"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-gray-900">Add New Event</h2>
+              <p class="text-gray-600 text-sm">Create a memorable event entry for your club</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div class="grid gap-6 md:grid-cols-2">
+              <label class="block">
+                <span class="block text-sm font-medium mb-2 text-gray-700">Event Title *</span>
+                <input name="title" required placeholder="Enter event title" 
+                       class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+              </label>
+
+              <label class="block">
+                <span class="block text-sm font-medium mb-2 text-gray-700">Venue</span>
+                <input name="venue" placeholder="Event location" 
+                       class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+              </label>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2">
+              <label class="block">
+                <span class="block text-sm font-medium mb-2 text-gray-700">Date *</span>
+                <input type="date" name="date" required 
+                       class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+              </label>
+
+              <label class="block">
+                <span class="block text-sm font-medium mb-2 text-gray-700">Time *</span>
+                <input type="time" name="time" required 
+                       class="form-input w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+              </label>
+            </div>
+
+            <label class="block">
+              <span class="block text-sm font-medium mb-2 text-gray-700">Event Photos (max 5)</span>
+              <input type="file" name="photos" accept="image/*" multiple
+                     class="file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white
+                            file:py-3 file:px-6 file:text-sm file:font-semibold 
+                            hover:file:bg-blue-700 file:transition-all w-full border border-gray-200 rounded-lg p-2" />
+              <p class="text-xs text-gray-500 mt-1">Upload up to 5 photos to showcase your event</p>
+            </label>
+
+            <label class="block">
+              <span class="block text-sm font-medium mb-2 text-gray-700">Description</span>
+              <textarea name="description" rows="4" placeholder="Tell us about this amazing event..."
+                        class="form-textarea w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"></textarea>
+            </label>
+          </div>
+
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-200">
+            <div class="text-sm text-gray-500">
+              <span class="inline-flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
+                </svg>
+                All fields marked with * are required
+              </span>
+            </div>
+            <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold 
+                                         hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+              </svg>
+              Create Event
+            </button>
+          </div>
+        </form>
+
+        <!-- Events Gallery -->
+        <section>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Events Gallery</h2>
+            <div class="text-sm text-gray-500">
+              <span id="eventCount"><%= events ? events.length : 0 %></span> event<span id="eventPlural"><%= (events && events.length !== 1) ? 's' : '' %></span> total
+            </div>
+          </div>
+
+          <div id="events-container" class="space-y-6">
+            <% if (events && events.length > 0) { %>
+              <% events.forEach(ev => { %>
+                <article class="dash-card">
+                  <div class="flex items-start gap-4 mb-4">
+                    <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                      <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                      </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-xl font-bold text-gray-900 mb-2"><%= ev.title %></h3>
+                      <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
+                        <span class="flex items-center gap-1">
+                          📅 <%= new Date(ev.date).toLocaleDateString('en-GB') %>
+                        </span>
+                        <span class="flex items-center gap-1">
+                          🕐 <%= new Date('1970-01-01T' + ev.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}) %>
+                        </span>
+                        <% if (ev.venue) { %>
+                          <span class="flex items-center gap-1">
+                            📍 <%= ev.venue %>
+                          </span>
+                        <% } %>
+                      </div>
+                      <% if (ev.description) { %>
+                        <p class="text-gray-700 leading-relaxed mb-4"><%= ev.description %></p>
+                      <% } %>
+
+                      <!-- Photo Gallery -->
+                      <% if (ev.photos && ev.photos.length) { %>
+                        <div class="border-t border-gray-200 pt-4">
+                          <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                            📸 Event Photos (<%= ev.photos.length %>)
+                          </h4>
+                          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                            <% ev.photos.forEach((src, index) => { %>
+                              <a href="<%= src %>" target="_blank" class="group block">
+                                <img src="<%= src %>" alt="<%= ev.title %> photo <%= index + 1 %>" 
+                                     class="w-full h-20 object-cover rounded-lg transition-transform group-hover:scale-105 shadow-sm border border-gray-200"
+                                     loading="lazy" 
+                                     onerror="this.parentElement.innerHTML='<div class=\\'w-full h-20 bg-gray-200 rounded-lg flex items-center justify-center border border-gray-200\\'>📷</div>'" />
+                              </a>
+                            <% }) %>
+                          </div>
+                        </div>
+                      <% } else { %>
+                        <div class="border-t border-gray-200 pt-4">
+                          <div class="flex items-center justify-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+                            <div class="text-center">
+                              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                              </svg>
+                              <p class="text-gray-500 text-sm font-medium">No photos uploaded for this event</p>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                    </div>
+                  </div>
+                </article>
+              <% }) %>
+            <% } else { %>
+              <div class="text-center py-16">
+                <div class="flex flex-col items-center gap-4">
+                  <div class="bg-gray-100 rounded-full p-6">
+                    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-600 mb-2">No events yet</h3>
+                    <p class="text-gray-500 text-sm">Create your first event to start showcasing your club's activities!</p>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- Enhanced Pagination -->
+          <% if (events && events.length > 0) { %>
+            <div class="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+              <div class="text-sm text-gray-500">
+                Showing events in your gallery
+              </div>
+              <div class="flex gap-3">
+                <button id="prev-btn" class="flex items-center gap-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium 
+                                             hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+                        disabled>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                  Previous
+                </button>
+                <button id="next-btn" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium 
+                                             hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        <%= (events && events.length < 5) ? 'disabled' : '' %>>
+                  Next
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          <% } %>
+        </section>
+
+        <!-- Quick Actions -->
+        <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/leader/leader-events" 
+               class="flex items-center gap-3 p-4 bg-white text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-50 transition-all hover:shadow-md">
+              <div class="bg-blue-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">Manage Events</div>
+                <div class="text-sm opacity-75">Create & schedule events</div>
+              </div>
+            </a>
+            
+            <a href="/leader/leader-members" 
+               class="flex items-center gap-3 p-4 bg-white text-green-600 rounded-lg border border-green-200 hover:bg-green-50 transition-all hover:shadow-md">
+              <div class="bg-green-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">View Members</div>
+                <div class="text-sm opacity-75">Manage club members</div>
+              </div>
+            </a>
+            
+            <a href="/leader/leader-updates" 
+               class="flex items-center gap-3 p-4 bg-white text-purple-600 rounded-lg border border-purple-200 hover:bg-purple-50 transition-all hover:shadow-md">
+              <div class="bg-purple-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">Share Updates</div>
+                <div class="text-sm opacity-75">Post club announcements</div>
+              </div>
+            </a>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   </main>
 
+  <!-- Enhanced JavaScript -->
   <script>
-    // Mobile menu toggle function
-    function toggleMobileMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.mobile-overlay');
+    document.addEventListener('DOMContentLoaded', function() {
+      // Form submission enhancement
+      const form = document.querySelector('form');
+      const submitBtn = document.getElementById('submitBtn');
       
-      sidebar.classList.toggle('translate-x-full');
-      overlay.classList.toggle('hidden');
-      
-      // Prevent body scroll when sidebar is open
-      if (!sidebar.classList.contains('translate-x-full')) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = '';
-      }
-    }
+      if (form && submitBtn) {
+        form.addEventListener('submit', function(e) {
+          const originalContent = submitBtn.innerHTML;
+          submitBtn.innerHTML = `
+            <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Creating Event...
+          `;
+          submitBtn.disabled = true;
 
-    // Close mobile menu when clicking on nav items
-    document.querySelectorAll('aside a').forEach(item => {
-      item.addEventListener('click', () => {
-        if (window.innerWidth < 1024) {
-          const sidebar = document.getElementById('sidebar');
-          const overlay = document.querySelector('.mobile-overlay');
-          
-          sidebar.classList.add('translate-x-full');
-          overlay.classList.add('hidden');
-          document.body.style.overflow = '';
+          // Reset button after delay (in case of error)
+          setTimeout(() => {
+            submitBtn.innerHTML = originalContent;
+            submitBtn.disabled = false;
+          }, 10000);
+        });
+      }
+
+      // File input validation
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+          const files = e.target.files;
+          if (files.length > 5) {
+            alert('You can only upload up to 5 photos per event.');
+            e.target.value = '';
+          }
+        });
+      }
+
+      // Set minimum date to today
+      const dateInput = document.querySelector('input[type="date"]');
+      if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+      }
+
+      // Pagination functionality
+      const limit = 5;
+      let skip = 0;
+      const container = document.getElementById('events-container');
+      const nextBtn = document.getElementById('next-btn');
+      const prevBtn = document.getElementById('prev-btn');
+      const eventCount = document.getElementById('eventCount');
+      const eventPlural = document.getElementById('eventPlural');
+
+      if (nextBtn && prevBtn && container) {
+        async function loadPage() {
+          try {
+            container.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div><p class="mt-2 text-gray-600">Loading events...</p></div>';
+            
+            const res = await fetch(`/leader/events/page?skip=${skip}`);
+            if (!res.ok) throw new Error('Failed to fetch events');
+            
+            const { events, totalCount } = await res.json();
+
+            container.innerHTML = '';
+            
+            if (events.length === 0) {
+              container.innerHTML = `
+                <div class="text-center py-16">
+                  <div class="flex flex-col items-center gap-4">
+                    <div class="bg-gray-100 rounded-full p-6">
+                      <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-600 mb-2">No events found</h3>
+                      <p class="text-gray-500 text-sm">No events found for this page.</p>
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else {
+              events.forEach(ev => {
+                const photosHtml = ev.photos && ev.photos.length ? 
+                  `<div class="border-t border-gray-200 pt-4">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      📸 Event Photos (${ev.photos.length})
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                      ${ev.photos.map((src, index) => `
+                        <a href="${src}" target="_blank" class="group block">
+                          <img src="${src}" alt="${ev.title} photo ${index + 1}" 
+                               class="w-full h-20 object-cover rounded-lg transition-transform group-hover:scale-105 shadow-sm border border-gray-200"
+                               loading="lazy" 
+                               onerror="this.parentElement.innerHTML='<div class=\\'w-full h-20 bg-gray-200 rounded-lg flex items-center justify-center border border-gray-200\\'>📷</div>'" />
+                        </a>
+                      `).join('')}
+                    </div>
+                  </div>` : 
+                  `<div class="border-t border-gray-200 pt-4">
+                    <div class="flex items-center justify-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+                      <div class="text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <p class="text-gray-500 text-sm font-medium">No photos uploaded for this event</p>
+                      </div>
+                    </div>
+                  </div>`;
+
+                container.insertAdjacentHTML('beforeend', `
+                  <article class="dash-card">
+                    <div class="flex items-start gap-4 mb-4">
+                      <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                        <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                        </svg>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${ev.title}</h3>
+                        <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
+                          <span class="flex items-center gap-1">📅 ${new Date(ev.date).toLocaleDateString('en-GB')}</span>
+                          <span class="flex items-center gap-1">🕐 ${new Date('1970-01-01T' + ev.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})}</span>
+                          ${ev.venue ? `<span class="flex items-center gap-1">📍 ${ev.venue}</span>` : ''}
+                        </div>
+                        ${ev.description ? `<p class="text-gray-700 leading-relaxed mb-4">${ev.description}</p>` : ''}
+                        ${photosHtml}
+                      </div>
+                    </div>
+                  </article>
+                `);
+              });
+            }
+
+            // Update pagination buttons
+            prevBtn.disabled = skip === 0;
+            nextBtn.disabled = skip + limit >= totalCount;
+            
+            // Update event count
+            if (eventCount) eventCount.textContent = events.length;
+            if (eventPlural) eventPlural.textContent = events.length !== 1 ? 's' : '';
+
+          } catch (error) {
+            container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading events. Please try again.</div>';
+            console.error('Error loading events:', error);
+          }
+        }
+
+        nextBtn.addEventListener('click', () => { 
+          skip += limit; 
+          loadPage(); 
+        });
+        
+        prevBtn.addEventListener('click', () => { 
+          skip = Math.max(0, skip - limit); 
+          loadPage(); 
+        });
+      }
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'n') {
+          e.preventDefault();
+          document.querySelector('input[name="title"]').focus();
         }
       });
     });
-
-    // Close sidebar when window is resized to desktop
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 1024) {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.querySelector('.mobile-overlay');
-        
-        sidebar.classList.remove('translate-x-full');
-        overlay.classList.add('hidden');
-        document.body.style.overflow = '';
-      }
-    });
-
-    // Pagination functionality
-    const limit = 5;
-    let skip = 0;
-    const container = document.getElementById('events-container');
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-
-    async function loadPage() {
-      try {
-        container.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>';
-        
-        const res = await fetch(`/leader/events/page?skip=${skip}`);
-        const { events, totalCount } = await res.json();
-
-        container.innerHTML = '';
-        events.forEach(ev => {
-          const photosHtml = ev.photos && ev.photos.length ? 
-            `<div class="border-t border-gray-200 pt-4">
-              <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                📸 Event Photos (${ev.photos.length})
-              </h4>
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                ${ev.photos.map((src, index) => `
-                  <a href="${src}" target="_blank" class="group block">
-                    <img src="${src}" alt="${ev.title} photo ${index + 1}" 
-                         class="w-full h-20 object-cover rounded-lg transition-transform group-hover:scale-105 shadow-sm"
-                         loading="lazy" 
-                         onerror="this.parentElement.innerHTML='<div class=\\'w-full h-20 bg-gray-200 rounded-lg flex items-center justify-center\\'>📷</div>'" />
-                  </a>
-                `).join('')}
-              </div>
-            </div>` : 
-            '<div class="border-t border-gray-200 pt-4"><p class="text-gray-500 text-sm italic">No photos uploaded for this event</p></div>';
-
-          container.insertAdjacentHTML('beforeend', `
-            <article class="dash-card">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
-                  </svg>
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-xl font-bold text-gray-900 mb-2">${ev.title}</h3>
-                  <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-2">
-                    <span class="flex items-center gap-1">📅 ${new Date(ev.date).toLocaleDateString('en-GB')}</span>
-                    <span class="flex items-center gap-1">🕐 ${new Date('1970-01-01T' + ev.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})}</span>
-                    ${ev.venue ? `<span class="flex items-center gap-1">📍 ${ev.venue}</span>` : ''}
-                  </div>
-                  ${ev.description ? `<p class="text-gray-700 leading-relaxed mb-4">${ev.description}</p>` : ''}
-                  ${photosHtml}
-                </div>
-              </div>
-            </article>
-          `);
-        });
-
-        prevBtn.disabled = skip === 0;
-        nextBtn.disabled = skip + limit >= totalCount;
-      } catch (error) {
-        container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading events</div>';
-      }
-    }
-
-    nextBtn.addEventListener('click', () => { skip += limit; loadPage(); });
-    prevBtn.addEventListener('click', () => { skip = Math.max(0, skip - limit); loadPage(); });
   </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Updates</title>
   <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -16,131 +18,449 @@
     currentPage: 'updates' 
   }) %>
 
-  <!-- Main Content Area with margin for sidebar -->
-  <main class="ml-0 md:ml-80 min-h-screen">
-    <div class="max-w-[960px] mx-auto px-6 py-8">
-      
-      <!-- Header -->
-      <header class="mb-8">
-        <div class="flex flex-wrap justify-between gap-3">
-          <div class="flex min-w-72 flex-col gap-3">
-            <h1 class="text-[#111418] text-[32px] font-bold leading-tight"> Updates</h1>
-            <p class="text-[#60758a] text-sm">Share announcements, news, and updates with your Club Members.</p>
-          </div>
-        </div>
-      </header>
-
-      <!-- Post Form -->
-      <div class="mb-8">
-        <form id="updateForm" method="POST" action="/leader/Post_Updates" class="bg-white border border-[#dbe0e6] rounded-lg overflow-hidden shadow-sm">
-          <div class="flex items-start p-4 gap-4">
-            <div class="rounded-full bg-cover bg-center size-10 shrink-0 bg-gray-200"></div>
-            <div class="flex flex-col flex-1 gap-2">
-              <input type="text" name="title" placeholder="Enter post title" class="w-full px-3 py-2 border border-[#dbe0e6] rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              <textarea name="content" placeholder="Write here?" class="w-full resize-none px-3 py-2 border border-[#dbe0e6] rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" required></textarea>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen transition-all duration-300">
+    <div class="max-w-[960px] mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        
+        <!-- Enhanced Header -->
+        <header class="mb-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 class="text-[#111418] text-4xl font-bold leading-tight mb-2">Updates</h1>
+              <p class="text-[#60758a] text-sm">Share announcements, news, and updates with your Club Members.</p>
             </div>
-          </div>
-          <div class="flex items-center justify-between px-4 py-2 border-t border-[#dbe0e6] bg-gray-50">
-            <div class="flex items-center gap-2">
-              <button type="button" class="text-[#60758a] hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Add Image">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
-                  <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H216v92.69l-30.34-30.35a16,16,0,0,0-22.62,0L147.31,134.07,106.34,93.66a16,16,0,0,0-22.68,0L40,137.38ZM216,200H40V152.45l53.66-53.66L147.31,152.45a16,16,0,0,0,22.62,0L216,106.9Z" />
-                </svg>
-              </button>
-              <button type="button" class="text-[#60758a] hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Add Link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
-                  <path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L70.21,106.57a8,8,0,0,1,11.32,11.31L59.69,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36ZM208,32a56.08,56.08,0,0,0-39.64,16.43L147.31,69.49a8,8,0,0,0,11.32,11.31l21.05-21.05a40,40,0,0,1,56.58,56.58L214.21,138.38a8,8,0,0,0,11.32,11.31L247.57,127.64A56,56,0,0,0,208,32Z" />
-                </svg>
-              </button>
-              <select id="postType" name="postType" class="border border-[#dbe0e6] rounded px-2 py-1 text-sm text-[#111418] bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="club">Club Only</option>
-                <option value="public">Public</option>
-              </select>
-            </div>
-            <button type="submit" class="bg-[#0c7ff2] text-white text-sm font-medium px-4 py-1.5 rounded hover:bg-blue-600 transition-colors">Post</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- JS to toggle form action -->
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const form = document.getElementById('updateForm');
-          const postType = document.getElementById('postType');
-          postType.addEventListener('change', function () {
-            form.action = postType.value === 'public' ? '/updates/public' : '/updates/club';
-          });
-        });
-      </script>
-
-      <!-- Recent Updates -->
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <!-- Section Header -->
-        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-          <h2 class="text-[#111418] text-[22px] font-bold leading-tight"> Recent Updates</h2>
-        </div>
-
-        <!-- Updates Container -->
-        <div id="updates-container">
-          <% data.forEach((d) => { %>
-            <div class="flex w-full flex-row items-start justify-start gap-3 p-6 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
-              <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" style='background-image: url("<%= d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png" %>");'></div>
-              <div class="flex h-full flex-1 flex-col items-start justify-start">
-                <div class="flex w-full flex-row items-start justify-start gap-x-3 mb-2">
-                  <p class="text-[#111418] text-sm font-bold"><%= d.posted_by %></p>
-                  <p class="text-[#111418] text-sm font-bold">(<%= d.title %>)</p>
-                  <p class="text-[#60758a] text-sm"><%= typeof d.ago === "function" ? d.ago() : "" %></p>
+            
+            <!-- Quick Stats -->
+            <div class="flex items-center gap-4">
+              <div class="bg-white rounded-lg border border-gray-200 px-3 py-2 shadow-sm">
+                <div class="text-center">
+                  <div class="text-lg font-bold text-blue-600"><%= data ? data.length : 0 %></div>
+                  <div class="text-xs text-gray-500">Updates</div>
                 </div>
-                <p class="text-[#111418] text-sm mb-3 leading-relaxed"><%= d.description %></p>
-               
               </div>
             </div>
-          <% }); %>
+          </div>
+        </header>
+
+        <!-- Enhanced Post Form -->
+        <div class="mb-8">
+          <form id="updateForm" method="POST" action="/leader/Post_Updates" class="bg-white border border-[#dbe0e6] rounded-xl overflow-hidden shadow-sm">
+            <!-- Form Header -->
+            <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
+              <div class="flex items-center gap-3">
+                <div class="bg-blue-100 p-2 rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">Create New Update</h3>
+                  <p class="text-sm text-gray-500">Share important news with your club members</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Content -->
+            <div class="p-6">
+              <div class="flex items-start gap-4">
+                <div class="rounded-full bg-cover bg-center size-10 shrink-0 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                  <span class="text-white font-semibold text-sm">
+                    <%= (Leader_Name || 'L').charAt(0).toUpperCase() %>
+                  </span>
+                </div>
+                <div class="flex flex-col flex-1 gap-4">
+                  <input 
+                    type="text" 
+                    name="title" 
+                    placeholder="Enter post title..." 
+                    class="w-full px-4 py-3 border border-[#dbe0e6] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    required 
+                  />
+                  <textarea 
+                    name="content" 
+                    placeholder="What would you like to share with your club members?" 
+                    class="w-full resize-none px-4 py-3 border border-[#dbe0e6] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all h-32" 
+                    required
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Footer -->
+            <div class="flex flex-col sm:flex-row items-center justify-between px-6 py-4 border-t border-[#dbe0e6] bg-gray-50 gap-3">
+              <div class="flex items-center gap-3 w-full sm:w-auto">
+                <button type="button" class="text-[#60758a] hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Add Image">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+                    <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H216v92.69l-30.34-30.35a16,16,0,0,0-22.62,0L147.31,134.07,106.34,93.66a16,16,0,0,0-22.68,0L40,137.38ZM216,200H40V152.45l53.66-53.66L147.31,152.45a16,16,0,0,0,22.62,0L216,106.9Z" />
+                  </svg>
+                </button>
+                <button type="button" class="text-[#60758a] hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors" title="Add Link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+                    <path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L70.21,106.57a8,8,0,0,1,11.32,11.31L59.69,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36ZM208,32a56.08,56.08,0,0,0-39.64,16.43L147.31,69.49a8,8,0,0,0,11.32,11.31l21.05-21.05a40,40,0,0,1,56.58,56.58L214.21,138.38a8,8,0,0,0,11.32,11.31L247.57,127.64A56,56,0,0,0,208,32Z" />
+                  </svg>
+                </button>
+                <select id="postType" name="postType" class="border border-[#dbe0e6] rounded-lg px-3 py-2 text-sm text-[#111418] bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[120px]">
+                  <option value="club">Club Only</option>
+                  <option value="public">Public</option>
+                </select>
+              </div>
+              <button 
+                type="submit" 
+                id="postButton"
+                class="w-full sm:w-auto bg-[#0c7ff2] text-white text-sm font-medium px-6 py-2.5 rounded-lg hover:bg-blue-600 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                </svg>
+                Post Update
+              </button>
+            </div>
+          </form>
         </div>
 
-        <!-- Pagination Buttons -->
-        <div class="flex justify-center gap-4 p-6 bg-gray-50 border-t border-gray-200">
-          <button id="prev-btn" class="bg-gray-200 px-4 py-2 rounded text-sm font-medium text-gray-800 disabled:opacity-50 hover:bg-gray-300 transition-colors" disabled>Previous</button>
-          <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded text-sm font-medium disabled:opacity-50 hover:bg-blue-600 transition-colors" <%= data.length < 5 ? "disabled" : "" %>>Next</button>
+        <!-- Enhanced Recent Updates Section -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <!-- Section Header with Search -->
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <h2 class="text-[#111418] text-2xl font-bold leading-tight">Recent Updates</h2>
+              
+              <!-- Search and Filter -->
+              <div class="flex items-center gap-3">
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    id="searchInput"
+                    placeholder="Search updates..." 
+                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+                  />
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Updates Container -->
+          <div id="updates-container">
+            <% if (data && data.length > 0) { %>
+              <% data.forEach((d, index) => { %>
+                <div class="update-item flex w-full flex-row items-start justify-start gap-3 p-6 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors"
+                     data-title="<%= (d.title || '').toLowerCase() %>"
+                     data-author="<%= (d.posted_by || '').toLowerCase() %>"
+                     data-content="<%= (d.description || '').toLowerCase() %>">
+                  <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-12 h-12 shrink-0 border-2 border-white shadow-md" 
+                       style='background-image: url("<%= d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png" %>");'></div>
+                  <div class="flex h-full flex-1 flex-col items-start justify-start">
+                    <div class="flex w-full flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <p class="text-[#111418] text-sm font-bold update-author"><%= d.posted_by || 'Unknown' %></p>
+                        <span class="text-gray-300">•</span>
+                        <p class="text-[#111418] text-sm font-semibold update-title">(<%= d.title || 'Untitled' %>)</p>
+                      </div>
+                      <p class="text-[#60758a] text-xs whitespace-nowrap">
+                        <%= typeof d.ago === "function" ? d.ago() : (d.createdAt ? new Date(d.createdAt).toLocaleDateString() : 'Recently') %>
+                      </p>
+                    </div>
+                    <p class="text-[#111418] text-sm mb-4 leading-relaxed update-content"><%= d.description || 'No content available' %></p>
+                    
+                    <!-- Interaction Buttons -->
+                    <div class="flex w-full flex-row items-center justify-between">
+                      <div class="flex items-center gap-6">
+                        <button class="flex items-center gap-2 text-gray-500 hover:text-green-600 transition-colors" title="Like">
+                          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558-.645 1.01-1.09 1.354l-.812.68c-.247.207-.46.465-.618.761.208-.013.426-.024.651-.024.864 0 1.723.129 2.547.374.735.22 1.416.598 2.009 1.107.593.508 1.07 1.156 1.315 1.893a7.26 7.26 0 01.126 2.102c-.09 1.117-.546 2.146-1.305 2.943-.759.797-1.787 1.25-2.943 1.25h-1.094a4.5 4.5 0 01-4.5-4.5v-.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5v.5a6 6 0 006 6h1.094a.75.75 0 010 1.5H7.493z"/>
+                          </svg>
+                          <span class="text-sm"><%= d.likes || 0 %></span>
+                        </button>
+                        <button class="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors" title="Comment">
+                          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                          </svg>
+                          <span class="text-sm"><%= d.comments || 0 %></span>
+                        </button>
+                        <button class="flex items-center gap-2 text-gray-500 hover:text-purple-600 transition-colors" title="Share">
+                          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="text-xs text-gray-400">
+                        Update #<%= index + 1 %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <div class="flex flex-col items-center justify-center py-16 text-center">
+                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                </svg>
+                <h3 class="text-lg font-semibold text-gray-600 mb-2">No updates yet</h3>
+                <p class="text-gray-500 text-sm">Be the first to share an update with your club members!</p>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- No Results Message -->
+          <div id="noResultsMessage" class="hidden flex flex-col items-center justify-center py-16 text-center">
+            <svg class="w-12 h-12 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-600 mb-2">No matching updates found</h3>
+            <p class="text-gray-500 text-sm">Try adjusting your search terms</p>
+          </div>
+
+          <!-- Enhanced Pagination Buttons -->
+          <% if (data && data.length > 0) { %>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 p-6 bg-gray-50 border-t border-gray-200">
+              <div class="text-sm text-gray-500">
+                Showing <span id="currentResults"><%= data.length %></span> updates
+              </div>
+              <div class="flex gap-3">
+                <button id="prev-btn" class="bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium text-gray-800 disabled:opacity-50 hover:bg-gray-300 transition-all flex items-center gap-2" disabled>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                  Previous
+                </button>
+                <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-blue-600 transition-all flex items-center gap-2" <%= (data && data.length < 5) ? "disabled" : "" %>>
+                  Next
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/leader/leader-members" 
+               class="flex items-center gap-3 p-4 bg-white text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-50 transition-all hover:shadow-md">
+              <div class="bg-blue-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">View Members</div>
+                <div class="text-sm opacity-75">Manage club members</div>
+              </div>
+            </a>
+            
+            <a href="/leader/leader-events" 
+               class="flex items-center gap-3 p-4 bg-white text-green-600 rounded-lg border border-green-200 hover:bg-green-50 transition-all hover:shadow-md">
+              <div class="bg-green-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">Events</div>
+                <div class="text-sm opacity-75">Manage club events</div>
+              </div>
+            </a>
+            
+            <a href="/leader/leader-feedback" 
+               class="flex items-center gap-3 p-4 bg-white text-purple-600 rounded-lg border border-purple-200 hover:bg-purple-50 transition-all hover:shadow-md">
+              <div class="bg-purple-100 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">Feedback</div>
+                <div class="text-sm opacity-75">View member feedback</div>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
+    </div>
+  </main>
 
-      <!-- Pagination Script -->
-      <script>
-        let skip = 0;
-        const limit = 5;
-        const total = <%= totalCount %>;
-        const container = document.getElementById("updates-container");
-        const nextBtn = document.getElementById("next-btn");
-        const prevBtn = document.getElementById("prev-btn");
+  <!-- Enhanced JavaScript -->
+  <script>
+    // Form handling
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('updateForm');
+      const postType = document.getElementById('postType');
+      const postButton = document.getElementById('postButton');
+      const searchInput = document.getElementById('searchInput');
+      const updateItems = document.querySelectorAll('.update-item');
+      const noResultsMessage = document.getElementById('noResultsMessage');
 
+      // Toggle form action based on post type
+      postType.addEventListener('change', function () {
+        form.action = postType.value === 'public' ? '/updates/public' : '/updates/club';
+      });
+
+      // Form submission enhancement
+      form.addEventListener('submit', function(e) {
+        const originalContent = postButton.innerHTML;
+        postButton.innerHTML = `
+          <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Posting...
+        `;
+        postButton.disabled = true;
+
+        // Reset button after a delay (in case of error)
+        setTimeout(() => {
+          postButton.innerHTML = originalContent;
+          postButton.disabled = false;
+        }, 10000);
+      });
+
+      // Search functionality
+      if (searchInput && updateItems.length > 0) {
+        function filterUpdates() {
+          const searchTerm = searchInput.value.toLowerCase().trim();
+          let visibleCount = 0;
+
+          updateItems.forEach(item => {
+            const title = item.dataset.title || '';
+            const author = item.dataset.author || '';
+            const content = item.dataset.content || '';
+
+            const matches = !searchTerm || 
+              title.includes(searchTerm) || 
+              author.includes(searchTerm) || 
+              content.includes(searchTerm);
+
+            if (matches) {
+              item.style.display = '';
+              visibleCount++;
+
+              // Highlight search terms
+              if (searchTerm) {
+                highlightSearchTerms(item, searchTerm);
+              } else {
+                removeHighlights(item);
+              }
+            } else {
+              item.style.display = 'none';
+            }
+          });
+
+          // Update results count
+          const currentResults = document.getElementById('currentResults');
+          if (currentResults) {
+            currentResults.textContent = visibleCount;
+          }
+
+          // Show/hide no results message
+          if (visibleCount === 0 && updateItems.length > 0) {
+            noResultsMessage.classList.remove('hidden');
+          } else {
+            noResultsMessage.classList.add('hidden');
+          }
+        }
+
+        function highlightSearchTerms(item, searchTerm) {
+          const titleElement = item.querySelector('.update-title');
+          const authorElement = item.querySelector('.update-author');
+          const contentElement = item.querySelector('.update-content');
+
+          [titleElement, authorElement, contentElement].forEach(element => {
+            if (element && element.textContent.toLowerCase().includes(searchTerm)) {
+              const regex = new RegExp(`(${searchTerm})`, 'gi');
+              element.innerHTML = element.textContent.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+            }
+          });
+        }
+
+        function removeHighlights(item) {
+          const highlights = item.querySelectorAll('mark');
+          highlights.forEach(mark => {
+            const parent = mark.parentNode;
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            parent.normalize();
+          });
+        }
+
+        // Real-time search with debounce
+        searchInput.addEventListener('input', function() {
+          clearTimeout(this.searchTimeout);
+          this.searchTimeout = setTimeout(filterUpdates, 300);
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            filterUpdates();
+          }
+        });
+      }
+
+      // Pagination handling
+      let skip = 0;
+      const limit = 5;
+      const total = <%= typeof totalCount !== 'undefined' ? totalCount : (data ? data.length : 0) %>;
+      const container = document.getElementById("updates-container");
+      const nextBtn = document.getElementById("next-btn");
+      const prevBtn = document.getElementById("prev-btn");
+
+      if (nextBtn && prevBtn && container) {
         function renderUpdates(updates) {
           container.innerHTML = "";
-          updates.forEach(d => {
+          if (updates.length === 0) {
+            container.innerHTML = `
+              <div class="flex flex-col items-center justify-center py-16 text-center">
+                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                </svg>
+                <h3 class="text-lg font-semibold text-gray-600 mb-2">No updates found</h3>
+                <p class="text-gray-500 text-sm">No updates found for this page.</p>
+              </div>
+            `;
+            return;
+          }
+
+          updates.forEach((d, index) => {
             const div = document.createElement("div");
-            div.className = "flex w-full flex-row items-start justify-start gap-3 p-6 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors";
+            div.className = "update-item flex w-full flex-row items-start justify-start gap-3 p-6 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors";
             div.innerHTML = `
-              <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
+              <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-12 h-12 shrink-0 border-2 border-white shadow-md"
                 style='background-image: url("${d.imageUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}");'></div>
               <div class="flex h-full flex-1 flex-col items-start justify-start">
-                <div class="flex w-full flex-row items-start justify-start gap-x-3 mb-2">
-                  <p class="text-[#111418] text-sm font-bold">${d.posted_by}</p>
-                  <p class="text-[#111418] text-sm font-bold">(${d.title})</p>
+                <div class="flex w-full flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <p class="text-[#111418] text-sm font-bold">${d.posted_by || 'Unknown'}</p>
+                    <span class="text-gray-300">•</span>
+                    <p class="text-[#111418] text-sm font-semibold">(${d.title || 'Untitled'})</p>
+                  </div>
+                  <p class="text-[#60758a] text-xs whitespace-nowrap">Recently</p>
                 </div>
-                <p class="text-[#111418] text-sm mb-3 leading-relaxed">${d.description}</p>
-                <div class="flex w-full flex-row items-center justify-start gap-9">
-                  <div class="flex items-center gap-2">
-                    <svg width="20" height="20" fill="currentColor" class="text-green-600">
-                      <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 004 14h4v7a1 1 0 001 1h6a1 1 0 001-1v-7h4a1.001 1.001 0 00.781-1.625l-8-10z"/>
-                    </svg>
-                    <p class="text-[#60758a] text-sm">${d.likes || 0}</p>
+                <p class="text-[#111418] text-sm mb-4 leading-relaxed">${d.description || 'No content available'}</p>
+                <div class="flex w-full flex-row items-center justify-between">
+                  <div class="flex items-center gap-6">
+                    <button class="flex items-center gap-2 text-gray-500 hover:text-green-600 transition-colors">
+                      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558-.645 1.01-1.09 1.354l-.812.68c-.247.207-.46.465-.618.761.208-.013.426-.024.651-.024.864 0 1.723.129 2.547.374.735.22 1.416.598 2.009 1.107.593.508 1.07 1.156 1.315 1.893a7.26 7.26 0 01.126 2.102c-.09 1.117-.546 2.146-1.305 2.943-.759.797-1.787 1.25-2.943 1.25h-1.094a4.5 4.5 0 01-4.5-4.5v-.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5v.5a6 6 0 006 6h1.094a.75.75 0 010 1.5H7.493z"/>
+                      </svg>
+                      <span class="text-sm">${d.likes || 0}</span>
+                    </button>
+                    <button class="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
+                      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                      </svg>
+                      <span class="text-sm">${d.comments || 0}</span>
+                    </button>
                   </div>
-                  <div class="flex items-center gap-2">
-                    <svg width="20" height="20" fill="currentColor" class="text-red-600">
-                      <path d="M11.219 13.625c.381.475 1.181.475 1.562 0l8-10A1.001 1.001 0 0020 2h-4V-5a1 1 0 00-1-1H9a1 1 0 00-1 1v7H4a1.001 1.001 0 00-.781 1.625l8 10z"/>
-                    </svg>
-                    <p class="text-[#60758a] text-sm">${d.dislikes || 0}</p>
-                  </div>
+                  <div class="text-xs text-gray-400">Update #${skip + index + 1}</div>
                 </div>
               </div>
             `;
@@ -149,11 +469,27 @@
         }
 
         async function loadUpdates() {
-          const res = await fetch(`/leader/updates/page?skip=${skip}`);
-          const { updates, totalCount } = await res.json();
-          renderUpdates(updates);
-          prevBtn.disabled = skip === 0;
-          nextBtn.disabled = skip + limit >= totalCount;
+          try {
+            container.innerHTML = '<div class="flex justify-center items-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div><p class="ml-3 text-gray-600">Loading updates...</p></div>';
+            
+            const res = await fetch(`/leader/updates/page?skip=${skip}`);
+            if (!res.ok) throw new Error('Failed to fetch updates');
+            
+            const { updates, totalCount } = await res.json();
+            renderUpdates(updates);
+            
+            prevBtn.disabled = skip === 0;
+            nextBtn.disabled = skip + limit >= totalCount;
+            
+            // Update results count
+            const currentResults = document.getElementById('currentResults');
+            if (currentResults) {
+              currentResults.textContent = updates.length;
+            }
+          } catch (error) {
+            container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading updates. Please try again.</div>';
+            console.error('Error loading updates:', error);
+          }
         }
 
         nextBtn.addEventListener("click", () => {
@@ -165,9 +501,50 @@
           skip = Math.max(0, skip - limit);
           loadUpdates();
         });
-      </script>
-    </div>
-  </main>
+      }
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'n') {
+          e.preventDefault();
+          document.querySelector('input[name="title"]').focus();
+        }
+        if (e.ctrlKey && e.key === 'k') {
+          e.preventDefault();
+          if (searchInput) searchInput.focus();
+        }
+      });
+    });
+  </script>
+
+  <!-- Custom Styles -->
+  <style>
+    mark {
+      background-color: #fef08a !important;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .update-item {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+      .update-item {
+        padding: 16px;
+      }
+      
+      .update-item .gap-3 {
+        gap: 12px;
+      }
+    }
+  </style>
 
 </body>
 </html>

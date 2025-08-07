@@ -73,15 +73,15 @@
                                 </div>
                                 
                                 <div class="mb-4">
+                                    <!-- FIXED: Resume Preview Button -->
                                     <button onclick="previewResume('<%= applicant._id %>')" 
-                                            class="text-blue-600 hover:underline text-sm cursor-pointer bg-transparent border-none p-0">
+                                            class="text-blue-600 hover:underline text-sm cursor-pointer bg-none border-none p-0">
                                         📄 Preview Resume
                                     </button>
                                     <p class="text-xs text-gray-500 mt-1">Applied: <%= new Date(applicant.createdAt).toLocaleDateString() %></p>
                                 </div>
                                 
-                                <!-- FIXED: Changed from 'active' to 'pending' -->
-                                <% if (applicant.status === 'pending') { %>
+                                <% if (applicant.status === 'active') { %>
                                     <div class="flex space-x-2 action-buttons">
                                         <button onclick="reviewApplication('<%= applicant._id %>', 'accepted')" 
                                                 class="accept-btn flex-1 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
@@ -120,31 +120,15 @@
         </div>
     </div>
 
-    <!-- Enhanced Resume Preview Modal -->
+    <!-- Resume Preview Modal -->
     <div id="resumeModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-        <div class="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 shadow-lg rounded-md bg-white">
-            <div class="flex justify-between items-center pb-3 border-b">
-                <h3 class="text-xl font-bold text-gray-800">Resume Preview</h3>
-                <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-3xl font-bold leading-none">&times;</button>
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3">
+                <p class="text-2xl font-bold">Resume Preview</p>
+                <button id="closeModal" class="text-black close-modal text-3xl leading-none font-semibold">&times;</button>
             </div>
-            <div class="mt-4">
-                <div id="loadingIndicator" class="text-center py-8">
-                    <p class="text-gray-600">Loading resume...</p>
-                </div>
-                <iframe 
-                    id="resumeFrame" 
-                    src="" 
-                    width="100%" 
-                    height="600px" 
-                    frameborder="0"
-                    onload="document.getElementById('loadingIndicator').style.display='none'"
-                    style="border: 1px solid #e5e7eb; border-radius: 8px;">
-                </iframe>
-            </div>
-            <div class="mt-4 text-center">
-                <button onclick="closeResumeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
-                    Close
-                </button>
+            <div class="mt-2">
+                <iframe id="resumeFrame" src="" width="100%" height="600px" frameborder="0"></iframe>
             </div>
         </div>
     </div>
@@ -164,7 +148,7 @@
             });
         });
 
-        // Enhanced review application function
+        // FIXED: Enhanced reviewApplication function
         async function reviewApplication(applicantId, decision) {
             const confirmMessage = decision === 'accepted' 
                 ? 'Are you sure you want to ACCEPT this applicant? They will receive an email notification and be added to the club.'
@@ -172,6 +156,7 @@
                 
             if (!confirm(confirmMessage)) return;
 
+            // Get the applicant card and buttons
             const card = document.querySelector(`[data-applicant-id="${applicantId}"]`);
             const buttons = card ? card.querySelectorAll('.action-buttons button') : [];
             
@@ -233,64 +218,32 @@
             }
         }
 
-        // Enhanced resume preview function
+        // NEW: Resume preview function
         function previewResume(applicantId) {
-            console.log('Opening resume for applicant:', applicantId);
-            
             const modal = document.getElementById('resumeModal');
             const iframe = document.getElementById('resumeFrame');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            
-            if (!modal || !iframe) {
-                console.error('Modal elements not found');
-                alert('Resume preview is not available');
-                return;
-            }
-            
-            // Show loading state
-            loadingIndicator.style.display = 'block';
-            iframe.src = '';
             
             // Set the resume URL for preview
-            const resumeUrl = `/download/resume/${applicantId}`;
-            console.log('Loading resume from:', resumeUrl);
+            iframe.src = `/download/resume/${applicantId}`;
             
             // Show modal
             modal.classList.remove('hidden');
-            
-            // Set iframe source
-            iframe.src = resumeUrl;
-            
-            // Add error handling for iframe
-            iframe.onerror = function() {
-                console.error('Failed to load resume');
-                alert('Failed to load resume. Please try downloading instead.');
-                closeResumeModal();
-            };
         }
 
-        // Close modal functions
-        function closeResumeModal() {
+        // Close modal functionality
+        document.getElementById('closeModal').addEventListener('click', function() {
             const modal = document.getElementById('resumeModal');
             const iframe = document.getElementById('resumeFrame');
             
-            if (modal) modal.classList.add('hidden');
-            if (iframe) iframe.src = '';
-        }
-
-        // Event listeners for modal
-        document.getElementById('closeModal').addEventListener('click', closeResumeModal);
-
-        document.getElementById('resumeModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeResumeModal();
-            }
+            modal.classList.add('hidden');
+            iframe.src = ''; // Clear iframe source
         });
 
-        // Keyboard support for modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeResumeModal();
+        // Close modal when clicking outside
+        document.getElementById('resumeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+                document.getElementById('resumeFrame').src = '';
             }
         });
     </script>

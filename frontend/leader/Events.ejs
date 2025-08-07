@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Events</title>
   <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -16,125 +18,145 @@
     currentPage: 'events' 
   }) %>
 
-  <!-- Main Content Area with margin for sidebar -->
-  <main class="ml-0 md:ml-80 min-h-screen">
-    <div class="max-w-[960px] mx-auto px-6 py-8">
-      <!-- Page Header -->
-      <header class="mb-8">
-        <h1 class="text-4xl font-bold text-[#111518] mb-2">Manage Events</h1>
-        <p class="text-gray-600">Create and organize club events</p>
-      </header>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen transition-all duration-300">
+    <div class="max-w-[960px] mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        <!-- Page Header -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold text-[#111518] mb-2">Manage Events</h1>
+          <p class="text-gray-600">Create and organize club events</p>
+        </header>
 
-      <!-- Add Event Form -->
-      <form action="/Post_event" method="POST" class="bg-white rounded-xl border border-gray-200 p-6 mb-8 shadow-sm">
-        <h3 class="text-[#111518] text-xl font-bold mb-6"> Add New Event</h3>
-        
-        <div class="space-y-6">
-          <div class="grid gap-6 md:grid-cols-2">
-            <label class="block">
-              <span class="block text-base font-medium mb-2 text-gray-700">Event Title</span>
-              <input 
-                name="title" 
-                placeholder="Enter event title" 
-                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
-              />
-            </label>
+        <!-- Add Event Form -->
+        <form action="/Post_event" method="POST" class="bg-white rounded-xl border border-gray-200 p-6 mb-8 shadow-sm">
+          <h3 class="text-[#111518] text-xl font-bold mb-6">Add New Event</h3>
+          
+          <div class="space-y-6">
+            <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
+              <label class="block">
+                <span class="block text-base font-medium mb-2 text-gray-700">Event Title</span>
+                <input 
+                  name="title" 
+                  placeholder="Enter event title" 
+                  class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+                  required
+                />
+              </label>
 
-            <label class="block">
-              <span class="block text-base font-medium mb-2 text-gray-700">Event Venue</span>
-              <input 
-                name="venue" 
-                placeholder="Enter venue" 
-                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
-              />
-            </label>
+              <label class="block">
+                <span class="block text-base font-medium mb-2 text-gray-700">Event Venue</span>
+                <input 
+                  name="venue" 
+                  placeholder="Enter venue" 
+                  class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
+              <label class="block">
+                <span class="block text-base font-medium mb-2 text-gray-700">Event Date</span>
+                <input 
+                  type="date" 
+                  name="date" 
+                  class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+                  required
+                />
+              </label>
+
+              <label class="block">
+                <span class="block text-base font-medium mb-2 text-gray-700">Event Time</span>
+                <input 
+                  type="time" 
+                  name="time" 
+                  class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
+                  required
+                />
+              </label>
+            </div>
           </div>
 
-          <div class="grid gap-6 md:grid-cols-2">
-            <label class="block">
-              <span class="block text-base font-medium mb-2 text-gray-700">Event Date</span>
-              <input 
-                type="date" 
-                name="date" 
-                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
-              />
-            </label>
-
-            <label class="block">
-              <span class="block text-base font-medium mb-2 text-gray-700">Event Time</span>
-              <input 
-                type="time" 
-                name="time" 
-                class="form-input w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" 
-              />
-            </label>
+          <div class="text-right mt-6">
+            <button 
+              type="submit" 
+              class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg"
+            >
+              Add Event
+            </button>
           </div>
-        </div>
+        </form>
 
-        <div class="text-right mt-6">
-          <button 
-            type="submit" 
-            class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg"
-          >
-             Add Event
-          </button>
-        </div>
-      </form>
-
-      <!-- Events List Section -->
-      <section>
-        <h2 class="text-2xl font-bold text-[#111518] mb-6"> Upcoming Events</h2>
-        
-        <div id="events-container" class="space-y-4">
-          <% data.forEach(item => { %>
-            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300">
-              <div class="flex items-start gap-4">
-                <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+        <!-- Events List Section -->
+        <section>
+          <h2 class="text-2xl font-bold text-[#111518] mb-6">Upcoming Events</h2>
+          
+          <div id="events-container" class="space-y-4">
+            <% if (data && data.length > 0) { %>
+              <% data.forEach(item => { %>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div class="flex items-start gap-4">
+                    <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                      <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                      </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-lg font-semibold text-[#111518] mb-2"><%= item.title %></h3>
+                      <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-1">
+                        <span class="flex items-center gap-1">
+                          📅 <%= new Date(item.date).toLocaleDateString('en-GB') %>
+                        </span>
+                        <span class="flex items-center gap-1">
+                          🕐 <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %>
+                        </span>
+                        <span class="flex items-center gap-1">
+                          📍 <%= item.venue?.trim() || 'Venue TBA' %>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="text-center py-12 text-gray-500">
+                <div class="bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
                   </svg>
                 </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-semibold text-[#111518] mb-2"><%= item.title %></h3>
-                  <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-1">
-                    <span class="flex items-center gap-1">
-                      📅 <%= new Date(item.date).toLocaleDateString('en-GB') %>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      🕐 <%= new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) %>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      📍 <%= item.venue?.trim() || 'Venue TBA' %>
-                    </span>
-                  </div>
-                </div>
+                <p class="text-lg font-medium mb-1">No events found</p>
+                <p class="text-sm">Create your first event above!</p>
               </div>
-            </div>
-          <% }) %>
-        </div>
+            <% } %>
+          </div>
 
-        <!-- Enhanced Pagination -->
-        <div class="mt-8 flex justify-center gap-3">
-          <button 
-            id="prev-btn" 
-            class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
-            disabled
-          >
-            ← Previous
-          </button>
-          <button 
-            id="next-btn" 
-            class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            <%= data.length < 5 ? 'disabled' : '' %>
-          >
-            Next →
-          </button>
-        </div>
-      </section>
+          <!-- Enhanced Pagination -->
+          <% if (data && data.length > 0) { %>
+            <div class="mt-8 flex justify-center gap-3">
+              <button 
+                id="prev-btn" 
+                class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" 
+                disabled
+              >
+                ← Previous
+              </button>
+              <button 
+                id="next-btn" 
+                class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                <%= data.length < 5 ? 'disabled' : '' %>
+              >
+                Next →
+              </button>
+            </div>
+          <% } %>
+        </section>
+      </div>
     </div>
   </main>
 
-  <!-- Enhanced Pagination Script -->
   <script>
     let skip = 0;
     const limit = 5;
@@ -142,55 +164,82 @@
     const nextBtn = document.getElementById("next-btn");
     const prevBtn = document.getElementById("prev-btn");
 
-    async function loadEvents() {
-      try {
-        // Add loading state
-        container.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>';
-        
-        const res = await fetch(`/leader/events/page?skip=${skip}`);
-        const { events, totalCount } = await res.json();
+    if (nextBtn && prevBtn) {
+      async function loadEvents() {
+        try {
+          container.innerHTML = '<div class="text-center py-8"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div><p class="mt-2 text-gray-600">Loading events...</p></div>';
+          
+          const res = await fetch(`/leader/events/page?skip=${skip}`);
+          if (!res.ok) throw new Error('Failed to fetch events');
+          
+          const { events, totalCount } = await res.json();
 
-        container.innerHTML = "";
-        events.forEach(item => {
-          const div = document.createElement("div");
-          div.className = "bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300";
-          div.innerHTML = `
-            <div class="flex items-start gap-4">
-              <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
-                </svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="text-lg font-semibold text-[#111518] mb-2">${item.title}</h3>
-                <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-1">
-                  <span class="flex items-center gap-1">📅 ${new Date(item.date).toLocaleDateString('en-GB')}</span>
-                  <span class="flex items-center gap-1">🕐 ${new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
-                  <span class="flex items-center gap-1">📍 ${item.venue?.trim() || 'Venue TBA'}</span>
+          container.innerHTML = "";
+          
+          if (events.length === 0) {
+            container.innerHTML = `
+              <div class="text-center py-12 text-gray-500">
+                <div class="bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                  </svg>
                 </div>
+                <p class="text-lg font-medium mb-1">No events found</p>
+                <p class="text-sm">No events found for this page.</p>
               </div>
-            </div>
-          `;
-          container.appendChild(div);
-        });
+            `;
+          } else {
+            events.forEach(item => {
+              const div = document.createElement("div");
+              div.className = "bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300";
+              div.innerHTML = `
+                <div class="flex items-start gap-4">
+                  <div class="bg-blue-100 p-3 rounded-full flex-shrink-0">
+                    <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-lg font-semibold text-[#111518] mb-2">${item.title}</h3>
+                    <div class="flex flex-wrap gap-4 text-sm text-gray-600 mb-1">
+                      <span class="flex items-center gap-1">📅 ${new Date(item.date).toLocaleDateString('en-GB')}</span>
+                      <span class="flex items-center gap-1">🕐 ${new Date('1970-01-01T' + item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                      <span class="flex items-center gap-1">📍 ${item.venue?.trim() || 'Venue TBA'}</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+              container.appendChild(div);
+            });
+          }
 
-        prevBtn.disabled = skip === 0;
-        nextBtn.disabled = skip + limit >= totalCount;
-      } catch (error) {
-        container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading events</div>';
-        console.error('Error loading events:', error);
+          prevBtn.disabled = skip === 0;
+          nextBtn.disabled = skip + limit >= totalCount;
+        } catch (error) {
+          container.innerHTML = '<div class="text-center py-8 text-red-600">Error loading events. Please try again.</div>';
+          console.error('Error loading events:', error);
+        }
       }
+
+      nextBtn.addEventListener("click", () => {
+        skip += limit;
+        loadEvents();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        skip = Math.max(0, skip - limit);
+        loadEvents();
+      });
     }
 
-    nextBtn.addEventListener("click", () => {
-      skip += limit;
-      loadEvents();
-    });
-
-    prevBtn.addEventListener("click", () => {
-      skip = Math.max(0, skip - limit);
-      loadEvents();
-    });
+    const form = document.querySelector('form[action="/Post_event"]');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        const button = form.querySelector('button[type="submit"]');
+        button.disabled = true;
+        button.innerHTML = 'Adding Event...';
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
   <link
     rel="stylesheet"
@@ -21,294 +23,297 @@
     currentPage: 'feedback' 
   }) %>
 
-  <!-- Main Content Area with margin for sidebar -->
-  <main class="ml-0 md:ml-80 min-h-screen">
-    <div class="max-w-[960px] mx-auto px-6 py-8">
-      
-      <!-- Page Header -->
-      <header class="mb-8">
-        <h1 class="text-4xl font-bold text-[#161212] mb-2"> Feedback Management</h1>
-        <p class="text-gray-600">Review and manage feedback from club members</p>
-      </header>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen transition-all duration-300">
+    <div class="max-w-[960px] mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        
+        <!-- Page Header -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold text-[#161212] mb-2">Feedback Management</h1>
+          <p class="text-gray-600">Review and manage feedback from club members</p>
+        </header>
 
-      <!-- Enhanced Search & Filter Section -->
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
-        <div class="space-y-4">
-          <!-- Search Input -->
-          <div class="flex items-center gap-4">
-            <div class="flex-1 relative">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Enhanced Search & Filter Section -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+          <div class="space-y-4">
+            <!-- Search Input -->
+            <div class="flex items-center gap-4">
+              <div class="flex-1 relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                </div>
+                <input
+                  id="searchInput"
+                  type="text"
+                  placeholder="Search feedback by title, author, email, or content..."
+                  class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#181111] 
+                         placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                         focus:bg-white transition-all duration-200"
+                  value="<%= typeof search !== 'undefined' ? search : '' %>"
+                />
+                <!-- Clear Button -->
+                <button
+                  id="clearSearch"
+                  type="button"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <!-- Search Button -->
+              <button
+                id="searchButton"
+                type="button"
+                class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 
+                       transition-colors flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-              </div>
-              <input
-                id="searchInput"
-                type="text"
-                placeholder="Search feedback by title, author, email, or content..."
-                class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#181111] 
-                       placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                       focus:bg-white transition-all duration-200"
-                value="<%= typeof search !== 'undefined' ? search : '' %>"
-              />
-              <!-- Clear Button -->
-              <button
-                id="clearSearch"
-                type="button"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+                Search
               </button>
             </div>
-            
-            <!-- Search Button -->
-            <button
-              id="searchButton"
-              type="button"
-              class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 
-                     transition-colors flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-              </svg>
-              Search
-            </button>
-          </div>
 
-          <!-- Advanced Filters -->
-          <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
-            <span class="text-sm font-medium text-gray-700">Filter by:</span>
-            
-            <!-- User Type Filter -->
-            <select id="userTypeFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-              <option value="">All User Types</option>
-              <option value="Student">Students</option>
-              <option value="Faculty">Faculty</option>
-              <option value="Alumni">Alumni</option>
-              <option value="Staff">Staff</option>
-            </select>
+            <!-- Advanced Filters -->
+            <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
+              <span class="text-sm font-medium text-gray-700">Filter by:</span>
+              
+              <!-- User Type Filter -->
+              <select id="userTypeFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                <option value="">All User Types</option>
+                <option value="Student">Students</option>
+                <option value="Faculty">Faculty</option>
+                <option value="Alumni">Alumni</option>
+                <option value="Staff">Staff</option>
+              </select>
 
-            <!-- Author Filter -->
-            <select id="authorFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-              <option value="">All Authors</option>
-              <% 
-              const uniqueAuthors = [...new Set(data.map(feedback => feedback.posted_by))];
-              uniqueAuthors.forEach(author => { 
-              %>
-                <option value="<%= author %>"><%= author %></option>
-              <% }); %>
-            </select>
+              <!-- Author Filter -->
+              <select id="authorFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                <option value="">All Authors</option>
+                <% 
+                const uniqueAuthors = [...new Set(data.map(feedback => feedback.posted_by))];
+                uniqueAuthors.forEach(author => { 
+                %>
+                  <option value="<%= author %>"><%= author %></option>
+                <% }); %>
+              </select>
 
-            <!-- Date Filter -->
-            <select id="dateFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-              <option value="">All Dates</option>
-              <option value="recent">Recent (Last 7 days)</option>
-              <option value="week">This Week</option>
-              <option value="month">This Month</option>
-            </select>
+              <!-- Date Filter -->
+              <select id="dateFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                <option value="">All Dates</option>
+                <option value="recent">Recent (Last 7 days)</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+              </select>
 
-            <!-- Reset Filters -->
-            <button
-              id="resetFilters"
-              type="button"
-              class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Reset Filters
-            </button>
+              <!-- Reset Filters -->
+              <button
+                id="resetFilters"
+                type="button"
+                class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Reset Filters
+              </button>
 
-            <!-- Results Count -->
-            <div class="ml-auto">
-              <span id="resultsCount" class="text-sm text-gray-500">
-                Showing <span id="visibleCount"><%= data.length %></span> of <span id="totalCount"><%= data.length %></span> feedback entries
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Feedback Cards Section -->
-      <section>
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-[#161212]"> Feedback List</h2>
-          <div class="text-sm text-gray-500">
-            <span id="feedbackCount"><%= data.length %></span> feedback entr<span id="feedbackPlural"><%= data.length !== 1 ? 'ies' : 'y' %></span> found
-          </div>
-        </div>
-
-        <div id="feedbackContainer" class="space-y-4">
-          <% if (data.length === 0) { %>
-            <div id="noFeedbackRow" class="text-center py-12 bg-white rounded-xl border border-gray-200">
-              <div class="text-gray-400 mb-4">
-                <svg class="mx-auto w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
+              <!-- Results Count -->
+              <div class="ml-auto">
+                <span id="resultsCount" class="text-sm text-gray-500">
+                  Showing <span id="visibleCount"><%= data.length %></span> of <span id="totalCount"><%= data.length %></span> feedback entries
+                </span>
               </div>
-              <h3 class="text-xl font-semibold text-gray-600 mb-2">No feedback found</h3>
-              <p class="text-gray-500">No feedback has been submitted yet.</p>
             </div>
-          <% } else { %>
-            <% data.forEach(function(item, index) { %>
-              <div class="feedback-item bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-                   data-feedback-title="<%= item.title.toLowerCase() %>"
-                   data-feedback-author="<%= item.posted_by.toLowerCase() %>"
-                   data-feedback-email="<%= item.email.toLowerCase() %>"
-                   data-feedback-content="<%= item.description.toLowerCase() %>"
-                   data-feedback-usertype="<%= item.user_type %>"
-                   data-feedback-date="<%= new Date(item.date).getTime() %>"
-                   data-author-name="<%= item.posted_by %>">
-                <div class="flex gap-4">
-                  <!-- Icon Section -->
-                  <div class="flex items-center justify-center rounded-xl bg-[#fff4f4] text-[#e63946] w-14 h-14 shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 256 256">
-                      <path d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"></path>
-                    </svg>
-                  </div>
+          </div>
+        </div>
 
-                  <!-- Content Section -->
-                  <div class="flex-1">
-                    <!-- Header Row -->
-                    <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
-                      <h3 class="text-xl font-bold text-[#0d47a1] hover:text-blue-600 transition-colors feedback-title">
-                        <%= item.title %>
-                      </h3>
-                      <span class="text-xs text-[#666] bg-gray-100 px-2 py-1 rounded-full">
-                        <%= new Date(item.date).toLocaleString('en-IN', {
-                          dateStyle: 'medium',
-                          timeStyle: 'short',
-                          hour12: true
-                        }) %>
-                      </span>
+        <!-- Feedback Cards Section -->
+        <section>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-[#161212]">Feedback List</h2>
+            <div class="text-sm text-gray-500">
+              <span id="feedbackCount"><%= data.length %></span> feedback entr<span id="feedbackPlural"><%= data.length !== 1 ? 'ies' : 'y' %></span> found
+            </div>
+          </div>
+
+          <div id="feedbackContainer" class="space-y-4">
+            <% if (data.length === 0) { %>
+              <div id="noFeedbackRow" class="text-center py-12 bg-white rounded-xl border border-gray-200">
+                <div class="text-gray-400 mb-4">
+                  <svg class="mx-auto w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No feedback found</h3>
+                <p class="text-gray-500">No feedback has been submitted yet.</p>
+              </div>
+            <% } else { %>
+              <% data.forEach(function(item, index) { %>
+                <div class="feedback-item bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+                     data-feedback-title="<%= item.title.toLowerCase() %>"
+                     data-feedback-author="<%= item.posted_by.toLowerCase() %>"
+                     data-feedback-email="<%= item.email.toLowerCase() %>"
+                     data-feedback-content="<%= item.description.toLowerCase() %>"
+                     data-feedback-usertype="<%= item.user_type %>"
+                     data-feedback-date="<%= new Date(item.date).getTime() %>"
+                     data-author-name="<%= item.posted_by %>">
+                  <div class="flex gap-4">
+                    <!-- Icon Section -->
+                    <div class="flex items-center justify-center rounded-xl bg-[#fff4f4] text-[#e63946] w-14 h-14 shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 256 256">
+                        <path d="M240,120a48.05,48.05,0,0,0-48-48H152.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,24,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,151.12,214l11,7.33A16,16,0,0,0,186.5,212l11.77-44.36A48.07,48.07,0,0,0,240,120ZM40,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C126.65,155,82.84,164.07,40,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM192,152H160V88h32a32,32,0,1,1,0,64Z"></path>
+                      </svg>
                     </div>
 
-                    <!-- Metadata Row -->
-                    <div class="flex flex-wrap items-center gap-3 text-sm text-[#444] mb-3">
-                      <div class="flex items-center gap-1">
-                        <span class="font-medium text-[#333]">👤 Posted by:</span>
-                        <span class="text-[#555] font-medium feedback-author"><%= item.posted_by %></span>
+                    <!-- Content Section -->
+                    <div class="flex-1 min-w-0">
+                      <!-- Header Row -->
+                      <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+                        <h3 class="text-xl font-bold text-[#0d47a1] hover:text-blue-600 transition-colors feedback-title">
+                          <%= item.title %>
+                        </h3>
+                        <span class="text-xs text-[#666] bg-gray-100 px-2 py-1 rounded-full">
+                          <%= new Date(item.date).toLocaleString('en-IN', {
+                            dateStyle: 'medium',
+                            timeStyle: 'short',
+                            hour12: true
+                          }) %>
+                        </span>
                       </div>
-                      <span class="text-[#ccc]">•</span>
-                      <a href="mailto:<%= item.email %>" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="feedback-email"><%= item.email %></span>
-                      </a>
-                      <span class="text-[#ccc]">•</span>
-                      <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">
-                        <%= item.user_type %>
-                      </span>
-                    </div>
 
-                    <!-- Feedback Content -->
-                    <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-400">
-                      <p class="text-[#444] leading-relaxed feedback-content">
-                        <%= item.description %>
-                      </p>
+                      <!-- Metadata Row -->
+                      <div class="flex flex-wrap items-center gap-3 text-sm text-[#444] mb-3">
+                        <div class="flex items-center gap-1">
+                          <span class="font-medium text-[#333]">👤 Posted by:</span>
+                          <span class="text-[#555] font-medium feedback-author"><%= item.posted_by %></span>
+                        </div>
+                        <span class="text-[#ccc]">•</span>
+                        <a href="mailto:<%= item.email %>" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                          </svg>
+                          <span class="feedback-email"><%= item.email %></span>
+                        </a>
+                        <span class="text-[#ccc]">•</span>
+                        <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">
+                          <%= item.user_type %>
+                        </span>
+                      </div>
+
+                      <!-- Feedback Content -->
+                      <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-400">
+                        <p class="text-[#444] leading-relaxed feedback-content">
+                          <%= item.description %>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
+              <% }) %>
+            <% } %>
+          </div>
+
+          <!-- No Results Message -->
+          <div id="noResultsMessage" class="hidden text-center py-12 bg-white rounded-xl border border-gray-200">
+            <div class="flex flex-col items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <div>
+                <p class="text-gray-500 text-lg font-medium">No matching feedback found</p>
+                <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
               </div>
-            <% }) %>
-          <% } %>
-        </div>
-
-        <!-- No Results Message -->
-        <div id="noResultsMessage" class="hidden text-center py-12 bg-white rounded-xl border border-gray-200">
-          <div class="flex flex-col items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-            <div>
-              <p class="text-gray-500 text-lg font-medium">No matching feedback found</p>
-              <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
             </div>
           </div>
-        </div>
 
-        <!-- Pagination Section -->
-        <div class="flex justify-center items-center gap-4 mt-8 bg-white rounded-lg border border-gray-200 p-4">
-          <% if (typeof limit !== 'undefined' && limit > 5) { %>
-            <a href="/leader/leader-feedback?<% if (search) { %>search=<%= encodeURIComponent(search) %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=5"
-              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
-              ← Show Less
-            </a>
-          <% } %>
+          <!-- Pagination Section -->
+          <div class="flex justify-center items-center gap-4 mt-8 bg-white rounded-lg border border-gray-200 p-4">
+            <% if (typeof limit !== 'undefined' && limit > 5) { %>
+              <a href="/leader/leader-feedback?<% if (search) { %>search=<%= encodeURIComponent(search) %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=5"
+                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+                ← Show Less
+              </a>
+            <% } %>
 
-          <span class="text-gray-600">
-            Showing <%= typeof limit !== 'undefined' ? Math.min(limit, data.length) : data.length %> of <%= data.length %> entries
-          </span>
+            <span class="text-gray-600">
+              Showing <%= typeof limit !== 'undefined' ? Math.min(limit, data.length) : data.length %> of <%= data.length %> entries
+            </span>
 
-          <% if (typeof hasMore !== 'undefined' && hasMore) { %>
-            <a href="/leader/leader-feedback?<% if (search) { %>search=<%= encodeURIComponent(search) %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=<%= (typeof limit !== 'undefined' ? limit : 5) + 5 %>"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-              Show More →
-            </a>
-          <% } %>
-        </div>
-      </section>
+            <% if (typeof hasMore !== 'undefined' && hasMore) { %>
+              <a href="/leader/leader-feedback?<% if (search) { %>search=<%= encodeURIComponent(search) %>&<% } %><% if (userType) { %>userType=<%= userType %>&<% } %>limit=<%= (typeof limit !== 'undefined' ? limit : 5) + 5 %>"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                Show More →
+              </a>
+            <% } %>
+          </div>
+        </section>
 
-      <!-- Quick Stats Cards -->
-      <div class="mt-8 grid gap-6 md:grid-cols-4">
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-blue-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-gray-600 text-sm">Total Feedback</p>
-              <p id="totalFeedbackCount" class="text-2xl font-bold text-gray-900"><%= data.length %></p>
+        <!-- Quick Stats Cards -->
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Total Feedback</p>
+                <p id="totalFeedbackCount" class="text-2xl font-bold text-gray-900"><%= data.length %></p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-green-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-gray-600 text-sm">Students</p>
-              <p id="studentFeedbackCount" class="text-2xl font-bold text-gray-900">
-                <%= data.filter(feedback => feedback.user_type === 'Student').length %>
-              </p>
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Students</p>
+                <p id="studentFeedbackCount" class="text-2xl font-bold text-gray-900">
+                  <%= data.filter(feedback => feedback.user_type === 'Student').length %>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-yellow-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-gray-600 text-sm">Faculty</p>
-              <p id="facultyFeedbackCount" class="text-2xl font-bold text-gray-900">
-                <%= data.filter(feedback => feedback.user_type === 'Faculty').length %>
-              </p>
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-yellow-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Faculty</p>
+                <p id="facultyFeedbackCount" class="text-2xl font-bold text-gray-900">
+                  <%= data.filter(feedback => feedback.user_type === 'Faculty').length %>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-purple-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-gray-600 text-sm">Alumni</p>
-              <p id="alumniFeedbackCount" class="text-2xl font-bold text-gray-900">
-                <%= data.filter(feedback => feedback.user_type === 'Alumni').length %>
-              </p>
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-purple-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Alumni</p>
+                <p id="alumniFeedbackCount" class="text-2xl font-bold text-gray-900">
+                  <%= data.filter(feedback => feedback.user_type === 'Alumni').length %>
+                </p>
+              </div>
             </div>
           </div>
         </div>

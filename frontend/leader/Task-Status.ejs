@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
   <link
     rel="stylesheet"
@@ -21,305 +23,353 @@
     currentPage: 'tasks' 
   }) %>
 
-  <!-- Main Content Area with margin for sidebar -->
-  <main class="ml-0 md:ml-80 min-h-screen">
-    <div class="max-w-[960px] mx-auto px-6 py-8">
-      
-      <!-- Enhanced Page Header -->
-      <header class="mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 class="text-4xl font-bold text-[#181111] mb-2"> Team Tasks</h1>
-            <p class="text-gray-600">Monitor and manage task assignments and progress</p>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen transition-all duration-300">
+    <div class="max-w-[960px] mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        
+        <!-- Enhanced Page Header -->
+        <header class="mb-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 class="text-4xl font-bold text-[#181111] mb-2">Team Tasks</h1>
+              <p class="text-gray-600">Monitor and manage task assignments and progress</p>
+            </div>
+            
+            <a href="/leader-Create-Task"
+               class="inline-flex items-center gap-2 px-4 sm:px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold 
+                      hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span class="hidden sm:inline">New Task</span>
+              <span class="sm:hidden">New</span>
+            </a>
           </div>
-          
-          <a href="/leader-Create-Task"
-             class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold 
-                    hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            New Task
-          </a>
-        </div>
-      </header>
+        </header>
 
-      <!-- Enhanced Search & Filter Section -->
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
-        <div class="space-y-4">
-          <!-- Search Input -->
-          <div class="flex items-center gap-4">
-            <div class="flex-1 relative">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        <!-- Quick Stats Cards -->
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
               </div>
-              <input
-                id="searchInput"
-                type="text"
-                placeholder="Search tasks by title, assignee, or description..."
-                class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#181111] 
-                       placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                       focus:bg-white transition-all duration-200"
-                value="<%= typeof search !== 'undefined' ? search : '' %>"
-              />
-              <!-- Clear Button -->
-              <button
-                id="clearSearch"
-                type="button"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              <div>
+                <p class="text-gray-600 text-sm">Total Tasks</p>
+                <p id="totalTasksCount" class="text-2xl font-bold text-gray-900"><%= data.length %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Completed</p>
+                <p id="completedTasksCount" class="text-2xl font-bold text-gray-900">
+                  <%= data.filter(task => task.task_status >= 100).length %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-yellow-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">In Progress</p>
+                <p id="inProgressTasksCount" class="text-2xl font-bold text-gray-900">
+                  <%= data.filter(task => task.task_status > 0 && task.task_status < 100).length %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-red-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Not Started</p>
+                <p id="notStartedTasksCount" class="text-2xl font-bold text-gray-900">
+                  <%= data.filter(task => task.task_status === 0).length %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced Search & Filter Section -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+          <div class="space-y-4">
+            <!-- Search Input -->
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <div class="flex-1 w-full relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                </div>
+                <input
+                  id="searchInput"
+                  type="text"
+                  placeholder="Search tasks by title, assignee, or description..."
+                  class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#181111] 
+                         placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                         focus:bg-white transition-all duration-200"
+                  value="<%= typeof search !== 'undefined' ? search : '' %>"
+                />
+                <!-- Clear Button -->
+                <button
+                  id="clearSearch"
+                  type="button"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <!-- Search Button -->
+              <button
+                id="searchButton"
+                type="button"
+                class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 
+                       transition-colors flex items-center justify-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                Search
               </button>
             </div>
-            
-            <!-- Search Button -->
-            <button
-              id="searchButton"
-              type="button"
-              class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 
-                     transition-colors flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-              </svg>
-              Search
-            </button>
-          </div>
 
-          <!-- Advanced Filters -->
-          <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
-            <span class="text-sm font-medium text-gray-700">Filter by:</span>
-            
-            <!-- Status Filter -->
-            <select id="statusFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-              <option value="">All Status</option>
-              <option value="completed">Completed (100%)</option>
-              <option value="in-progress">In Progress</option>
-              <option value="not-started">Not Started (0%)</option>
-            </select>
+            <!-- Advanced Filters -->
+            <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-gray-200">
+              <span class="text-sm font-medium text-gray-700">Filter by:</span>
+              
+              <!-- Status Filter -->
+              <select id="statusFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                <option value="">All Status</option>
+                <option value="completed">Completed (100%)</option>
+                <option value="in-progress">In Progress</option>
+                <option value="not-started">Not Started (0%)</option>
+              </select>
 
-            <!-- Assignee Filter -->
-            <select id="assigneeFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-              <option value="">All Assignees</option>
-              <% 
-              const uniqueAssignees = [...new Set(data.map(task => task.assigned_to))];
-              uniqueAssignees.forEach(assignee => { 
-              %>
-                <option value="<%= assignee %>"><%= assignee %></option>
-              <% }); %>
-            </select>
+              <!-- Assignee Filter -->
+              <select id="assigneeFilter" class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                <option value="">All Assignees</option>
+                <% 
+                const uniqueAssignees = [...new Set(data.map(task => task.assigned_to).filter(Boolean))];
+                uniqueAssignees.forEach(assignee => { 
+                %>
+                  <option value="<%= assignee %>"><%= assignee %></option>
+                <% }); %>
+              </select>
 
-            <!-- Reset Filters -->
-            <button
-              id="resetFilters"
-              type="button"
-              class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Reset Filters
-            </button>
+              <!-- Reset Filters -->
+              <button
+                id="resetFilters"
+                type="button"
+                class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Reset Filters
+              </button>
 
-            <!-- Results Count -->
-            <div class="ml-auto">
-              <span id="resultsCount" class="text-sm text-gray-500">
-                Showing <span id="visibleCount"><%= data.length %></span> of <span id="totalCount"><%= data.length %></span> tasks
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enhanced Tasks Table -->
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <!-- Table Header -->
-        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900"> Task Overview</h2>
-            <div class="text-sm text-gray-500">
-              <span id="tableCount"><%= data.length %></span> task<span id="taskPlural"><%= data.length !== 1 ? 's' : '' %></span> found
+              <!-- Results Count -->
+              <div class="ml-auto">
+                <span id="resultsCount" class="text-sm text-gray-500">
+                  Showing <span id="visibleCount"><%= data.length %></span> of <span id="totalCount"><%= data.length %></span> tasks
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Table Content -->
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th class="px-6 py-4 text-left text-gray-900 font-semibold text-sm"> Task</th>
-                <th class="px-6 py-4 text-left text-gray-900 font-semibold text-sm"> Assigned To</th>
-                <th class="px-6 py-4 text-left text-gray-900 font-semibold text-sm"> Description</th>
-                <th class="px-6 py-4 text-left text-gray-900 font-semibold text-sm"> Due Date</th>
-                <th class="px-6 py-4 text-left text-gray-900 font-semibold text-sm"> Progress</th>
-              </tr>
-            </thead>
-            <tbody id="tasksTableBody" class="divide-y divide-gray-200">
-              <% if (data.length === 0) { %>
-                <tr id="noTasksRow">
-                  <td colspan="5" class="px-6 py-12 text-center">
-                    <div class="flex flex-col items-center gap-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                      </svg>
-                      <div>
-                        <p class="text-gray-500 text-lg font-medium">No tasks found</p>
-                        <p class="text-gray-400 text-sm">Create your first task to get started</p>
-                      </div>
-                    </div>
-                  </td>
+        <!-- Enhanced Tasks Table -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <!-- Table Header -->
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-semibold text-gray-900">Task Overview</h2>
+              <div class="text-sm text-gray-500">
+                <span id="tableCount"><%= data.length %></span> task<span id="taskPlural"><%= data.length !== 1 ? 's' : '' %></span> found
+              </div>
+            </div>
+          </div>
+
+          <!-- Table Content -->
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="px-4 md:px-6 py-4 text-left text-gray-900 font-semibold text-sm">Task</th>
+                  <th class="px-4 md:px-6 py-4 text-left text-gray-900 font-semibold text-sm">Assigned To</th>
+                  <th class="px-4 md:px-6 py-4 text-left text-gray-900 font-semibold text-sm hidden lg:table-cell">Description</th>
+                  <th class="px-4 md:px-6 py-4 text-left text-gray-900 font-semibold text-sm">Due Date</th>
+                  <th class="px-4 md:px-6 py-4 text-left text-gray-900 font-semibold text-sm">Progress</th>
                 </tr>
-              <% } else { %>
-                <% data.forEach(function(item, index) { %>
-                  <tr class="task-row hover:bg-gray-50 transition-colors duration-200" 
-                      data-task-title="<%= item.title.toLowerCase() %>"
-                      data-assignee="<%= item.assigned_to.toLowerCase() %>"
-                      data-description="<%= item.description.toLowerCase() %>"
-                      data-status="<%= item.task_status %>"
-                      data-assignee-name="<%= item.assigned_to %>">
-                    <!-- Task Title -->
-                    <td class="px-6 py-4">
-                      <div class="flex flex-col">
-                        <span class="font-semibold text-gray-900 text-base task-title"><%= item.title %></span>
-                        <span class="text-gray-500 text-sm">Task #<%= index + 1 %></span>
-                      </div>
-                    </td>
-                    
-                    <!-- Assigned To -->
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span class="text-blue-600 font-medium text-sm">
-                            <%= item.assigned_to.charAt(0).toUpperCase() %>
-                          </span>
-                        </div>
-                        <span class="text-gray-900 font-medium task-assignee"><%= item.assigned_to %></span>
-                      </div>
-                    </td>
-                    
-                    <!-- Description -->
-                    <td class="px-6 py-4">
-                      <p class="text-gray-700 text-sm max-w-xs truncate task-description" title="<%= item.description %>">
-                        <%= item.description %>
-                      </p>
-                    </td>
-                    
-                    <!-- Due Date -->
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+              </thead>
+              <tbody id="tasksTableBody" class="divide-y divide-gray-200">
+                <% if (data.length === 0) { %>
+                  <tr id="noTasksRow">
+                    <td colspan="5" class="px-6 py-12 text-center">
+                      <div class="flex flex-col items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
-                        <span class="text-gray-600 text-sm">
-                          <%= item.task_completion_date.toDateString ? item.task_completion_date.toDateString() : item.task_completion_date %>
-                        </span>
-                      </div>
-                    </td>
-                    
-                    <!-- Progress Status -->
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-3">
-                        <div class="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
-                          <div class="h-2 rounded-full transition-all duration-300
-                                      <%= item.task_status >= 100 ? 'bg-green-500' : 
-                                          item.task_status >= 75 ? 'bg-blue-500' : 
-                                          item.task_status >= 50 ? 'bg-yellow-500' : 
-                                          item.task_status >= 25 ? 'bg-orange-500' : 'bg-red-500' %>"
-                               style="width: <%= Math.min(item.task_status, 100) %>%">
-                          </div>
+                        <div>
+                          <p class="text-gray-500 text-lg font-medium">No tasks found</p>
+                          <p class="text-gray-400 text-sm">Create your first task to get started</p>
                         </div>
-                        <span class="text-sm font-medium min-w-[3rem]
-                                     <%= item.task_status >= 100 ? 'text-green-600' : 
-                                         item.task_status >= 75 ? 'text-blue-600' : 
-                                         item.task_status >= 50 ? 'text-yellow-600' : 
-                                         item.task_status >= 25 ? 'text-orange-600' : 'text-red-600' %>">
-                          <%= item.task_status %>%
-                        </span>
                       </div>
                     </td>
                   </tr>
-                <% }); %>
-              <% } %>
-            </tbody>
-          </table>
+                <% } else { %>
+                  <% data.forEach(function(item, index) { %>
+                    <tr class="task-row hover:bg-gray-50 transition-colors duration-200" 
+                        data-task-title="<%= (item.title || '').toLowerCase() %>"
+                        data-assignee="<%= (item.assigned_to || '').toLowerCase() %>"
+                        data-description="<%= (item.description || '').toLowerCase() %>"
+                        data-status="<%= item.task_status || 0 %>"
+                        data-assignee-name="<%= item.assigned_to || '' %>">
+                      <!-- Task Title -->
+                      <td class="px-4 md:px-6 py-4">
+                        <div class="flex flex-col">
+                          <span class="font-semibold text-gray-900 text-base task-title"><%= item.title || 'Untitled Task' %></span>
+                          <span class="text-gray-500 text-sm">Task #<%= index + 1 %></span>
+                        </div>
+                      </td>
+                      
+                      <!-- Assigned To -->
+                      <td class="px-4 md:px-6 py-4">
+                        <div class="flex items-center gap-2">
+                          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-medium text-sm">
+                              <%= (item.assigned_to || 'U').charAt(0).toUpperCase() %>
+                            </span>
+                          </div>
+                          <span class="text-gray-900 font-medium task-assignee"><%= item.assigned_to || 'Unassigned' %></span>
+                        </div>
+                      </td>
+                      
+                      <!-- Description -->
+                      <td class="px-4 md:px-6 py-4 hidden lg:table-cell">
+                        <p class="text-gray-700 text-sm max-w-xs truncate task-description" title="<%= item.description || 'No description' %>">
+                          <%= item.description || 'No description provided' %>
+                        </p>
+                      </td>
+                      
+                      <!-- Due Date -->
+                      <td class="px-4 md:px-6 py-4">
+                        <div class="flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7H3v12a2 2 0 0 0 2 2Z"/>
+                          </svg>
+                          <span class="text-gray-600 text-sm">
+                            <%= item.task_completion_date && item.task_completion_date.toDateString ? item.task_completion_date.toDateString() : (item.task_completion_date || 'No date set') %>
+                          </span>
+                        </div>
+                      </td>
+                      
+                      <!-- Progress Status -->
+                      <td class="px-4 md:px-6 py-4">
+                        <div class="flex items-center gap-3">
+                          <div class="flex-1 bg-gray-200 rounded-full h-2 max-w-[80px] sm:max-w-[100px]">
+                            <div class="h-2 rounded-full transition-all duration-300
+                                        <%= (item.task_status || 0) >= 100 ? 'bg-green-500' : 
+                                            (item.task_status || 0) >= 75 ? 'bg-blue-500' : 
+                                            (item.task_status || 0) >= 50 ? 'bg-yellow-500' : 
+                                            (item.task_status || 0) >= 25 ? 'bg-orange-500' : 'bg-red-500' %>"
+                                 style="width: <%= Math.min(item.task_status || 0, 100) %>%">
+                            </div>
+                          </div>
+                          <span class="text-sm font-medium min-w-[3rem]
+                                       <%= (item.task_status || 0) >= 100 ? 'text-green-600' : 
+                                           (item.task_status || 0) >= 75 ? 'text-blue-600' : 
+                                           (item.task_status || 0) >= 50 ? 'text-yellow-600' : 
+                                           (item.task_status || 0) >= 25 ? 'text-orange-600' : 'text-red-600' %>">
+                            <%= item.task_status || 0 %>%
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } %>
+              </tbody>
+            </table>
 
-          <!-- No Results Message -->
-          <div id="noResultsMessage" class="hidden px-6 py-12 text-center">
-            <div class="flex flex-col items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-              </svg>
-              <div>
-                <p class="text-gray-500 text-lg font-medium">No matching tasks found</p>
-                <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
+            <!-- No Results Message -->
+            <div id="noResultsMessage" class="hidden px-6 py-12 text-center">
+              <div class="flex flex-col items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <div>
+                  <p class="text-gray-500 text-lg font-medium">No matching tasks found</p>
+                  <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Quick Stats Cards -->
-      <div class="mt-8 grid gap-6 md:grid-cols-4">
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-blue-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        <!-- Team Performance Insights -->
+        <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-gray-200 p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
               </svg>
             </div>
             <div>
-              <p class="text-gray-600 text-sm">Total Tasks</p>
-              <p id="totalTasksCount" class="text-2xl font-bold text-gray-900"><%= data.length %></p>
+              <h3 class="text-lg font-semibold text-gray-900">Team Performance</h3>
+              <p class="text-gray-600 text-sm">Overall task completion insights</p>
             </div>
           </div>
-        </div>
-
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-green-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
+          
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Completion Rate</span>
+                <span class="text-lg font-bold text-blue-600">
+                  <%= data.length > 0 ? Math.round((data.filter(task => task.task_status >= 100).length / data.length) * 100) : 0 %>%
+                </span>
+              </div>
             </div>
-            <div>
-              <p class="text-gray-600 text-sm">Completed</p>
-              <p id="completedTasksCount" class="text-2xl font-bold text-gray-900">
-                <%= data.filter(task => task.task_status >= 100).length %>
-              </p>
+            
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Avg Progress</span>
+                <span class="text-lg font-bold text-green-600">
+                  <%= data.length > 0 ? Math.round(data.reduce((sum, task) => sum + (task.task_status || 0), 0) / data.length) : 0 %>%
+                </span>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-yellow-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-gray-600 text-sm">In Progress</p>
-              <p id="inProgressTasksCount" class="text-2xl font-bold text-gray-900">
-                <%= data.filter(task => task.task_status > 0 && task.task_status < 100).length %>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="bg-red-100 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="text-gray-600 text-sm">Not Started</p>
-              <p id="notStartedTasksCount" class="text-2xl font-bold text-gray-900">
-                <%= data.filter(task => task.task_status === 0).length %>
-              </p>
+            
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Active Members</span>
+                <span class="text-lg font-bold text-purple-600">
+                  <%= [...new Set(data.map(task => task.assigned_to).filter(Boolean))].length %>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -358,7 +408,7 @@
 
       // Highlight search terms
       function highlightText(element, searchTerm) {
-        if (!searchTerm) return;
+        if (!searchTerm || !element) return;
         
         const text = element.textContent;
         const regex = new RegExp(`(${searchTerm})`, 'gi');
@@ -387,11 +437,11 @@
         removeHighlights();
 
         filteredTasks = allTasks.filter(row => {
-          const taskTitle = row.dataset.taskTitle;
-          const assignee = row.dataset.assignee;
-          const description = row.dataset.description;
-          const status = parseInt(row.dataset.status);
-          const assigneeName = row.dataset.assigneeName;
+          const taskTitle = row.dataset.taskTitle || '';
+          const assignee = row.dataset.assignee || '';
+          const description = row.dataset.description || '';
+          const status = parseInt(row.dataset.status) || 0;
+          const assigneeName = row.dataset.assigneeName || '';
 
           // Text search
           const matchesSearch = !searchTerm || 
@@ -468,7 +518,7 @@
         let notStartedCount = 0;
 
         filteredTasks.forEach(row => {
-          const status = parseInt(row.dataset.status);
+          const status = parseInt(row.dataset.status) || 0;
           if (status >= 100) completedCount++;
           else if (status > 0) inProgressCount++;
           else notStartedCount++;
@@ -519,14 +569,16 @@
       toggleClearButton();
 
       // Add progress bar animations
-      const progressBars = document.querySelectorAll('[style*="width:"]');
-      progressBars.forEach(bar => {
-        const width = bar.style.width;
-        bar.style.width = '0%';
-        setTimeout(() => {
-          bar.style.width = width;
-        }, 100);
-      });
+      setTimeout(() => {
+        const progressBars = document.querySelectorAll('[style*="width:"]');
+        progressBars.forEach(bar => {
+          const width = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => {
+            bar.style.width = width;
+          }, 100);
+        });
+      }, 100);
 
       // Keyboard shortcuts
       document.addEventListener('keydown', function(e) {
@@ -558,6 +610,19 @@
     
     .task-row {
       animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Mobile table responsiveness */
+    @media (max-width: 640px) {
+      .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      table th,
+      table td {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
     }
   </style>
 

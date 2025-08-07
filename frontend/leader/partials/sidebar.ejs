@@ -1,20 +1,20 @@
-<!-- Mobile Menu Button - Moved to Right Side -->
-<button class="fixed top-5 right-5 z-[60] p-3 rounded-lg bg-white border border-gray-200 shadow-lg md:hidden transition-all hover:bg-gray-50" onclick="toggleMobileMenu()">
+<!-- Mobile Menu Button - Appears on RIGHT for mobile only -->
+<button class="fixed top-4 right-4 z-[60] p-3 rounded-lg bg-white border border-gray-200 shadow-lg md:hidden transition-all hover:bg-gray-50" onclick="toggleMobileMenu()">
   <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
   </svg>
 </button>
 
 <!-- Mobile Overlay -->
-<div class="fixed inset-0 z-[40] bg-black bg-opacity-50 hidden mobile-overlay" onclick="toggleMobileMenu()"></div>
+<div class="fixed inset-0 z-[45] bg-black bg-opacity-50 hidden mobile-overlay transition-opacity duration-300" onclick="toggleMobileMenu()"></div>
 
-<!-- Fixed Right Sidebar - Changed from Left to Right -->
-<aside class="fixed top-0 right-0 w-80 h-screen bg-white border-l border-gray-200 shadow-xl z-[50] overflow-y-auto transition-transform duration-300 translate-x-full md:translate-x-0 md:static md:left-0" id="sidebar">
+<!-- Sidebar - LEFT on desktop, slides from RIGHT on mobile -->
+<aside class="fixed top-0 left-0 w-80 h-screen bg-white border-r border-gray-200 shadow-xl z-[50] overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0 translate-x-full md:left-0 md:right-auto right-0 md:border-r md:border-l-0 border-l" id="sidebar">
   <div class="p-6">
-    <!-- Close Button for Mobile (Optional) -->
-    <div class="flex justify-between items-center mb-4 md:hidden">
+    <!-- Close Button for Mobile -->
+    <div class="flex justify-between items-center mb-6 md:hidden">
       <h2 class="text-lg font-semibold text-gray-900">Menu</h2>
-      <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-gray-100">
+      <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
         <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
@@ -101,19 +101,26 @@
 </aside>
 
 <script>
-  // Mobile menu toggle function - Updated for right-side drawer
   function toggleMobileMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.querySelector('.mobile-overlay');
+    const body = document.body;
     
-    sidebar.classList.toggle('translate-x-full');
-    overlay.classList.toggle('hidden');
+    // Check if sidebar is currently open (on mobile, when it's open, it doesn't have translate-x-full)
+    const isOpen = !sidebar.classList.contains('translate-x-full');
     
-    // Prevent body scroll when sidebar is open
-    if (!sidebar.classList.contains('translate-x-full')) {
-      document.body.style.overflow = 'hidden';
+    if (isOpen) {
+      // Close sidebar - slide it to the right (off-screen)
+      sidebar.classList.add('translate-x-full');
+      sidebar.classList.remove('-translate-x-0');
+      overlay.classList.add('hidden');
+      body.style.overflow = '';
     } else {
-      document.body.style.overflow = '';
+      // Open sidebar - slide it from right to center
+      sidebar.classList.remove('translate-x-full');
+      sidebar.classList.add('-translate-x-0');
+      overlay.classList.remove('hidden');
+      body.style.overflow = 'hidden';
     }
   }
 
@@ -125,21 +132,52 @@
         const overlay = document.querySelector('.mobile-overlay');
         
         sidebar.classList.add('translate-x-full');
+        sidebar.classList.remove('-translate-x-0');
         overlay.classList.add('hidden');
         document.body.style.overflow = '';
       }
     });
   });
 
-  // Close sidebar when window is resized to desktop
+  // Handle window resize
   window.addEventListener('resize', () => {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.querySelector('.mobile-overlay');
+    
     if (window.innerWidth >= 768) {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.mobile-overlay');
-      
-      sidebar.classList.remove('translate-x-full');
+      // Desktop: ensure sidebar is visible and positioned left
+      sidebar.classList.remove('translate-x-full', '-translate-x-0');
+      sidebar.style.left = '0';
+      sidebar.style.right = 'auto';
       overlay.classList.add('hidden');
       document.body.style.overflow = '';
+    } else {
+      // Mobile: ensure sidebar is hidden initially
+      sidebar.classList.add('translate-x-full');
+      sidebar.classList.remove('-translate-x-0');
+      sidebar.style.left = 'auto';
+      sidebar.style.right = '0';
+      if (!overlay.classList.contains('hidden')) {
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+
+  // Initialize proper state on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('sidebar');
+    
+    if (window.innerWidth >= 768) {
+      // Desktop: sidebar on left, always visible
+      sidebar.classList.remove('translate-x-full', '-translate-x-0');
+      sidebar.style.left = '0';
+      sidebar.style.right = 'auto';
+    } else {
+      // Mobile: sidebar hidden, positioned for right slide-in
+      sidebar.classList.add('translate-x-full');
+      sidebar.style.left = 'auto';
+      sidebar.style.right = '0';
     }
   });
 </script>

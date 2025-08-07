@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
   <link
     rel="stylesheet"
@@ -21,106 +23,382 @@
     currentPage: 'members' 
   }) %>
 
-  <!-- Main Content Area with margin for sidebar -->
-  <main class="ml-0 md:ml-80 min-h-screen bg-[#fcf8f8]">
-    <div class="max-w-[960px] mx-auto px-6 py-8">
-      
-      <!-- Page Header -->
-      <header class="mb-8">
-        <h1 class="text-4xl font-bold text-[#1b0e0e] mb-2"> Members Management</h1>
-        <p class="text-gray-600">Manage and view all club members and their teams</p>
-      </header>
+  <!-- Main Content Area - LEFT margin for desktop, full width for mobile -->
+  <main class="ml-0 md:ml-80 min-h-screen bg-[#fcf8f8] transition-all duration-300">
+    <div class="max-w-[960px] mx-auto px-4 py-8 md:px-6">
+      <!-- Mobile spacing to account for fixed toggle button -->
+      <div class="pt-16 md:pt-0">
+        
+        <!-- Page Header -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold text-[#1b0e0e] mb-2">Members Management</h1>
+          <p class="text-gray-600">Manage and view all club members and their teams</p>
+        </header>
 
-      <!-- Members Table Section -->
-      <section class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-[#1b0e0e]"> All Members</h2>
-          <div class="text-sm text-gray-500">
-            <%= members.length %> total members
+        <!-- Quick Stats Cards -->
+        <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mb-8">
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-blue-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Total Members</p>
+                <p class="text-2xl font-bold text-gray-900"><%= members.length %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Active Teams</p>
+                <p class="text-2xl font-bold text-gray-900">
+                  <%= [...new Set(members.map(m => m.teamName))].length %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-purple-100 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">This Month</p>
+                <p class="text-2xl font-bold text-gray-900">+5</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Enhanced Table Container -->
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead>
-                <tr class="bg-gray-50 border-b border-gray-200">
-                  <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Profile</th>
-                  <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Name</th>
-                  <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Team</th>
-                  <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Email</th>
-                  <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200">
-                <% members.forEach((memberss, index) => { %>
-                  <tr class="hover:bg-gray-50 transition-colors duration-200">
-                    <!-- Profile Picture -->
-                    <td class="px-6 py-4">
-                      <div class="w-12 h-12 rounded-full bg-center bg-cover bg-no-repeat border-2 border-white shadow-md"
-                           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdzN9dP90LqFZUtXI4I5zvmUjuyZEP3_saSiiiu4trKeSPQUjdXKMSHotJnAvbYGPObjpYZtXX_I4tYtyzjrVLPwi6_3GYbV32kSX0QaivQ5tn85MCdk_w7VPsEIW8pP2SXstkSx0L0z9OQOYYSnr8SjrUq4wACRRsaqQ_PmD9gm8zVXBL3WGYHt0LFc2-2l5PYObrELTlVOj7P6WhufiTVmWgornqkEpin2i_VU4cSGMrx8rpTyZSSIHeBgpMf5KNioLDWtQODBA");'>
-                      </div>
-                    </td>
-                    
-                    <!-- Name -->
-                    <td class="px-6 py-4">
-                      <div class="flex flex-col">
-                        <span class="text-[#1b0e0e] font-semibold text-base"><%= memberss.name %></span>
-                        <span class="text-gray-500 text-sm">Member #<%= index + 1 %></span>
-                      </div>
-                    </td>
-                    
-                    <!-- Team -->
-                    <td class="px-6 py-4">
-                      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                        <%= memberss.teamName %>
-                      </span>
-                    </td>
-                    
-                    <!-- Email -->
-                    <td class="px-6 py-4">
-                      <a href="mailto:<%= memberss.email %>" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <%= memberss.email %>
-                      </a>
-                    </td>
-                    
-                    <!-- Actions -->
-                    <td class="px-6 py-4">
-                      <div class="flex gap-2">
-                        <button class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="View Profile">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                          </svg>
-                        </button>
-                        <button class="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors" title="Send Message">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                          </svg>
-                        </button>
-                        <button class="p-2 text-orange-600 hover:bg-orange-100 rounded-lg transition-colors" title="Edit Member">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
+        <!-- Search and Filter Section -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-8">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <!-- Search Input -->
+            <div class="flex-1 relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <input
+                id="memberSearch"
+                type="text"
+                placeholder="Search members by name or email..."
+                class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-gray-50 text-[#1b0e0e] 
+                       placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                       focus:bg-white transition-all duration-200"
+              />
+            </div>
+            
+            <!-- Team Filter -->
+            <select id="teamFilter" class="px-4 py-3 rounded-lg border border-gray-300 bg-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 min-w-[150px]">
+              <option value="">All Teams</option>
+              <% [...new Set(members.map(m => m.teamName))].forEach(teamName => { %>
+                <option value="<%= teamName %>"><%= teamName %></option>
+              <% }); %>
+            </select>
+            
+            <!-- Reset Button -->
+            <button
+              id="resetFilters"
+              type="button"
+              class="px-4 py-3 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors border border-gray-300"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Members Table Section -->
+        <section class="mb-12">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-[#1b0e0e]">All Members</h2>
+            <div class="text-sm text-gray-500">
+              <span id="memberCount"><%= members.length %></span> total members
+            </div>
+          </div>
+
+          <!-- Enhanced Table Container -->
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full" id="membersTable">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200">
+                    <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Profile</th>
+                    <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Name</th>
+                    <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Team</th>
+                    <th class="px-6 py-4 text-left text-[#1b0e0e] text-sm font-semibold">Email</th>
                   </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- Upcoming Event Section -->
+                </thead>
+                <tbody class="divide-y divide-gray-200" id="membersTableBody">
+                 <% members.forEach((memberss, index) => { %>
+  <tr class="hover:bg-gray-50 transition-colors duration-200 member-row"
+      data-member-name="<%= (memberss.name || '').toLowerCase() %>"
+      data-member-email="<%= (memberss.email || '').toLowerCase() %>"
+      data-member-team="<%= memberss.teamName || '' %>">
+    <!-- Profile Picture -->
+    <td class="px-6 py-4">
+      <div class="w-12 h-12 rounded-full bg-center bg-cover bg-no-repeat border-2 border-white shadow-md"
+           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdzN9dP90LqFZUtXI4I5zvmUjuyZEP3_saSiiiu4trKeSPQUjdXKMSHotJnAvbYGPObjpYZtXX_I4tYtyzjrVLPwi6_3GYbV32kSX0QaivQ5tn85MCdk_w7VPsEIW8pP2SXstkSx0L0z9OQOYYSnr8SjrUq4wACRRsaqQ_PmD9gm8zVXBL3WGYHt0LFc2-2l5PYObrELTlVOj7P6WhufiTVmWgornqkEpin2i_VU4cSGMrx8rpTyZSSIHeBgpMf5KNioLDWtQODBA");'>
+      </div>
+    </td>
     
+    <!-- Name -->
+    <td class="px-6 py-4">
+      <div class="flex flex-col">
+        <span class="text-[#1b0e0e] font-semibold text-base member-name">
+          <%= memberss.name || 'N/A' %>
+        </span>
+        <span class="text-gray-500 text-sm">Member #<%= index + 1 %></span>
+      </div>
+    </td>
+    
+    <!-- Team -->
+    <td class="px-6 py-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 member-team">
+        <%= memberss.teamName || 'No Team' %>
+      </span>
+    </td>
+    
+    <!-- Email -->
+    <td class="px-6 py-4">
+      <% if (memberss.email) { %>
+        <a href="mailto:<%= memberss.email %>" class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <span class="member-email"><%= memberss.email %></span>
+        </a>
+      <% } else { %>
+        <span class="text-gray-400 text-sm">No email</span>
+      <% } %>
+    </td>
+    
+    <!-- Actions -->
+   
+  </tr>
+<% }) %>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResultsMessage" class="hidden text-center py-12">
+              <div class="flex flex-col items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <div>
+                  <p class="text-gray-500 text-lg font-medium">No members found</p>
+                  <p class="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Team Summary Section -->
+        <section>
+          <h2 class="text-2xl font-bold text-[#1b0e0e] mb-6">Team Overview</h2>
+          <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <% 
+            const teamCounts = {};
+            members.forEach(member => {
+              teamCounts[member.teamName] = (teamCounts[member.teamName] || 0) + 1;
+            });
+            Object.entries(teamCounts).forEach(([teamName, count]) => { 
+            %>
+              <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="font-semibold text-[#1b0e0e]"><%= teamName %></h3>
+                  <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                    <%= count %> member<%= count !== 1 ? 's' : '' %>
+                  </span>
+                </div>
+                <p class="text-gray-600 text-sm">Team productivity and collaboration stats</p>
+                <div class="mt-4 w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-blue-600 h-2 rounded-full" style="width: <%= Math.min((count / members.length) * 100, 100) %>%"></div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
+
+  <!-- Enhanced JavaScript for Search and Filter -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const memberSearch = document.getElementById('memberSearch');
+      const teamFilter = document.getElementById('teamFilter');
+      const resetFilters = document.getElementById('resetFilters');
+      const memberRows = document.querySelectorAll('.member-row');
+      const noResultsMessage = document.getElementById('noResultsMessage');
+      const memberCount = document.getElementById('memberCount');
+      const membersTableBody = document.getElementById('membersTableBody');
+      
+      let allMembers = Array.from(memberRows);
+      let filteredMembers = [...allMembers];
+
+      // Highlight search terms
+      function highlightText(element, searchTerm) {
+        if (!searchTerm) return;
+        
+        const text = element.textContent;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        if (regex.test(text)) {
+          element.innerHTML = text.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+        }
+      }
+
+      // Remove highlights
+      function removeHighlights() {
+        const highlights = document.querySelectorAll('mark');
+        highlights.forEach(mark => {
+          const parent = mark.parentNode;
+          parent.replaceChild(document.createTextNode(mark.textContent), mark);
+          parent.normalize();
+        });
+      }
+
+      // Filter members
+      function filterMembers() {
+        const searchTerm = memberSearch.value.toLowerCase().trim();
+        const teamValue = teamFilter.value;
+
+        // Remove previous highlights
+        removeHighlights();
+
+        filteredMembers = allMembers.filter(row => {
+          const memberName = row.dataset.memberName;
+          const memberEmail = row.dataset.memberEmail;
+          const memberTeam = row.dataset.memberTeam;
+
+          // Text search
+          const matchesSearch = !searchTerm || 
+            memberName.includes(searchTerm) || 
+            memberEmail.includes(searchTerm);
+
+          // Team filter
+          const matchesTeam = !teamValue || memberTeam === teamValue;
+
+          return matchesSearch && matchesTeam;
+        });
+
+        // Show/hide rows
+        allMembers.forEach(row => {
+          if (filteredMembers.includes(row)) {
+            row.style.display = '';
+            
+            // Highlight search terms
+            if (searchTerm) {
+              const nameElement = row.querySelector('.member-name');
+              const emailElement = row.querySelector('.member-email');
+              
+              highlightText(nameElement, searchTerm);
+              highlightText(emailElement, searchTerm);
+            }
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        // Update count
+        memberCount.textContent = filteredMembers.length;
+
+        // Show/hide no results message
+        if (filteredMembers.length === 0) {
+          noResultsMessage.classList.remove('hidden');
+        } else {
+          noResultsMessage.classList.add('hidden');
+        }
+      }
+
+      // Event listeners
+      memberSearch.addEventListener('input', function() {
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(filterMembers, 300);
+      });
+
+      memberSearch.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          filterMembers();
+        }
+      });
+
+      teamFilter.addEventListener('change', filterMembers);
+
+      resetFilters.addEventListener('click', function() {
+        memberSearch.value = '';
+        teamFilter.value = '';
+        filterMembers();
+        memberSearch.focus();
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'k') {
+          e.preventDefault();
+          memberSearch.focus();
+        }
+        if (e.key === 'Escape') {
+          if (document.activeElement === memberSearch) {
+            memberSearch.blur();
+          }
+        }
+      });
+    });
+  </script>
+
+  <!-- Custom styles for highlighting -->
+  <style>
+    mark {
+      background-color: #fef08a !important;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .member-row {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Mobile table responsiveness */
+    @media (max-width: 640px) {
+      .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      table th,
+      table td {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
+      
+      .member-row .flex {
+        gap: 4px;
+      }
+    }
+  </style>
 
 </body>
 </html>
