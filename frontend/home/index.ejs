@@ -35,7 +35,7 @@
           <div class="w-full overflow-visible">
             <h1
               id="hero-type"
-              class="border-r-2 border-white/80 pr-4 text-2xl font-extrabold tracking-tight
+              class="text-2xl font-extrabold tracking-tight
                      sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl min-w-max"
               style="font-family:'Pacifico','Brush Script Std',cursive;"
             ></h1>
@@ -145,23 +145,22 @@
 <style>
   /* Glass-morphism helper */
   .glass-card{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.18);}
-  /* Typing animation */
+  /* Typing animation WITHOUT blinking cursor */
   #hero-type{white-space:nowrap;overflow:visible;display:inline-block;position:relative;}
   #hero-type::before{
     content:"ALL CLUBS, ONE-STOP SOLUTION!";
     white-space:nowrap;overflow:hidden;display:inline-block;
-    animation:typing 7s steps(29,end) infinite,blink 1s step-end infinite;
+    animation:typing 7s steps(29,end) infinite;
   }
   @keyframes typing{0%{width:0}40%{width:100%}60%{width:100%}100%{width:0}}
-  @keyframes blink{0%,100%{border-color:transparent}50%{border-color:currentColor}}
   @media (max-width:768px){
      #hero-type::before{content:"ALL CLUBS, ONE SOLUTION!";
-       animation:typing-m 6s steps(24,end) infinite,blink 1s step-end infinite;}
+       animation:typing-m 6s steps(24,end) infinite;}
      @keyframes typing-m{0%{width:0}40%{width:100%}60%{width:100%}100%{width:0}}
   }
   @media (max-width:480px){
      #hero-type::before{content:"ALL CLUBS, ONE STOP!";
-       animation:typing-s 5s steps(20,end) infinite,blink 1s step-end infinite;}
+       animation:typing-s 5s steps(20,end) infinite;}
      @keyframes typing-s{0%{width:0}40%{width:100%}60%{width:100%}100%{width:0}}
   }
   /* Video tweaks */
