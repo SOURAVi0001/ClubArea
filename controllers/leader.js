@@ -801,7 +801,7 @@ const teams = async (req, res) => {
       membercount: members.length
     }));
 
-    res.render("leader/teams", {
+    res.render("leader/Teams", {
       PageTitle: "Teams",
       Leader_Name: name,
       Club_Name: clubName,
@@ -841,7 +841,7 @@ exports.members = members;
 const chat = (req, res) => {
   if (req.session.isLoggedIn) {
     const { name, clubName } = req.session.user;
-    res.render('leader/Chat', {
+    res.render('leader/chat', {
       PageTitle: "Chat",
       Leader_Name: name,
       Club_Name: clubName,
