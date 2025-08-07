@@ -20,31 +20,31 @@
 
     <!-- Custom styles -->
     <style>
-      /* Animated gradient backdrop */
+      /* Neutral gradient backdrop */
       @keyframes gradient-bg {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
-      .tech-bg {
-        background: linear-gradient(120deg, #1f2937 0%, #0ea5e9 25%, #6366f1 50%, #7c3aed 75%, #a855f7 100%);
+      .neutral-bg {
+        background: linear-gradient(120deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%);
         background-size: 200% 200%;
-        animation: gradient-bg 12s ease-in-out infinite;
+        animation: gradient-bg 15s ease-in-out infinite;
       }
-      /* Re-usable glass card */
+      /* Neutral glass card */
       .glass {
-        backdrop-filter: blur(14px) saturate(180%);
-        background-color: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(14px) saturate(120%);
+        background-color: rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.3);
       }
     </style>
   </head>
 
-  <body class="tech-bg min-h-screen flex items-center justify-center" style="font-family:Inter,'Noto Sans',sans-serif;">
+  <body class="neutral-bg min-h-screen flex items-center justify-center" style="font-family:Inter,'Noto Sans',sans-serif;">
     <!-- Glassmorphic wrapper for subtle depth -->
-    <div class="glass px-10 py-12 rounded-[2rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-center text-white mb-10 tracking-tight drop-shadow-[0_1px_4px_rgba(0,0,0,0.25)]">
-        Welcome to <span class="text-sky-400">Club Area</span>
+    <div class="glass px-10 py-12 rounded-[2rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.1)]">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-center text-slate-800 mb-10 tracking-tight drop-shadow-[0_1px_4px_rgba(0,0,0,0.1)]">
+        Welcome to <span class="text-slate-600">Club Area</span>
       </h1>
 
       <!-- Button grid -->
@@ -53,13 +53,13 @@
         <button
           id="admin-login"
           class="relative group w-64 h-64 rounded-3xl flex flex-col items-center justify-center overflow-hidden
-                 bg-[#197ce5] text-white text-2xl font-bold tracking-wide shadow-xl
+                 bg-slate-700 text-white text-2xl font-bold tracking-wide shadow-xl
                  hover:scale-105 transition-transform duration-300"
         >
           <!-- Glow layer -->
           <span
             class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                   bg-gradient-to-br from-white/20 to-transparent"
+                   bg-gradient-to-br from-white/15 to-transparent"
           ></span>
 
           <!-- Icon -->
@@ -71,12 +71,12 @@
         <button
           id="user-login"
           class="relative group w-64 h-64 rounded-3xl flex flex-col items-center justify-center overflow-hidden
-                 bg-[#243547] text-white text-2xl font-bold tracking-wide shadow-xl
+                 bg-slate-500 text-white text-2xl font-bold tracking-wide shadow-xl
                  hover:scale-105 transition-transform duration-300"
         >
           <span
             class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                   bg-gradient-to-br from-white/20 to-transparent"
+                   bg-gradient-to-br from-white/15 to-transparent"
           ></span>
 
           <i data-feather="user" class="w-12 h-12 stroke-[2.5] mb-4 relative z-10"></i>
