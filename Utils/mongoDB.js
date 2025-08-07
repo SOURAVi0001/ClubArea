@@ -2,23 +2,22 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/clubarea';
+    // Use MONGODB_URI for production, MONGO_URL for local development
+    const mongoURI = process.env.MONGODB_URI || process.env.MONGO_URL;
     
-    // Remove deprecated options
     const conn = await mongoose.connect(mongoURI);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     return conn;
   } catch (error) {
     console.error('⚠️ MongoDB connection failed:', error.message);
     
-    // In production, don't crash the app - just log and continue
+    // Don't crash in production
     if (process.env.NODE_ENV === 'production') {
       console.log('🔄 Continuing without database in production mode');
       return null;
     } else {
-      // In development, you can choose to crash or continue
-      console.log('💡 Tip: Set up MongoDB locally or use cloud database');
-      return null; // Don't crash, just return null
+      console.log('💡 Tip: Check your MongoDB connection');
+      return null;
     }
   }
 };

@@ -1,71 +1,333 @@
-<!-- ===== Responsive Tech-Vibes Header ===== -->
-<header class="fixed top-0 left-0 z-50 w-full bg-slate-900/90 text-white backdrop-blur-md">
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-    <!-- Logo -->
-    <a href="/" class="flex items-center gap-2">
-      <img src="./partials/logo.png" alt="ClubArea logo" class="h-[35px] w-[110px]" />
-    </a>
+<!-- partials/navbar.ejs -->
+<header class="fixed top-0 left-0 w-full z-50 bg-slate-900/95 backdrop-blur-lg border-b border-slate-700/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      
+      <!-- Logo Section -->
+      <div class="flex items-center">
+        <a href="/" class="flex items-center space-x-2 group">
+          <div class="relative">
+            <img src="/partials/logo.png" alt="ClubArea logo" class="h-8 w-auto sm:h-9 transition-all duration-300 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+        </a>
+      </div>
 
-    <!-- Hamburger (hidden ≥ md) -->
-    <button id="nav-toggle"
-      class="md:hidden flex h-9 w-9 items-center justify-center rounded hover:bg-white/10 focus:outline-none">
-      <!-- 3-bar icon -->
-      <span class="block h-0.5 w-5 bg-white transition-all duration-300"></span>
-      <span class="mt-1 block h-0.5 w-5 bg-white transition-all duration-300"></span>
-      <span class="mt-1 block h-0.5 w-5 bg-white transition-all duration-300"></span>
-    </button>
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center space-x-1">
+        <a href="/" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+          Home
+        </a>
+        <a href="/clublist" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+          Clubs
+        </a>
+        <a href="/recruitment" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+          Recruitment
+        </a>
+        <a href="/updates" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+          Updates
+        </a>
+        <a href="/gallery" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+          Gallery
+        </a>
+        <a href="/ContactUs" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+          Contact
+        </a>
+        
+        <!-- Desktop Login Button -->
+        <div class="ml-6 pl-6 border-l border-slate-700">
+          <a href="/login_type">
+            <button class="relative px-6 py-2.5 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
+              <span class="relative z-10">Login</span>
+              <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-600/50 to-purple-600/50 rounded-lg blur opacity-0 hover:opacity-100 transition-opacity duration-200"></div>
+            </button>
+          </a>
+        </div>
+      </nav>
 
-    <!-- Desktop nav -->
-    <nav class="hidden md:flex flex-1 items-center justify-end gap-9 text-sm font-medium">
-      <a class="hover:text-fuchsia-300 transition" href="/">Home</a>
-      <a class="hover:text-fuchsia-300 transition" href="/clublist">Clubs</a>
-      <a class="hover:text-fuchsia-300 transition" href="/recruitment">Recruitment</a>
-      <a class="hover:text-fuchsia-300 transition" href="/updates">Updates</a>
-      <a class="hover:text-fuchsia-300 transition" href="/gallery">Gallery</a>
-      <a class="hover:text-fuchsia-300 transition" href="/ContactUs">Contact&nbsp;Us</a>
-
-      <!-- CTA -->
-      <a href="/login_type">
-        <button
-          class="rounded-full bg-[#c313eb] px-4 py-2 font-bold tracking-wide hover:brightness-110">
-          Login
+      <!-- Mobile Menu Button -->
+      <div class="lg:hidden">
+        <button id="mobile-menu-toggle" class="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-slate-600">
+          <span class="sr-only">Open main menu</span>
+          <div class="menu-icon">
+            <span class="menu-line top-0 left-0"></span>
+            <span class="menu-line top-2 left-0"></span>
+            <span class="menu-line top-4 left-0"></span>
+          </div>
         </button>
-      </a>
-    </nav>
+      </div>
+    </div>
   </div>
 
-  <!-- Mobile drawer (hidden ≥ md) -->
-  <nav id="mobile-menu"
-    class="md:hidden max-h-0 overflow-hidden bg-slate-900/95 transition-[max-height] duration-300">
-    <div class="flex flex-col gap-5 px-6 py-6 text-sm font-medium">
-      <a class="hover:text-fuchsia-300 transition" href="/">Home</a>
-      <a class="hover:text-fuchsia-300 transition" href="/clublist">Clubs</a>
-      <a class="hover:text-fuchsia-300 transition" href="/recruitment">Recruitment</a>
-      <a class="hover:text-fuchsia-300 transition" href="/updates">Updates</a>
-      <a class="hover:text-fuchsia-300 transition" href="/gallery">Gallery</a>
-      <a class="hover:text-fuchsia-300 transition" href="/ContactUs">Contact&nbsp;Us</a>
-      <a href="/login_type">
-        <button
-          class="w-full rounded-full bg-[#c313eb] py-2 font-bold tracking-wide hover:brightness-110">
-          Login
+  <!-- Solid Mobile Menu Overlay -->
+  <div id="mobile-overlay" class="lg:hidden fixed inset-0 bg-slate-900 z-40 opacity-0 invisible transition-all duration-300"></div>
+
+  <!-- Solid Mobile Menu Panel -->
+  <div id="mobile-menu" class="lg:hidden fixed inset-y-0 right-0 w-full max-w-sm bg-slate-900 border-l border-slate-700 transform translate-x-full transition-transform duration-300 ease-in-out z-50 shadow-2xl">
+    
+    <!-- Mobile Menu Header -->
+    <div class="flex items-center justify-between p-6 border-b border-slate-700 bg-slate-800">
+      <div class="flex items-center space-x-3">
+        <img src="/partials/logo.png" alt="ClubArea" class="h-7 w-auto" />
+        <span class="text-white font-semibold"></span>
+      </div>
+      <button id="close-mobile-menu" class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Navigation -->
+    <nav class="flex-1 px-6 py-6 space-y-1 bg-slate-900">
+      <a href="/" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Home
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+      
+      <a href="/clublist" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Clubs
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+      
+      <a href="/recruitment" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Recruitment
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+      
+      <a href="/updates" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Updates
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+      
+      <a href="/gallery" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Gallery
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+      
+      <a href="/ContactUs" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Contact
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Mobile Login Button -->
+    <div class="p-6 border-t border-slate-700 bg-slate-800">
+      <a href="/login_type" class="block">
+        <button class="w-full px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
+          Login to ClubEaria
         </button>
       </a>
     </div>
-  </nav>
+  </div>
 </header>
 
-<!-- Toggle script (vanilla JS, ~10 lines) -->
-<script>
-  const burger = document.getElementById('nav-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  let open = false;
+<style>
+  /* Custom Menu Icon Animation */
+  .menu-icon {
+    width: 20px;
+    height: 16px;
+    position: relative;
+  }
+  
+  .menu-line {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Active Menu Animation */
+  .menu-icon.active .menu-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+  
+  .menu-icon.active .menu-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  
+  .menu-icon.active .menu-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
 
-  burger.addEventListener('click', () => {
-    open = !open;
-    mobileMenu.style.maxHeight = open ? mobileMenu.scrollHeight + 'px' : '0';
-    // animate burger into “X”
-    burger.children[0].style.transform = open ? 'rotate(45deg) translateY(6px)' : '';
-    burger.children[1].style.opacity   = open ? '0' : '1';
-    burger.children[2].style.transform = open ? 'rotate(-45deg) translateY(-6px)' : '';
+  /* Mobile Menu States */
+  #mobile-menu.open {
+    transform: translateX(0);
+  }
+  
+  #mobile-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Active Navigation States */
+  .nav-item.active,
+  .mobile-nav-item.active {
+    background-color: rgba(168, 85, 247, 0.2) !important;
+    color: #d946ef !important;
+    border: 1px solid rgba(217, 70, 239, 0.3) !important;
+  }
+
+  .mobile-nav-item.active span:first-child {
+    color: #d946ef !important;
+  }
+
+  /* Enhanced hover states for mobile menu */
+  .mobile-nav-item:hover {
+    background-color: #1e293b !important;
+  }
+
+  /* Focus States */
+  .nav-item:focus,
+  .mobile-nav-item:focus {
+    outline: 2px solid #d946ef;
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  class ModernNavbar {
+    constructor() {
+      this.mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      this.mobileMenu = document.getElementById('mobile-menu');
+      this.mobileOverlay = document.getElementById('mobile-overlay');
+      this.closeMobileMenu = document.getElementById('close-mobile-menu');
+      this.menuIcon = document.querySelector('.menu-icon');
+      this.isMenuOpen = false;
+
+      this.init();
+    }
+
+    init() {
+      // Event listeners
+      this.mobileMenuToggle?.addEventListener('click', () => this.toggleMenu());
+      this.closeMobileMenu?.addEventListener('click', () => this.closeMenu());
+      this.mobileOverlay?.addEventListener('click', () => this.closeMenu());
+      
+      // Close menu when clicking nav links
+      document.querySelectorAll('.mobile-nav-item').forEach(link => {
+        link.addEventListener('click', () => {
+          setTimeout(() => this.closeMenu(), 100);
+        });
+      });
+
+      // Escape key handler
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.isMenuOpen) {
+          this.closeMenu();
+        }
+      });
+
+      // Window resize handler
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && this.isMenuOpen) {
+          this.closeMenu();
+        }
+      });
+
+      // Set active navigation on page load
+      this.setActiveNavigation();
+      
+      // Update active navigation when clicking links
+      document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(link => {
+        link.addEventListener('click', () => {
+          setTimeout(() => this.setActiveNavigation(), 50);
+        });
+      });
+    }
+
+    toggleMenu() {
+      if (this.isMenuOpen) {
+        this.closeMenu();
+      } else {
+        this.openMenu();
+      }
+    }
+
+    openMenu() {
+      this.isMenuOpen = true;
+      this.mobileMenu?.classList.add('open');
+      this.mobileOverlay?.classList.add('open');
+      this.menuIcon?.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    closeMenu() {
+      this.isMenuOpen = false;
+      this.mobileMenu?.classList.remove('open');
+      this.mobileOverlay?.classList.remove('open');
+      this.menuIcon?.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    setActiveNavigation() {
+      const currentPath = window.location.pathname;
+      const navLinks = document.querySelectorAll('.nav-item, .mobile-nav-item');
+      
+      // Clear all active states first
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Find and set the active link
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        
+        // Direct match
+        if (href === currentPath) {
+          link.classList.add('active');
+          return;
+        }
+        
+        // Handle home page special case
+        if (currentPath === '/' && href === '/') {
+          link.classList.add('active');
+          return;
+        }
+        
+        // Handle trailing slash variations
+        const normalizedHref = href.replace(/\/$/, '') || '/';
+        const normalizedPath = currentPath.replace(/\/$/, '') || '/';
+        
+        if (normalizedHref === normalizedPath) {
+          link.classList.add('active');
+          return;
+        }
+      });
+    }
+  }
+
+  // Initialize navbar
+  document.addEventListener('DOMContentLoaded', () => {
+    new ModernNavbar();
+  });
+
+  // Also set active navigation when the page loads (backup)
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const navbar = new ModernNavbar();
+      navbar.setActiveNavigation();
+    }, 100);
   });
 </script>

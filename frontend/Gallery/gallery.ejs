@@ -1,5 +1,6 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
     <link
       rel="stylesheet"
@@ -8,138 +9,274 @@
       href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700"
     />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <title><%= title || 'ClubEaria - Gallery' %></title>
+    <link rel="icon" type="image/x-icon" href="image/x-icon;base64," />
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  </head>
-  <body>
-     <%- include( '../partials/navbar' )%>
-    <div class="relative flex size-full min-h-screen flex-col bg-slate-900 text-white group/design-root overflow-x-hidden mt-[20px]" style='font-family: "Spline Sans", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4">
-              <div class="flex min-w-72 flex-col gap-3">
-                <p class="text-white tracking-light text-[32px] font-bold leading-tight">Gallery</p>
-                <p class="text-[#b1a2b4] text-sm font-normal leading-normal">
-                  Explore the vibrant moments captured at our club's events and activities. From electrifying performances to intimate gatherings, relive the excitement and energy
-                  through our curated collection of photos and videos.
-                </p>
-              </div>
+    
+    <style>
+        .club-row {
+            scroll-behavior: smooth;
+        }
+        .image-container {
+            transition: transform 0.2s ease;
+        }
+        .image-container:hover {
+            transform: scale(1.05);
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        .close-modal {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-btn {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .scroll-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="min-h-screen bg-slate-900 text-white pt-20" style='font-family: "Spline Sans", "Noto Sans", sans-serif;'>
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            
+            <!-- Header Section -->
+            <div class="text-left mb-8">
+                <h1 class="text-4xl font-bold text-gray mb-4">Gallery</h1>
+                
             </div>
-            <div class="flex gap-3 p-3 flex-wrap pr-4">
-              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#342b36] pl-4 pr-2">
-                <p class="text-white text-sm font-medium leading-normal">All</p>
-                <div class="text-white" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
+            <!-- Club Rows -->
+            <% if (clubGalleries && clubGalleries.length > 0) { %>
+                <div class="space-y-8">
+                    <% clubGalleries.forEach(function(club, clubIndex) { %>
+                    <div class="club-section" data-club="<%= club.clubName %>">
+                        
+                        <!-- Club Header -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h2 class="text-2xl font-bold text-white"><%= club.clubName %></h2>
+                                <p class="text-slate-400 text-sm">
+                                    <%= club.events.length %> Events • 
+                                    <%= club.events.reduce((sum, event) => sum + event.photos.length, 0) %> Photos
+                                </p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="scroll-btn" onclick="scrollLeft('club-<%= clubIndex %>')">‹</button>
+                                <button class="scroll-btn" onclick="scrollRight('club-<%= clubIndex %>')">›</button>
+                            </div>
+                        </div>
+
+                        <!-- Horizontal Scrollable Images -->
+                        <div class="relative">
+                            <div id="club-<%= clubIndex %>" class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="scroll-behavior: smooth;">
+                                <% club.events.forEach(function(event) { %>
+                                    <% event.photos.forEach(function(photo, photoIndex) { %>
+                                    <div class="image-container flex-shrink-0 w-48 h-32 bg-cover bg-center rounded-lg cursor-pointer relative overflow-hidden border border-slate-700"
+                                         style='background-image: url("<%= photo %>");'
+                                         onclick="openModal('<%= photo %>', '<%= event.title %>', '<%= club.clubName %>', '<%= new Date(event.date).toLocaleDateString() %>', '<%= event.venue || '' %>', '<%= event.description || '' %>')">
+                                        
+                                        <!-- Image overlay with event info -->
+                                        <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-60 transition-all duration-200 flex items-end">
+                                            <div class="p-3 text-white opacity-0 hover:opacity-100 transition-opacity duration-200">
+                                                <p class="text-xs font-semibold truncate"><%= event.title %></p>
+                                                <p class="text-xs text-slate-300 truncate">
+                                                    <%= new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
                 </div>
-              </button>
-              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#342b36] pl-4 pr-2">
-                <p class="text-white text-sm font-medium leading-normal">Events</p>
-                <div class="text-white" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#342b36] pl-4 pr-2">
-                <p class="text-white text-sm font-medium leading-normal">Activities</p>
-                <div class="text-white" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#342b36] pl-4 pr-2">
-                <p class="text-white text-sm font-medium leading-normal">Performances</p>
-                <div class="text-white" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
+            <% } else { %>
+            <!-- No Clubs Found -->
+            <div class="text-center py-16">
+                <div class="text-6xl mb-4">📸</div>
+                <h3 class="text-white text-2xl font-bold mb-2">No Gallery Items</h3>
+                <p class="text-slate-400">No event photos have been uploaded yet.</p>
             </div>
-            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuA57BZ-TvMJlm8XKjfHYciouYHq07hp7hyMgFkC2fuHFjKgG_m9rGAgZLuPK-efL7CR9X40sS8uBah9uk9cjBroQ9camqBFgvb0hK_9z8n8kOZGKoEe1Y74sbT_CR_m-4CNH5eTQYN4fcEgJ11DdLKFJcK2Jf2pvJkyytIGfcapcoiMmhiCJkCzw1ztGdAD4GShCwMEzmNYkAIPySCVHPf-89PLdmamvwo3tu_vhp4OvcPdRd8YTbLNevUf-PD3bGpdDMjP9UuS3QU");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 1</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCyAVEXU4rOIJeItYgkkMLh8FSWgcdyXUN2hIkok9XFS1Wen9PwQtAapY68R2NJDsiGslVmexFJylKD36aa1nnF0U8AeVYmf0aI24Q3EkYppEw7rIl126odmkbOfXdt8p1pYFbizmvFEhuJXvktAtKia4bimG5OLiQ-aaHYI-jY0ljFpUv6PJpvjUgxasOrZI2diLUlvQnq71M92fhaTZd27rmPkpGWgzU8wAnNj2FrNWF5tx3MDvv8CwbFWZbcdrmtfwTS3htNwHo");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 2</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbMTA6SxNL96ixI6-Mm5rv-YjWq4k4Ta4UbLxO90wppBdIrjXP1yZBF6rsu1EM8tI-0nwRujQBqQNh7o1AB26_ZfPymyqByQyhHEmtTG_8rimKxH7IUTB7dnx0UeC3j2Nrw40H4IeJ6eqhjFTw3Tp8n1D3Un6QJDksRlj-1SpfP-3IGekDWTtT_F9lkM4HvSki5CHbTZC-Wf2sOTpyRAp6I37UKD4tPeisJJNVQi6hFhBOYhE0m1SC-5klyoMqiuFmY5Yg0KBxVHE");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 3</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBi5go9UpCCDPGHRPCpfjmkJZgaqALHaakDPIMSMXvGKJJJ9ye_q83sfVb3sKqlrSEsFl7kuqnDDchtn26cvON-xISWBAE8eu32q10t2Us-qy0mi59Fi0FMc7cfF81CE0gFnM3aHz6HExPVoXecR5NrniZOxx9IflBT2BL9th7As6WBUqq69J6AKheRZs3T4Q1nBCq_amDQ_z3mSEsuYiUWlhU4Y8HzlGhW5migi9iUvJQOlgJtJiwY4uB8PlJm-a0cY6E1ZYFjksM");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 4</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmh7Mqat6qyCPSIEVxJyZ5GLcLfxsXnGZo_22cT01mI2ztQuKIf4a5lOcS3RSUPkGN4_52yeVd19zN2Afd4zEEzo9iW-8yBTPF5TXf8bWjIj2OALCWdTukv4E4ghrTc7dTV2deTA_-QL3ui9XhQ08iEZV9FLf9aqwC2IgoHeRPSauoTSBPzNo47JVKeDtG0bxvqLqXBw_hnAzwfA296XDIY3HfIP4bI5mZAN_xctF5arZdnxaI_3pCayv41OSIYhukSPFosvGtBHw");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 5</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAiX7_c8Lf7kGyDsomqd-S6U3UlliCTcQmavJAbbjN7KBz_b70kAUh5VrFhwvJASHmGP2m5dU-SVpjtNsEjt8lIb7w6_CiYml1IzimXLzrLu3pR8lcaFq5qhV77D7cSUkD1NjiuCISs7ZtHQL3bOCtvYzctS4nU0IETYBFX0N_Ab-MJfqkZp6Rh4crXueuoWt3lqPRvzry46Kzn407wxXDcxJyPfIGKWjvgRYEQAWd-FPjca63bbBZEYgGDNq-2f3RFxDaYKwKEWNE");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 6</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPuUinbZQ5j4HkTKqcvrqgj5Lpq8u_zUywlBah4mmfaFXxlroytioMWjYWO9M9C6FXnGFxytG4us9Fu_2COHNrtbypz9JSrMJNBqShIytI_tVtNWSIwHgiXkA0cbZU7Jz1UGwJNCypxsojDQSUuiwXg61dHGazW1RhPRwh9fttR1eRvZq-iLx3ibFdByMBhLy7j2tNM_8aDIl3IYvs4UYAeVwmWxdRh3dKzjYzn1TycGSy7GvSvFOCtjMnXuKe0pgh2pPywTVyBGU");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 7</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAX9R3rva9MTrADrjB83UCwELkULibO0qWTo4wWb4t72DXXXI_6PcGULk9IHMI_FLVMJ0I6MIxyVFRr2ZQtpV0Iu91isycT-JT26E19ep9uZdKmo_MGII1_rWVe3hpyNznh9nGnC-JO5gdTXJvtCXCAIRiLsVcHyIsGclJZjOEqtfZl2-hy0kLoJkqp1pHO1u38jv0eEfv1th9_eDxUmkn4uCx9q07xi8AidtqrrgnPvbUAQSCjjCVpsZ6Vp8BbBIxLA_cZM2brd0c");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 8</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCejqo8u0-mQrwyBQCWt-oL7dHlc2Sh0h6LtzUqHVsdgqfrkKXbxzWsRUPt2Dkrmsi_8MBaQDpSZk7AUHlTPJRg1YQMLRTJDss5Sd3_63ZhmempzE84ONmaXSDD1QzMiZNF-yJuGcvSmiEMfQ5AaHn86VZx0YcJ9oKoQyQkNvpV-83CaulP5Q525M-Q6xVc4m8ENsS9WiAJol8js6jcvKoxoCTYt0zJ2_heDDjn2A1vDBSt3R_QKUSsfjjfN5Rf77gyf_z3NoQyi4I");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 9</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdWnGW6QQIT_u6pRv-ss0BI2kbktnn7-p8Mgo97EJJT7ye92Wes2EXNAYwF9qaN3dP1KXpGQDewfiIfnuBGvzegcgyyi2U1WjSD8rwDh8mHiJ22ZWKJxxQIwDVybxvqkwX53LN1iVldcKe0PHg5NIbMRFVdFYDHHqBfzMCLENsJa0xsMH36exSrbgxtl_RvWhWxvTbN3ilVtVWZxpNf0t1OO-CoUspQ7Ceyp2ZWBqW97Bex5fg6_QEl-M4ECOHVNy1clYJpP3jvGo");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 10</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDxaUx2FU6XRYhwQmXCBLMYw_S_gVATJnq0FHC9uCeKbjqKYoohJ27t0ylJOs92mPszDipg4klnQB5JLo--Ad-T66hz8gRBc2aj5b_8tbQWnpKiGtNW0ycfcikbqZ8Rj4sdpxF1cqWQ-uDLDJjn3SHmwERB1NZeFDbsycO2qHtcwV7wCPawqcX36wceS5b1xrBwixyfudi5yIiI-HOnQqFszDqx-o7E0HSSGytNbTF065MfG7s2aChvlfWiU1OlwqdKM6ZSAtjZKs0");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 11</p>
-              </div>
-              <div
-                class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-square"
-                style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.1) 100%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8b4eBND6yGHRLS6V3Py5Dry-52rqZcCOBqBLTlh1Ye7kWNxvnOMXXvkalhDrxDI37TGup7t8icSHh7_ufuldz_-pg4n1q89ZiobFzsYHAVqlG2XIvCBEdCvr9NTUWuyVdWWVegWPF9dIENtVSDLnnBJtW-TZXQRZn0ulj2HWuKsB5uG_rtwyG2z_8qhtOBrOQPhYioWn20QdiSRFV0Xwdk9t8Ei2nukAyQTKbrf8JEAo3jTDw7Rk5arVPvcUiEcpc7LoQ_rbCUEg");'
-              >
-                <p class="text-white text-base font-bold leading-tight w-4/5 line-clamp-2">Event 12</p>
-              </div>
+            <% } %>
+
+            <!-- Error Message -->
+            <% if (typeof error !== 'undefined') { %>
+            <div class="p-4 bg-red-900/20 border border-red-700 rounded-lg text-red-200 text-center mt-8">
+                ⚠️ <%= error %>
             </div>
-          </div>
+            <% } %>
         </div>
-      </div>
     </div>
-  </body>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">×</span>
+        <div class="text-center">
+            <img id="modalImage" src="" alt="" class="rounded-lg">
+            <div class="bg-slate-800 text-white p-4 rounded-lg mt-4 max-w-md mx-auto">
+                <h3 id="modalTitle" class="font-bold text-lg mb-2"></h3>
+                <div class="text-sm text-slate-300 space-y-1">
+                    <p><strong>Club:</strong> <span id="modalClub"></span></p>
+                    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                    <p id="modalVenueContainer"><strong>Venue:</strong> <span id="modalVenue"></span></p>
+                    <p id="modalDescriptionContainer"><strong>Description:</strong> <span id="modalDescription"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        document.getElementById('searchInput')?.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const clubSections = document.querySelectorAll('.club-section');
+            
+            clubSections.forEach(section => {
+                const clubName = section.dataset.club.toLowerCase();
+                if (clubName.includes(searchTerm) || searchTerm === '') {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+
+        // Scroll functions
+        function scrollLeft(containerId) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({ left: -300, behavior: 'smooth' });
+        }
+
+        function scrollRight(containerId) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({ left: 300, behavior: 'smooth' });
+        }
+
+        // Modal functionality
+        function openModal(imageSrc, title, club, date, venue, description) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalClub').textContent = club;
+            document.getElementById('modalDate').textContent = date;
+            
+            // Show/hide venue and description if they exist
+            const venueContainer = document.getElementById('modalVenueContainer');
+            const descriptionContainer = document.getElementById('modalDescriptionContainer');
+            
+            if (venue) {
+                document.getElementById('modalVenue').textContent = venue;
+                venueContainer.style.display = 'block';
+            } else {
+                venueContainer.style.display = 'none';
+            }
+            
+            if (description) {
+                document.getElementById('modalDescription').textContent = description;
+                descriptionContainer.style.display = 'block';
+            } else {
+                descriptionContainer.style.display = 'none';
+            }
+            
+            document.getElementById('photoModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('photoModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('photoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let startX = null;
+        
+        document.querySelectorAll('[id^="club-"]').forEach(container => {
+            container.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            });
+            
+            container.addEventListener('touchmove', function(e) {
+                if (startX === null) return;
+                
+                const currentX = e.touches[0].clientX;
+                const diff = startX - currentX;
+                
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        scrollRight(this.id);
+                    } else {
+                        scrollLeft(this.id);
+                    }
+                    startX = null;
+                }
+            });
+        });
+    </script>
+</body>
 </html>

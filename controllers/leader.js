@@ -676,7 +676,6 @@ const feedback = async (req, res) => {
 };
 exports.feedback = feedback;
 
-
 const recuriment = (req, res) => {
   if (req.session.isLoggedIn) {
     const { name, clubName } = req.session.user;
