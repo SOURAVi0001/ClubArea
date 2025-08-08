@@ -81,25 +81,30 @@
                                     <p class="text-xs text-gray-500 mt-1">Applied: <%= new Date(applicant.createdAt).toLocaleDateString() %></p>
                                 </div>
                                 
-                                <% if (applicant.status === 'active') { %>
-                                    <div class="flex space-x-2 action-buttons">
-                                        <button onclick="reviewApplication('<%= applicant._id %>', 'accepted')" 
-                                                class="accept-btn flex-1 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
-                                            Accept
-                                        </button>
-                                        <button onclick="reviewApplication('<%= applicant._id %>', 'rejected')" 
-                                                class="reject-btn flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
-                                            Reject
-                                        </button>
-                                    </div>
-                                <% } else { %>
-                                    <div class="text-center py-2">
-                                        <p class="text-sm text-gray-500">
-                                            <%= applicant.status === 'accepted' ? 'Accepted' : 'Rejected' %> on 
-                                            <%= applicant.reviewedDate ? new Date(applicant.reviewedDate).toLocaleDateString() : 'N/A' %>
-                                        </p>
-                                    </div>
-                                <% } %>
+                               <% if (applicant.status === 'pending') { %>
+    <div class="flex space-x-2 action-buttons">
+        <button onclick="reviewApplication('<%= applicant._id %>', 'accepted')" 
+                class="accept-btn flex-1 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+            Accept
+        </button>
+        <button onclick="reviewApplication('<%= applicant._id %>', 'rejected')" 
+                class="reject-btn flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-2 px-3 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+            Reject
+        </button>
+    </div>
+<% } else if (applicant.status === 'accepted' || applicant.status === 'rejected') { %>
+    <div class="text-center py-2">
+        <p class="text-sm text-gray-500">
+            <%= applicant.status === 'accepted' ? 'Accepted' : 'Rejected' %> on 
+            <%= applicant.reviewedDate ? new Date(applicant.reviewedDate).toLocaleDateString() : 'N/A' %>
+        </p>
+    </div>
+<% } else { %>
+    <div class="text-center py-2">
+        <p class="text-sm text-gray-500">Status: <%= applicant.status %></p>
+    </div>
+<% } %>
+
                             </div>
                         <% }); %>
                     </div>
