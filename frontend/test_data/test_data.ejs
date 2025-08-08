@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Management Testing UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Navbar Styles */
+        .menu-icon {
+            width: 20px;
+            height: 16px;
+            position: relative;
+        }
+        
+        .menu-line {
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background-color: currentColor;
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-icon.active .menu-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .menu-icon.active .menu-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        
+        .menu-icon.active .menu-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        #mobile-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-item.active,
+        .mobile-nav-item.active {
+            background-color: #e3f2fd !important;
+            color: #1976d2 !important;
+            border: 1px solid #bbdefb !important;
+        }
+
+        .mobile-nav-item.active span:first-child {
+            color: #1976d2 !important;
+        }
+
+        .mobile-nav-item:hover {
+            background-color: #1e293b !important;
+        }
+
+        .nav-item:focus,
+        .mobile-nav-item:focus {
+            outline: 2px solid #1976d2;
+            outline-offset: 2px;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            color: #2c2c2c;
+            font-size: 2rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1976d2;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #f8f9fa;
+            color: #2c2c2c;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .toggle-btn {
+            background: #1976d2;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #1565c0;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .data-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .data-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 16px;
+            background: #fafafa;
+        }
+
+        .data-card:hover {
+            border-color: #1976d2;
+            background: #f8f9fa;
+        }
+
+        .user-card {
+            border-left: 3px solid #4caf50;
+        }
+
+        .admin-card {
+            border-left: 3px solid #ff9800;
+        }
+
+        .leader-card {
+            border-left: 3px solid #f44336;
+            background: #fff3e0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: #2c2c2c;
+            font-size: 1rem;
+        }
+
+        .role-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .leader-badge {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .member-badge {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #bbdefb;
+        }
+
+        .user-badge {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .card-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 2px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: #2c2c2c;
+            font-weight: 500;
+        }
+
+        .password-value {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 3px 6px;
+            border-radius: 3px;
+            color: #495057;
+            border: 1px solid #ced4da;
+        }
+
+        .club-section {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .club-header {
+            background: #37474f;
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .club-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .club-id {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+        }
+
+        .team-section {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #1976d2;
+        }
+
+        .team-title {
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .team-members {
+            display: grid;
+            gap: 10px;
+        }
+
+        .search-container {
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #1976d2;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .section-content {
+                padding: 15px;
+            }
+            
+            .card-details {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-slate-900/95 backdrop-blur-lg border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+              
+                <!-- Logo Section -->
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2 group">
+                        <div class="relative">
+                            <img src="/partials/logo.png" alt="ClubArea logo" class="h-8 w-auto sm:h-9 transition-all duration-300 group-hover:scale-105" />
+                            <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="/" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Home
+                    </a>
+                    <a href="/clublist" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Clubs
+                    </a>
+                    <a href="/recruitment" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Recruitment
+                    </a>
+                    <a href="/updates" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Updates
+                    </a>
+                    <a href="/gallery" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Gallery
+                    </a>
+                    <a href="/ContactUs" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Contact
+                    </a>
+                     <a href="/testing_data" class="nav-item px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all duration-200">
+                        Testing data
+                     </a>
+                    <!-- Desktop Login Button -->
+                    <div class="ml-6 pl-6 border-l border-slate-700">
+                        <a href="/login_type">
+                            <button class="relative px-6 py-2.5 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
+                                <span class="relative z-10">Login</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-600/50 to-purple-600/50 rounded-lg blur opacity-0 hover:opacity-100 transition-opacity duration-200"></div>
+                            </button>
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-toggle" class="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-slate-600">
+                        <span class="sr-only">Open main menu</span>
+                        <div class="menu-icon">
+                            <span class="menu-line top-0 left-0"></span>
+                            <span class="menu-line top-2 left-0"></span>
+                            <span class="menu-line top-4 left-0"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay and Panel -->
+        <div id="mobile-overlay" class="lg:hidden fixed inset-0 bg-slate-900 z-40 opacity-0 invisible transition-all duration-300"></div>
+        <div id="mobile-menu" class="lg:hidden fixed inset-y-0 right-0 w-full max-w-sm bg-slate-900 border-l border-slate-700 transform translate-x-full transition-transform duration-300 ease-in-out z-50 shadow-2xl">
+            
+            <!-- Mobile Menu Header -->
+            <div class="flex items-center justify-between p-6 border-b border-slate-700 bg-slate-800">
+                <div class="flex items-center space-x-3">
+                    <img src="/partials/logo.png" alt="ClubArea" class="h-7 w-auto" />
+                    <span class="text-white font-semibold"></span>
+                </div>
+                <button id="close-mobile-menu" class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Navigation -->
+            <nav class="flex-1 px-6 py-6 space-y-1 bg-slate-900">
+                <a href="/" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+                    <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+                    Home
+                    <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                
+                <a href="/clublist" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+                    <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+                    Clubs
+                    <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                
+                <a href="/recruitment" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+                    <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+                    Recruitment
+                    <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                
+                <a href="/updates" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+                    <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+                    Updates
+                    <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                
+                <a href="/gallery" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+                    <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+                    Gallery
+                    <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                
+                <a href="/ContactUs" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+                    <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+                    Contact
+                    <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                  <a href="/testing_data" class="mobile-nav-item group flex items-center px-4 py-3 text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200">
+        <span class="w-6 h-6 mr-3 text-fuchsia-400"></span>
+        Testing data
+        <svg class="ml-auto w-4 h-4 text-slate-500 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+            </nav>
+
+            <!-- Mobile Login Button -->
+            <div class="p-6 border-t border-slate-700 bg-slate-800">
+                <a href="/login_type" class="block">
+                    <button class="w-full px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-fuchsia-500 hover:to-purple-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
+                        Login to ClubEaria
+                    </button>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Club Management Testing Interface</h1>
+            <p>Professional Data Display for Development & Testing</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <span class="stat-number" id="totalUsers">0</span>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="totalAdmins">0</span>
+                <div class="stat-label">Total Admins</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="totalLeaders">0</span>
+                <div class="stat-label">Leaders</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="totalMembers">0</span>
+                <div class="stat-label">Members</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="totalClubs">0</span>
+                <div class="stat-label">Clubs</div>
+            </div>
+        </div>
+
+        <!-- Regular Users Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Regular Users (userdb)</h2>
+                <button class="toggle-btn" onclick="toggleSection('users')">Toggle View</button>
+            </div>
+            <div class="section-content" id="users">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search users by name or email..." onkeyup="searchUsers(this.value)">
+                </div>
+                <div class="data-grid" id="userGrid">
+                    <% if (typeof users !== 'undefined' && users.length > 0) { %>
+                        <% users.forEach((user, index) => { %>
+                            <div class="data-card user-card" data-search="<%= user.name.toLowerCase() %> <%= user.email.toLowerCase() %>">
+                                <div class="card-header">
+                                    <div class="card-title"><%= user.name %></div>
+                                    <span class="role-badge user-badge">User</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Name</span>
+                                        <span class="detail-value"><%= user.name %></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Email</span>
+                                        <span class="detail-value"><%= user.email %></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Password</span>
+                                        <span class="detail-value password-value"><%= user.password %></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">User ID</span>
+                                        <span class="detail-value"><%= user._id ? (user._id.$oid || user._id) : 'N/A' %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="data-card">
+                            <p style="text-align: center; color: #666;">No users found. Make sure to pass 'users' data to this template.</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Users Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Admin Users by Clubs (admindb)</h2>
+                <button class="toggle-btn" onclick="toggleSection('admins')">Toggle View</button>
+            </div>
+            <div class="section-content" id="admins">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search admins by name, email, club, or team..." onkeyup="searchAdmins(this.value)">
+                </div>
+                <div id="adminGrid">
+                    <% if (typeof admins !== 'undefined' && admins.length > 0) { %>
+                        <%
+                            // Group admins by club
+                            const clubGroups = {};
+                            admins.forEach(admin => {
+                                if (!clubGroups[admin.clubId]) {
+                                    clubGroups[admin.clubId] = {
+                                        clubName: admin.clubName,
+                                        members: []
+                                    };
+                                }
+                                clubGroups[admin.clubId].members.push(admin);
+                            });
+                        %>
+                        
+                        <% Object.keys(clubGroups).forEach(clubId => { %>
+                            <div class="club-section">
+                                <div class="club-header">
+                                    <div class="club-title"><%= clubGroups[clubId].clubName %></div>
+                                    <div class="club-id"><%= clubId %></div>
+                                </div>
+                                <div style="padding: 16px;">
+                                    <%
+                                        // Group by team within club
+                                        const teamGroups = {};
+                                        const leaders = [];
+                                        
+                                        clubGroups[clubId].members.forEach(member => {
+                                            if (member.role === 'leader') {
+                                                leaders.push(member);
+                                            } else {
+                                                const teamName = member.teamName || 'No Team';
+                                                if (!teamGroups[teamName]) {
+                                                    teamGroups[teamName] = [];
+                                                }
+                                                teamGroups[teamName].push(member);
+                                            }
+                                        });
+                                    %>
+                                    
+                                    <!-- Leaders -->
+                                    <% if (leaders.length > 0) { %>
+                                        <div class="team-section">
+                                            <div class="team-title">Leaders</div>
+                                            <div class="team-members">
+                                                <% leaders.forEach(leader => { %>
+                                                    <div class="data-card leader-card" data-search="<%= leader.email.toLowerCase() %> <%= leader.clubName.toLowerCase() %> leader <%= (leader.name || '').toLowerCase() %>">
+                                                        <div class="card-header">
+                                                            <div class="card-title"><%= leader.name || leader.email.split('@')[0] %></div>
+                                                            <span class="role-badge leader-badge">Leader</span>
+                                                        </div>
+                                                        <div class="card-details">
+                                                            <% if (leader.name) { %>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Name</span>
+                                                                <span class="detail-value"><%= leader.name %></span>
+                                                            </div>
+                                                            <% } %>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Email</span>
+                                                                <span class="detail-value"><%= leader.email %></span>
+                                                            </div>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Password</span>
+                                                                <span class="detail-value password-value"><%= leader.password %></span>
+                                                            </div>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Club</span>
+                                                                <span class="detail-value"><%= leader.clubName %></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% }) %>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                    
+                                    <!-- Team Members -->
+                                    <% Object.keys(teamGroups).forEach(teamName => { %>
+                                        <div class="team-section">
+                                            <div class="team-title"><%= teamName %></div>
+                                            <div class="team-members">
+                                                <% teamGroups[teamName].forEach(member => { %>
+                                                    <div class="data-card admin-card" data-search="<%= member.email.toLowerCase() %> <%= member.clubName.toLowerCase() %> <%= teamName.toLowerCase() %> member <%= (member.name || '').toLowerCase() %>">
+                                                        <div class="card-header">
+                                                            <div class="card-title"><%= member.name || member.email.split('@')[0] %></div>
+                                                            <span class="role-badge member-badge">Member</span>
+                                                        </div>
+                                                        <div class="card-details">
+                                                            <% if (member.name) { %>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Name</span>
+                                                                <span class="detail-value"><%= member.name %></span>
+                                                            </div>
+                                                            <% } %>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Email</span>
+                                                                <span class="detail-value"><%= member.email %></span>
+                                                            </div>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Password</span>
+                                                                <span class="detail-value password-value"><%= member.password %></span>
+                                                            </div>
+                                                            <div class="detail-item">
+                                                                <span class="detail-label">Team</span>
+                                                                <span class="detail-value"><%= member.teamName || 'No Team' %></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% }) %>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="data-card">
+                            <p style="text-align: center; color: #666;">No admin users found. Make sure to pass 'admins' data to this template.</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navbar functionality
+        class ModernNavbar {
+            constructor() {
+                this.mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+                this.mobileMenu = document.getElementById('mobile-menu');
+                this.mobileOverlay = document.getElementById('mobile-overlay');
+                this.closeMobileMenu = document.getElementById('close-mobile-menu');
+                this.menuIcon = document.querySelector('.menu-icon');
+                this.isMenuOpen = false;
+
+                this.init();
+            }
+
+            init() {
+                this.mobileMenuToggle?.addEventListener('click', () => this.toggleMenu());
+                this.closeMobileMenu?.addEventListener('click', () => this.closeMenu());
+                this.mobileOverlay?.addEventListener('click', () => this.closeMenu());
+                
+                document.querySelectorAll('.mobile-nav-item').forEach(link => {
+                    link.addEventListener('click', () => {
+                        setTimeout(() => this.closeMenu(), 100);
+                    });
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.isMenuOpen) {
+                        this.closeMenu();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth >= 1024 && this.isMenuOpen) {
+                        this.closeMenu();
+                    }
+                });
+
+                this.setActiveNavigation();
+                
+                document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(link => {
+                    link.addEventListener('click', () => {
+                        setTimeout(() => this.setActiveNavigation(), 50);
+                    });
+                });
+            }
+
+            toggleMenu() {
+                if (this.isMenuOpen) {
+                    this.closeMenu();
+                } else {
+                    this.openMenu();
+                }
+            }
+
+            openMenu() {
+                this.isMenuOpen = true;
+                this.mobileMenu?.classList.add('open');
+                this.mobileOverlay?.classList.add('open');
+                this.menuIcon?.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closeMenu() {
+                this.isMenuOpen = false;
+                this.mobileMenu?.classList.remove('open');
+                this.mobileOverlay?.classList.remove('open');
+                this.menuIcon?.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            setActiveNavigation() {
+                const currentPath = window.location.pathname;
+                const navLinks = document.querySelectorAll('.nav-item, .mobile-nav-item');
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    
+                    if (href === currentPath) {
+                        link.classList.add('active');
+                        return;
+                    }
+                    
+                    if (currentPath === '/' && href === '/') {
+                        link.classList.add('active');
+                        return;
+                    }
+                    
+                    const normalizedHref = href.replace(/\/$/, '') || '/';
+                    const normalizedPath = currentPath.replace(/\/$/, '') || '/';
+                    
+                    if (normalizedHref === normalizedPath) {
+                        link.classList.add('active');
+                        return;
+                    }
+                });
+            }
+        }
+
+        // Testing UI functionality
+        function updateStats() {
+            const users = document.querySelectorAll('.user-card').length;
+            const admins = document.querySelectorAll('.admin-card, .leader-card').length;
+            const leaders = document.querySelectorAll('.leader-card').length;
+            const members = document.querySelectorAll('.admin-card').length;
+            const clubs = document.querySelectorAll('.club-section').length;
+
+            document.getElementById('totalUsers').textContent = users;
+            document.getElementById('totalAdmins').textContent = admins;
+            document.getElementById('totalLeaders').textContent = leaders;
+            document.getElementById('totalMembers').textContent = members;
+            document.getElementById('totalClubs').textContent = clubs;
+        }
+
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.toggle('hidden');
+        }
+
+        function searchUsers(query) {
+            const cards = document.querySelectorAll('#userGrid .user-card');
+            const searchTerm = query.toLowerCase();
+            
+            cards.forEach(card => {
+                const searchData = card.dataset.search;
+                if (searchData.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function searchAdmins(query) {
+            const cards = document.querySelectorAll('#adminGrid .data-card');
+            const searchTerm = query.toLowerCase();
+            
+            cards.forEach(card => {
+                const searchData = card.dataset.search;
+                if (searchData.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            new ModernNavbar();
+            updateStats();
+        });
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const navbar = new ModernNavbar();
+                navbar.setActiveNavigation();
+                updateStats();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
