@@ -13,16 +13,17 @@ import { LoginTypePage } from '@/pages/LoginTypePage';
 import { UserPage } from '@/pages/UserPage';
 import { ROUTES } from '@/utils/constants';
 import {
-  LeaderEventsPage,
-  LeaderUpdatesPage,
-  LeaderTeamsPage,
-  LeaderMembersPage,
-  LeaderChatPage,
-  LeaderTaskStatusPage,
-  LeaderClubSettingPage,
-  LeaderFeedbackPage,
-  LeaderOpeningsPage,
-  LeaderManageEventsPage,
+  LeaderDashboard,
+  LeaderEvents,
+  LeaderUpdates,
+  LeaderTeams,
+  LeaderMembers,
+  LeaderChat,
+  LeaderTasks,
+  LeaderClubSetting,
+  LeaderFeedback,
+  LeaderRecruitment,
+  LeaderManageEvents,
 } from '@/pages/leader';
 import {
   MemberDashboardPage,
@@ -84,17 +85,17 @@ export function AppRoutes() {
           </LeaderRoute>
         }
       >
-        <Route index element={<Navigate to={ROUTES.LEADER_EVENTS} replace />} />
-        <Route path="leader-events" element={<LeaderEventsPage />} />
-        <Route path="leader-updates" element={<LeaderUpdatesPage />} />
-        <Route path="leader-teams" element={<LeaderTeamsPage />} />
-        <Route path="leader-members" element={<LeaderMembersPage />} />
-        <Route path="leader-chat" element={<LeaderChatPage />} />
-        <Route path="leader-taskstatus" element={<LeaderTaskStatusPage />} />
-        <Route path="leader-clubsetting" element={<LeaderClubSettingPage />} />
-        <Route path="leader-feedback" element={<LeaderFeedbackPage />} />
-        <Route path="openings" element={<LeaderOpeningsPage />} />
-        <Route path="manage-events" element={<LeaderManageEventsPage />} />
+        <Route index element={<LeaderDashboard />} />
+        <Route path="leader-events" element={<LeaderEvents />} />
+        <Route path="leader-updates" element={<LeaderUpdates />} />
+        <Route path="leader-teams" element={<LeaderTeams />} />
+        <Route path="leader-members" element={<LeaderMembers />} />
+        <Route path="leader-chat" element={<LeaderChat />} />
+        <Route path="leader-taskstatus" element={<LeaderTasks />} />
+        <Route path="leader-clubsetting" element={<LeaderClubSetting />} />
+        <Route path="leader-feedback" element={<LeaderFeedback />} />
+        <Route path="openings" element={<LeaderRecruitment />} />
+        <Route path="manage-events" element={<LeaderManageEvents />} />
       </Route>
 
       {/* ========== Member (role === 'member', DashboardLayout + Member sidebar) ========== */}

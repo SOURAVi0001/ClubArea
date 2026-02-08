@@ -1,10 +1,13 @@
-export { LeaderEventsPage } from './LeaderEventsPage';
-export { LeaderUpdatesPage } from './LeaderUpdatesPage';
-export { LeaderTeamsPage } from './LeaderTeamsPage';
-export { LeaderMembersPage } from './LeaderMembersPage';
-export { LeaderChatPage } from './LeaderChatPage';
-export { LeaderTaskStatusPage } from './LeaderTaskStatusPage';
-export { LeaderClubSettingPage } from './LeaderClubSettingPage';
-export { LeaderFeedbackPage } from './LeaderFeedbackPage';
-export { LeaderOpeningsPage } from './LeaderOpeningsPage';
-export { LeaderManageEventsPage } from './LeaderManageEventsPage';
+export * from './LeaderDashboard';
+export * from './LeaderRecruitment';
+export * from './LeaderUpdates';
+export * from './LeaderEvents';
+export * from './LeaderTasks';
+export * from './LeaderTeams';
+export * from './LeaderMembers';
+export * from './LeaderFeedback';
+
+// Placeholders for now
+export const LeaderChat = () => <div className="p-8 text-white">Chat feature coming soon...</div>;
+export const LeaderClubSetting = () => <div className="p-8 text-white">Club Settings feature coming soon...</div>;
+export const LeaderManageEvents = () => <div className="p-8 text-white">Manage Events feature coming soon...</div>;
