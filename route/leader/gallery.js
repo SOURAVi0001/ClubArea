@@ -48,10 +48,6 @@ console.log()
 });
 
 router.get('/leader/manage-events', async (req, res) => {
-  // ✅ Basic auth check
-
-
-
   if (!req.session?.user) {
     return res.redirect('/login');
   }

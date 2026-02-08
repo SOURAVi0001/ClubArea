@@ -1,21 +1,21 @@
 
 const updatesdb = require('../models/updates');
-const userdb=require('../models/user');
-const admindb=require('../models/clubadmin');
+const userdb = require('../models/user');
+const admindb = require('../models/clubadmin');
 const InterviewApplicationdb = require('../models/Application_form');
 // Add this import at the top of controllers/home.js
 const InterviewApplication = require('../models/Application_form'); // Adjust path as needed
 const Applieddb = require('../models/Applied'); // Adjust path as needed
 
-const opening=require('../models/Opening');
-const openingdb=require('../models/Opening');
+const opening = require('../models/Opening');
+const openingdb = require('../models/Opening');
 
 const { body, validationResult } = require('express-validator');
 const form = async (req, res) => {
   const openingData = await openingdb.findById(req.session.user.openingId);
   const clubName = openingData.clubName;
   const role = openingData.teamName;
-  const email=req.session.user.email;
+  const email = req.session.user.email;
   console.log("EMAIL FOR THE USER IN THE SESSION IS ", req.session.user);
   res.render('form_fill/form_fill', {
     clubName,
@@ -25,7 +25,7 @@ const form = async (req, res) => {
 };
 
 
-exports.form=form;
+exports.form = form;
 // controllers/clubController.js
 
 
@@ -38,14 +38,18 @@ exports.form=form;
 // Render all clubs
 
 // controllers/home.js (or wherever your route handler is)
- const Club = require('../models/clubs');  // Import the Mongoose model
+const Club = require('../models/clubs');  // Import the Mongoose model
 
 const clubs = (req, res) => {
   Club.find()
     .then(clubs => {
-      res.render('clubs/clublist', {
+      // res.render('clubs/clublist', {
+      //   PageTitle: 'ClubDetails',
+      //   Register: clubs  
+      // });
+      res.json({
         PageTitle: 'ClubDetails',
-        Register: clubs  // You can rename 'Register' to 'clubs' in the template too
+        clubs: clubs
       });
     })
     .catch(err => {
@@ -65,7 +69,11 @@ const getclubdetail = (req, res) => {
   Club.findOne({ id: ClubId })  // match with custom string id
     .then(club => {
       if (!club) return res.status(404).send("Club not found");
-      res.render('clubs/clubdetails', {
+      // res.render('clubs/clubdetails', {
+      //   PageTitle: 'ClubDetails',
+      //   club: club
+      // });
+      res.json({
         PageTitle: 'ClubDetails',
         club: club
       });
@@ -79,23 +87,24 @@ const getclubdetail = (req, res) => {
 exports.getclubdetail = getclubdetail;
 
 
-const contact_us=(req,res)=>{
-      res.render( 'contact-us/contact_us',{PageTitle:"Contact-Us"});
+const contact_us = (req, res) => {
+  res.json({ PageTitle: "Contact-Us" });
 }
-exports.contact_us=contact_us;
+exports.contact_us = contact_us;
 
 
-const home=(req,res) => {
- res.render('home/index',{PageTitle:"ClubAreia"}); // ✅ This tells Express to render index.ejs from views/home
+const home = (req, res) => {
+  // res.render('home/index',{PageTitle:"ClubAreia"}); 
+  res.json({ message: "Welcome to ClubArea API", PageTitle: "ClubArea" });
 };
-exports.home=home;
+exports.home = home;
 
 
 const leader_log = (req, res) => {
   req.session.isLoggedIn = true;
-req.session.save(() => {
+  req.session.save(() => {
     res.redirect('/leader');
-});
+  });
 };
 exports.leader_log = leader_log;
 
@@ -104,9 +113,9 @@ exports.leader_log = leader_log;
 const leader = (req, res) => {
   //console.log(req.url, req.method, req.body);
   if (req.session.isLoggedIn) {
-    const {name,clubName}=req.session.user;
+    const { name, clubName } = req.session.user;
     console.log(name);
-    res.redirect( '/leader/leader-events');
+    res.redirect('/leader/leader-events');
   } else {
     res.redirect("/login");
   }
@@ -115,7 +124,7 @@ exports.leader = leader;
 
 
 const admin_login = (req, res) => {
-  
+
   const errors = req.session.errors || [];
   const oldInput = req.session.oldInput || {};
 
@@ -123,14 +132,14 @@ const admin_login = (req, res) => {
   req.session.oldInput = {};
   req.session.isLoggedIn = false;
   req.session.save(() => {
-   res.render('Login/admin_login', {
-    PageTitle: 'Admin Login',
-    errors,
-    oldInput
-   });
-});
+    res.render('Login/admin_login', {
+      PageTitle: 'Admin Login',
+      errors,
+      oldInput
+    });
+  });
 
- };
+};
 exports.admin_login = admin_login;
 
 
@@ -147,7 +156,7 @@ const user_login = (req, res) => {
     errors,
     oldInput
   });
- };
+};
 exports.user_login = user_login;
 
 
@@ -192,59 +201,64 @@ exports.Sign_Up = Sign_Up;
 
 const VALIDATE = [
   ...Sign_Up_Validators,
-  (req, res) => {
+  async (req, res) => {
     console.log(req.body);
     console.log("Validator is called");
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      req.session.errors = errors.array();
-      req.session.oldInput = req.body;
-      return res.redirect('/Sign_Up');
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
     }
 
-    const { name, email, password,confirmpassword } = req.body;
-    const user = new userdb({ name, email, password });
+    const { name, email, password } = req.body;
+    try {
+      const user = new userdb({ name, email, password });
+      await user.save();
 
-    console.log(user);
+      // Auto-login or just success message
+      req.session.isLoggedIn = true; // Maybe auto-login?
+      req.session.user = user;
 
-    user.save()
-      .then(() => {
-        req.session.errors = [];
-        req.session.oldInput = {};
-        res.redirect('/user_login');
-      })
-      .catch(err => {
-        console.log("Error in saving the user: ", err);
-        req.session.errors = [{ msg: err.message }];
-        req.session.oldInput = req.body;
-        return res.redirect('/Sign_Up');
+      return res.status(201).json({
+        success: true,
+        message: "User registered successfully",
+        user: { name: user.name, email: user.email }
       });
+    } catch (err) {
+      console.log("Error in saving the user: ", err);
+      return res.status(500).json({
+        success: false,
+        message: err.message || "Registration failed"
+      });
+    }
   }
 ];
 exports.VALIDATE = VALIDATE;
 
 
-const member =(req,res)=>{
-  if(req.session.isLoggedIn){
-      res.render('Club_Member/member',{
-        PageTitle: "Events",
-        Member_Name: req.session.user.name,
-        Club_Name: req.session.user.clubName,
-        Curr: "member"
-      });
+const member = (req, res) => {
+  if (req.session.isLoggedIn) {
+    res.render('Club_Member/member', {
+      PageTitle: "Events",
+      Member_Name: req.session.user.name,
+      Club_Name: req.session.user.clubName,
+      Curr: "member"
+    });
   }
   else res.redirect("/login");
 };
-exports.member=member;
+exports.member = member;
 
 
 const member_log = (req, res) => {
   req.session.isLoggedIn = true;
   console.log("Req is passed and approved for member !")
-req.session.save(() => {
+  req.session.save(() => {
     res.redirect('/member');
-});
+  });
 };
 exports.member_log = member_log;
 
@@ -256,28 +270,22 @@ const user_login_post = async (req, res) => {
     const user = await userdb.findOne({ email });
 
     if (!user) {
-      req.session.errors = [{ msg: "You don't have an account yet. Please Sign Up first." }];
-      req.session.oldInput = req.body;
-      return res.redirect('/user_login');
+      return res.status(401).json({ success: false, message: "Use doesn't exist. Please Sign Up first." });
     }
 
     if (user.password !== password) {
-      req.session.errors = [{ msg: "Invalid email or password" }];
-      req.session.oldInput = req.body;
-      return res.redirect('/user_login');
+      return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
     req.session.isLoggedIn = true;
     req.session.user = user;
     req.session.errors = [];
     req.session.oldInput = {};
-    return res.redirect('/user');
+    return res.json({ success: true, message: "Login successful", user });
 
   } catch (err) {
     console.error("Login error:", err);
-    req.session.errors = [{ msg: "Something went wrong. Try again later." }];
-    req.session.oldInput = req.body;
-    return res.redirect('/user_login');
+    return res.status(500).json({ success: false, message: "Something went wrong. Try again later." });
   }
 };
 exports.user_login_post = user_login_post;
@@ -293,115 +301,101 @@ const admin_login_post = async (req, res) => {
     console.log("User found in DB:", user);
 
     if (!user) {
-      req.session.errors = [{ msg: "You are not authorised!" }];
-      req.session.oldInput = { email };
-      return res.redirect('/admin_login');
+      return res.status(401).json({ success: false, message: "You are not authorised!" });
     }
 
     if (user.password !== password) {
-      req.session.errors = [{ msg: "Invalid email or password" }];
-      req.session.oldInput = { email };
-      return res.redirect('/admin_login');
+      return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
-    req.session.isLoggedIn = false;
+    // Set session
+    req.session.isLoggedIn = true; // Was false in original?? Setting to true for logic consistency
     req.session.user = user;
     req.session.errors = [];
     req.session.oldInput = {};
 
-  if (user.role === 'leader') {
-  req.session.isLoggedIn = false;
-  req.session.save(() => {
-  return res.redirect('/leader_log');
-});
-      
+    let redirectUrl = '/admin'; // default
+    if (user.role === 'leader') {
+      redirectUrl = '/leader';
+    } else if (user.role === 'member') {
+      redirectUrl = '/member';
     }
-  else if (user.role === 'member') {
-  req.session.isLoggedIn = false;
-  console.log("Req for member")
-  req.session.save(() => {
-  return res.redirect('/member_log');
-});
-     
-    } 
-    else {
-      req.session.errors = [{ msg: "Unknown user role" }];
-      req.session.oldInput = { email };
-      return res.redirect('/admin_login');
-    }
+
+    req.session.save(() => {
+      return res.json({ success: true, message: "Login successful", user, redirectUrl });
+    });
+
   }
-   catch (err) {
+  catch (err) {
     console.error("Login error:", err);
-    req.session.errors = [{ msg: "Something went wrong. Try again later." }];
-    req.session.oldInput = { email };
-    return res.redirect('/admin_login');
+    return res.status(500).json({ success: false, message: "Something went wrong. Try again later." });
   }
 
 };
 exports.admin_login_post = admin_login_post;
 
 
-const user =async(req,res)=>{
-console.log("user call here with session ",req.url,req.method,req.body,req.session.user);
-const userEmail = req.session.user.email;
+const user = async (req, res) => {
+  console.log("user call here with session ", req.url, req.method, req.body, req.session.user);
+  const userEmail = req.session.user.email;
 
-// Step 1: Get all applied job records by this user
-const appliedDocs = await Applieddb.find({ applicantEmail: userEmail });
-console.log('appliedDocs:', appliedDocs);
+  // Step 1: Get all applied job records by this user
+  const appliedDocs = await Applieddb.find({ applicantEmail: userEmail });
+  console.log('appliedDocs:', appliedDocs);
 
-// Step 2: Build Set of composite keys for efficient lookup
-const appliedKeysSet = new Set(
-  appliedDocs.map(doc =>
-    [doc.clubName.trim().toLowerCase(), doc.teamName.trim().toLowerCase()].join('|')
-  )
-);
+  // Step 2: Build Set of composite keys for efficient lookup
+  const appliedKeysSet = new Set(
+    appliedDocs.map(doc =>
+      [doc.clubName.trim().toLowerCase(), doc.teamName.trim().toLowerCase()].join('|')
+    )
+  );
 
-const allOpenings = await openingdb.find();
+  const allOpenings = await openingdb.find();
 
-console.log('appliedKeysSet:', Array.from(appliedKeysSet));
-console.log('allOpeningsKeys:', allOpenings.map(openingKey));
+  console.log('appliedKeysSet:', Array.from(appliedKeysSet));
+  console.log('allOpeningsKeys:', allOpenings.map(openingKey));
 
-function openingKey(opening) {
-  return [
-    opening.clubName.trim().toLowerCase(),
-    opening.teamName.trim().toLowerCase()
-  ].join('|');
-}
-
-console.log('appliedKeysSet:', Array.from(appliedKeysSet));
-console.log('allOpeningsKeys:', allOpenings.map(openingKey));
-
-const openingsApplied = [];
-const openingsNotApplied = [];
-
-allOpenings.forEach(opening => {
-  if (appliedKeysSet.has(openingKey(opening))) {
-    openingsApplied.push(opening);
-  } 
-  else {
-    openingsNotApplied.push(opening);
+  function openingKey(opening) {
+    return [
+      opening.clubName.trim().toLowerCase(),
+      opening.teamName.trim().toLowerCase()
+    ].join('|');
   }
-});
+
+  console.log('appliedKeysSet:', Array.from(appliedKeysSet));
+  console.log('allOpeningsKeys:', allOpenings.map(openingKey));
+
+  const openingsApplied = [];
+  const openingsNotApplied = [];
+
+  allOpenings.forEach(opening => {
+    if (appliedKeysSet.has(openingKey(opening))) {
+      openingsApplied.push(opening);
+    }
+    else {
+      openingsNotApplied.push(opening);
+    }
+  });
 
 
-console.log("openingsApplied", openingsApplied);
-console.log("openingsNotApplied", openingsNotApplied);
-const alreadyApplied = await InterviewApplicationdb.find({ applicantEmail: userEmail });
-const username=req.session.user.name;
-// Step 2: Extract jobIds the user has applied to
+  console.log("openingsApplied", openingsApplied);
+  console.log("openingsNotApplied", openingsNotApplied);
+  const alreadyApplied = await InterviewApplicationdb.find({ applicantEmail: userEmail });
+  const username = req.session.user.name;
+  // Step 2: Extract jobIds the user has applied to
 
-// Now you can use openingsApplied and openingsNotApplied in your view or return them
+  // Now you can use openingsApplied and openingsNotApplied in your view or return them
 
-  
-      res.render('User/user',{
-        opening:openingsNotApplied,
-        openingsApplied:alreadyApplied,
-        email:userEmail,
-        PageTitle:"User",
-        username
-      });
+
+  res.json({
+    PageTitle: "User",
+    opening: openingsNotApplied,
+    openingsApplied: alreadyApplied,
+    email: userEmail,
+    username
+  });
 };
-exports.user=user;
+exports.user = user;
 
 
 
@@ -409,7 +403,7 @@ exports.user=user;
 const updates = async (req, res) => {
   try {
     // 1. Fetch all updates:
-    const updatedlist = await updatesdb.find({type:"public"});
+    const updatedlist = await updatesdb.find({ type: "public" });
 
     // 2. Extract unique clubIds from updates
     const clubIds = [...new Set(updatedlist.map(update => update.clubId))];
@@ -431,8 +425,8 @@ const updates = async (req, res) => {
       clubName: clubIdToName[update.clubId] || "Unknown Club"
     }));
 
-    // 6. Render the view
-    res.render('updates/update', {
+    // 6. Return JSON
+    res.json({
       PageTitle: "Updates",
       updates: updatesWithClubName
     });
@@ -450,8 +444,8 @@ exports.updates = updates;
 const checkSession = (req, res) => {
   try {
     const isLoggedIn = !!(req.session && req.session.user && req.session.isLoggedIn);
-    
-    res.json({ 
+
+    res.json({
       loggedIn: isLoggedIn,
       user: isLoggedIn ? {
         name: req.session.user.name,
@@ -468,14 +462,14 @@ const checkSession = (req, res) => {
 exports.checkSession = checkSession;
 
 
-const recruitment =async(req,res)=>{
-  const openings=await openingdb.find();
-      res.render('Recruitment/recruitment',{
-        PageTitle: "Recruitment",
-       opening:openings
-      });
+const recruitment = async (req, res) => {
+  const openings = await openingdb.find();
+  res.json({
+    PageTitle: "Recruitment",
+    opening: openings
+  });
 };
-exports.recruitment=recruitment;
+exports.recruitment = recruitment;
 
 
 
@@ -489,10 +483,10 @@ exports.recruitment=recruitment;
 
 
 
-const Login_Type =(req,res)=>{
-      res.render('Login_Type/logintype');
+const Login_Type = (req, res) => {
+  res.render('Login_Type/logintype');
 };
-exports.Login_Type=Login_Type;
+exports.Login_Type = Login_Type;
 
 
 
@@ -536,7 +530,7 @@ const upload = multer({
 // Submit application
 // Add this at the top of your submitApplication function
 const submitApplication = async (req, res) => {
- 
+
 
   console.log('=== APPLICATION SUBMISSION STARTED ===');
   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Request body: for the SUMBIT APPLICATION ', req.session);
@@ -560,26 +554,26 @@ const submitApplication = async (req, res) => {
       motivation
     } = req.body;
 
-     const appliedDoc = await InterviewApplicationdb.findOne({
-  clubName: clubName,          // e.g., "AI Club"
-  teamName: TeamName,          // e.g., "Orthoptist Team"
-  applicantEmail: email        // e.g., "souravpandr@gmail.com"
-});
+    const appliedDoc = await InterviewApplicationdb.findOne({
+      clubName: clubName,          // e.g., "AI Club"
+      teamName: TeamName,          // e.g., "Orthoptist Team"
+      applicantEmail: email        // e.g., "souravpandr@gmail.com"
+    });
 
-if (appliedDoc) {
-  const applied = new Applieddb({
-  jobId: appliedDoc._id,
-  clubName: clubName,          // e.g., "AI Club"
-  teamName: TeamName, 
-  applicantEmail: appliedDoc.applicantEmail
-});
-await applied.save();
-    
+    if (appliedDoc) {
+      const applied = new Applieddb({
+        jobId: appliedDoc._id,
+        clubName: clubName,          // e.g., "AI Club"
+        teamName: TeamName,
+        applicantEmail: appliedDoc.applicantEmail
+      });
+      await applied.save();
 
-}
-else {
-  console.log("No application found.");
-}
+
+    }
+    else {
+      console.log("No application found.");
+    }
 
     console.log('Extracted form ', {
       fullName, email, scholarNo, phone, address, clubName, TeamName, motivation
@@ -623,18 +617,18 @@ else {
 
     // Save to Opening collection
     await newOpening.save();
-try {
-  const appliedEntry = new Applieddb({
-    jobId: newOpening._id,
-    clubName: clubName,
-    teamName: TeamName,
-    applicantEmail: email
-  });
-  await appliedEntry.save();
-  console.log('Application saved to Applieddb:', appliedEntry._id);
-} catch (appliedErr) {
-  console.error('Error saving to Applieddb:', appliedErr);
-}
+    try {
+      const appliedEntry = new Applieddb({
+        jobId: newOpening._id,
+        clubName: clubName,
+        teamName: TeamName,
+        applicantEmail: email
+      });
+      await appliedEntry.save();
+      console.log('Application saved to Applieddb:', appliedEntry._id);
+    } catch (appliedErr) {
+      console.error('Error saving to Applieddb:', appliedErr);
+    }
     console.log('Data saved successfully to Opening collection:', newOpening._id);
 
     // Clear session data
@@ -676,7 +670,7 @@ try {
 
 exports.submitApplication = submitApplication;
 
-exports.upload=upload;
+exports.upload = upload;
 
 // Add to your routes controller
 
@@ -685,25 +679,25 @@ const storeApplicationData = (req, res) => {
   try {
     console.log("JJJJJJJJJJJJJJJJ");
     console.log('Received ', req.body);
-    
+
     if (!req.session) {
       return res.status(400).json({ success: false, message: 'Session not available' });
     }
-    
+
     // Handle both data formats - current frontend sends {applied: {clubName, TeamName}}
     let sessionData;
-    
+
     if (req.body.applied) {
       // Current frontend format
       sessionData = {
         clubName: req.body.applied.clubName,
-        TeamName: req.body.applied.TeamName, 
+        TeamName: req.body.applied.TeamName,
         timestamp: new Date()
       };
-      
+
       // Store in session under 'applied' key to match frontend expectation
       req.session.applied = sessionData;
-      
+
     }
     else {
       // Alternative format if you want to use openingId format
@@ -715,22 +709,22 @@ const storeApplicationData = (req, res) => {
         teamName,
         timestamp: new Date()
       };
-      
+
       req.session.applicationData = sessionData;
     }
-    
+
     // Force session save
     req.session.save((err) => {
       if (err) {
         console.error('Session save error:', err);
         return res.status(500).json({ success: false, message: 'Failed to save session' });
       }
-      
+
       console.log("Session data stored successfully:");
       console.log(req.session.applied || req.session.applicationData);
       res.json({ success: true, message: 'Application data stored' });
     });
-    
+
   } catch (error) {
     console.error('Error storing application ', error);
     res.status(500).json({ success: false, message: 'Server error' });
@@ -744,15 +738,15 @@ const getUserApplications = async (req, res) => {
     if (!req.session || !req.session.user) {
       return res.json({ success: false, message: 'Not logged in' });
     }
-    
+
     const userEmail = req.session.user.email;
-    
+
     // Fetch user's applications using correct field name from schema
-    const applications = await InterviewApplicationdb.find({ 
+    const applications = await InterviewApplicationdb.find({
       applicantEmail: userEmail  // Changed from 'email' to 'applicantEmail'
     })
-    .sort({ createdAt: -1 });
-    
+      .sort({ createdAt: -1 });
+
     const formattedApplications = applications.map(app => ({
       id: app._id,
       role: app.role || 'Member',
@@ -765,10 +759,10 @@ const getUserApplications = async (req, res) => {
       applicantEmail: app.applicantEmail,
       phone: app.phone
     }));
-    
+
     res.json({
-      success: true, 
-      applications: formattedApplications 
+      success: true,
+      applications: formattedApplications
     });
   }
   catch (error) {

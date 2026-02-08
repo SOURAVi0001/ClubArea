@@ -31,7 +31,7 @@ const leadergallery = require('./route/leader/gallery');
 const leaderchat = require('./route/leader/taskstatus');
 const leaderrecuriment = require('./route/leader/recuriment');
 const Interview = require('./route/Interview');
-const {Selection} = require('./route/Selection');
+const { Selection } = require('./route/Selection');
 const Error404 = require('./route/Error404');
 const Gallery = require('./route/Gallery');
 const Recruitment = require('./route/Recruitment');
@@ -66,6 +66,14 @@ if (process.env.MONGODB_URI) {
 
 app.use(session(sessionConfig));
 
+// Enable CORS
+const cors = require('cors');
+app.use(cors({
+  origin: 'http://localhost:5173', // Vite default port
+  credentials: true
+}));
+
+
 // Static file serving
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
@@ -95,7 +103,7 @@ const memberData = {
       title: 'Submit Task Report',
       status: 'Completed',
       deadlineProgress: 100
-    } 
+    }
   ]
 };
 
@@ -206,17 +214,17 @@ function startServer() {
 // Initialize application
 async function initializeApp() {
   console.log('🔄 Starting application...');
-  
+
   // Try to connect to database
   const dbConnected = await connectToDatabase();
-  
+
   if (dbConnected) {
     console.log('✅ Application started with database connection');
   } else {
     console.log('⚠️ Application started without database connection');
     console.log('💡 Add database environment variables to enable database features');
   }
-  
+
   // Start the server regardless of database connection status
   startServer();
 }
