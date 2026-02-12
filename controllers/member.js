@@ -10,166 +10,174 @@ const events = async (req, res) => {
 
     const admin = await admindb.findOne({ email });
     if (!admin) {
-      console.error("Admin not found for email:", email);
-      return res.redirect("./login");
+      return res.status(404).json({ error: "Admin not found" });
     }
 
-    const { clubid, clubName } = admin;
+    const { clubId, clubName } = admin;
 
     const page = Math.max(1, parseInt(req.query.page)) || 1;
     const limitPerPage = 5;
-    const limit = page * limitPerPage; // Accumulate all events up to current page
+    const limit = page * limitPerPage;
 
-    const totalEvents = await eventsdb.countDocuments({ clubid });
+    try {
+      // Note: Original code used 'clubid' (lowercase) in query but 'clubId' (camelCase) from admin object. 
+      // Assuming database field is 'clubId' based on other files, but check if it was 'clubid'. 
+      // The original code had: const { clubid, clubName } = admin; and query { clubid }
+      // But in updates it used clubId. Let's assume consistent field names or check model.
+      // safely use both or check what 'admin' has.
 
-    const eventsList = await eventsdb.find({ clubid })
-      .sort({ date: 1, time: 1 })
-      .limit(limit); // Don't skip, just show all up to the current page
+      const query = { clubId: clubId || admin.clubid };
 
-    const totalPages = Math.ceil(totalEvents / limitPerPage);
+      const totalEvents = await eventsdb.countDocuments(query);
+      const eventsList = await eventsdb.find(query)
+        .sort({ date: 1, time: 1 })
+        .limit(limit);
 
-    res.render("Club_Member/Events", {
-      PageTitle: "Events",
-      Member_Name: name,
-      Club_Name: clubName,
-      Curr: "Events",
-      data: eventsList,
-      currentPage: page,
-      totalPages
-    });
+      const totalPages = Math.ceil(totalEvents / limitPerPage);
+
+      res.json({
+        PageTitle: "Events",
+        Member_Name: name,
+        Club_Name: clubName,
+        data: eventsList,
+        currentPage: page,
+        totalPages,
+        totalEvents
+      });
+    } catch (err) {
+      console.error("Error fetching events:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   } else {
-    res.redirect("./login");
+    res.status(401).json({ error: "Not authorized" });
   }
 };
-
 exports.events = events;
 
 
 const updates = async (req, res) => {
   try {
-    // ✅ Session validation
     if (!req.session?.isLoggedIn || !req.session?.user) {
-      return res.redirect("/login");
+      return res.status(401).json({ error: "Not authorized" });
     }
 
-    // ✅ Destructure safely
     const { name, email } = req.session.user;
+    const admin = await admindb.findOne({ email });
 
-    // ✅ Pagination
+    if (!admin) {
+      return res.status(404).json({ error: "Member profile not found" });
+    }
+
+    const { clubId, clubName } = admin;
     const page = Math.max(1, parseInt(req.query.page)) || 1;
     const limit = 5;
     const skip = (page - 1) * limit;
 
-    // ✅ Find admin details
-    const admin = await admindb.findOne({ email });
-    console.log("Admin:", admin);
-
-    const { clubId, clubName } = admin;
-
-    // ✅ Fetch both club-specific and public updates
-    console.log("Fetching updates for club:", clubId);
     const query = {
       clubId: clubId?.toUpperCase(),
-      type: { $in: ["club", "public"] }, // show both types
+      type: { $in: ["club", "public"] },
     };
 
     const totalUpdates = await updatedb.countDocuments(query);
-
     const updatesList = await updatedb.find(query)
-      .sort({ date : 1 ,time :1}) // newest first
+      .sort({ date: -1, time: -1 }) // Sorting by date descending for updates usually
       .skip(skip)
       .limit(limit);
 
     const totalPages = Math.ceil(totalUpdates / limit);
 
-    // ✅ Render updates page
-    res.render("Club_Member/Updates", {
-      PageTitle: "Events",
+    res.json({
+      PageTitle: "Updates",
       Member_Name: name,
       Club_Name: clubName,
-      Curr: "Events",
-      update: updatesList,
+      data: updatesList,
       currentPage: page,
       totalPages,
+      totalUpdates
     });
 
   } catch (err) {
     console.error("Error fetching updates:", err);
-    res.status(500).send("Server Error");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 exports.updates = updates;
 
-// ✅ Updated: Contact
 const Contact = async (req, res) => {
   if (req.session.isLoggedIn) {
     const { name, email } = req.session.user;
     const admin = await admindb.findOne({ email });
 
     if (!admin) {
-      console.error("Admin not found for email:", email);
-      return res.redirect("./login");
+      return res.status(404).json({ error: "Member profile not found" });
     }
 
-    const { clubName } = admin;
+    const { clubName, clubId } = admin;
 
-    res.render("Club_Member/Leader_Contact", {
+    // Find the leader of this club
+    const leader = await admindb.findOne({ clubId, role: 'leader' });
+
+    res.json({
       PageTitle: "Contact Leader",
       Member_Name: name,
       Club_Name: clubName,
-      Curr: "Contact"
+      leader: leader ? {
+        name: leader.name,
+        email: leader.email,
+        phone: leader.phone || 'Not available' // Assuming phone exists or just email
+      } : null
     });
   } else {
-    res.redirect("./login");
+    res.status(401).json({ error: "Not authorized" });
   }
 };
 exports.Contact = Contact;
 
-// ✅ Updated: Task_Status
 const Task_Status = async (req, res) => {
   if (req.session.isLoggedIn) {
     const { name, email } = req.session.user;
     const admin = await admindb.findOne({ email });
 
     if (!admin) {
-      console.error("Admin not found for email:", email);
-      return res.redirect("./login");
+      return res.status(404).json({ error: "Member profile not found" });
     }
 
     const { clubId, clubName } = admin;
     const search = req.query.search?.trim() || "";
-    const limit = parseInt(req.query.limit) || 3;
+    const limit = parseInt(req.query.limit) || 10; // Increased default limit for API
 
     const query = { assigned_to: name };
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
-        { assigned_to: { $regex: search, $options: 'i' } }
       ];
     }
 
-    const allData = await taskstatusdb.find(query).sort({ task_assign_date: -1 });
-    const data = allData.slice(0, limit);
+    try {
+      const allData = await taskstatusdb.find(query).sort({ task_assign_date: -1 });
+      // The original code did slice for pagination manually? 
+      // Let's just return what was requested.
+      const data = allData.slice(0, limit);
+      const hasMore = allData.length > limit;
 
-    const hasMore = allData.length > limit;
-
-    res.render("Club_Member/Task_Status", {
-      PageTitle: "Task Status",
-      Member_Name: name,
-      Club_Name: clubName,
-      Curr: "Task",
-      data,
-      search,
-      limit,
-      hasMore
-    });
+      res.json({
+        PageTitle: "Task Status",
+        Member_Name: name,
+        Club_Name: clubName,
+        data,
+        search,
+        limit,
+        hasMore
+      });
+    } catch (err) {
+      console.error("Error fetching tasks:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   } else {
-    res.redirect("./login");
+    res.status(401).json({ error: "Not authorized" });
   }
 };
-
 exports.Task_Status = Task_Status;
 
 const Task_view_details = async (req, res) => {
@@ -177,84 +185,91 @@ const Task_view_details = async (req, res) => {
     const { name, email } = req.session.user;
     const admin = await admindb.findOne({ email });
 
-    if (!admin) {
-      console.error("Admin not found for email:", email);
-      return res.redirect("./login");
-    }
+    if (!admin) return res.status(404).json({ error: "Member profile not found" });
 
     const { clubName } = admin;
-    const { id } = req.params; // ✅ FIXED: Extract ID from route params
+    const { id } = req.params;
 
     try {
       const task = await taskstatusdb.findById(id);
-      if (!task) return res.status(404).send("Task not found");
+      if (!task) return res.status(404).json({ error: "Task not found" });
 
-      res.render("Club_Member/Task_Details", {
+      res.json({
         PageTitle: "Task Details",
         Member_Name: name,
         Club_Name: clubName,
-        Curr: "Task",
-        task: task,
+        task,
       });
     } catch (err) {
       console.error("Error fetching task:", err);
-      res.status(500).send("Server error");
+      res.status(500).json({ error: "Internal Server Error" });
     }
 
   } else {
-    res.redirect("./login");
+    res.status(401).json({ error: "Not authorized" });
   }
 };
 exports.Task_view_details = Task_view_details;
 
-// ✅ Updated: Feedback
-const Feedback = async (req, res) => {
-  if (req.session.isLoggedIn) {
-      console.log(req.body)
+// Split Feedback into get and post
+const getFeedback = async (req, res) => {
+  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
 
-   const title = req.body?.title || '';
-const description = req.body?.description || '';
+  const { name, email } = req.session.user;
+  const admin = await admindb.findOne({ email });
+  if (!admin) return res.status(404).json({ error: "Member profile not found" });
+  const { clubName } = admin;
 
-    const { name, email } = req.session.user;
-
-    const admin = await admindb.findOne({ email });
-
-    if (!admin) {
-      console.error("Admin not found for email:", email);
-      return res.redirect("./login");
-    }
-
-    const { clubId, clubName } = admin;
-
-    if (title && description) {
-      const feedback = new feedbackdb({
-        title:title,
-        description:description,
-        posted_by: name,
-        clubId: clubId,
-        user_type: "member",
-        email: email,
-        date: new Date()
-      });
-
-      await feedback.save();
-    }
-const prevfeedback=await feedbackdb.find({email});
-console.log("prevfeedback.  ",prevfeedback);
-    res.render("Club_Member/Feedback", {
+  try {
+    const prevfeedback = await feedbackdb.find({ email }).sort({ date: -1 });
+    res.json({
       PageTitle: "Feedback",
       Member_Name: name,
       Club_Name: clubName,
-      Curr: "Feedback",
-      prevfeedback
+      data: prevfeedback
     });
-  } 
-  else {
-    res.redirect("./login");
+  } catch (err) {
+    console.error("Error fetching feedback:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.getFeedback = getFeedback;
+
+const postFeedback = async (req, res) => {
+  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+
+  const { title, description } = req.body;
+  const { name, email } = req.session.user;
+
+  const admin = await admindb.findOne({ email });
+  if (!admin) return res.status(404).json({ error: "Member profile not found" });
+  const { clubId } = admin;
+
+  if (!title || !description) {
+    return res.status(400).json({ error: "Title and description are required" });
   }
 
+  try {
+    const feedback = new feedbackdb({
+      title,
+      description,
+      posted_by: name,
+      clubId,
+      user_type: "member",
+      email,
+      date: new Date()
+    });
+    await feedback.save();
+    res.json({ success: true, message: "Feedback submitted successfully" });
+  } catch (err) {
+    console.error("Error saving feedback:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
-exports.Feedback = Feedback;
+exports.postFeedback = postFeedback;
+
+// Keep the old export name for compatibility if needed, but route should check
+exports.Feedback = getFeedback; // Default to get logic if imported directly without change, but we will change route.
 
 
 

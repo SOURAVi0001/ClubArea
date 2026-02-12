@@ -48,14 +48,14 @@ const getOpeningsDashboard = async (req, res) => {
   try {
     // Check if user is logged in and is a leader
     if (!req.session || !req.session.isLoggedIn || !req.session.user) {
-      return res.redirect('/login?error=Please log in to continue.');
+      return res.status(401).json({ error: "Please log in to continue" });
     }
 
     const user = req.session.user;
 
     // Only leaders can access this dashboard
     if (user.role !== 'leader') {
-      return res.redirect('/login?error=Access denied. Leaders only.');
+      return res.status(403).json({ error: "Access denied. Leaders only." });
     }
 
     const leaderEmail = user.email;
@@ -108,7 +108,93 @@ const getOpeningsDashboard = async (req, res) => {
   }
 };
 
-// ... (createOpening and closeOpening are already JSON)
+// Create a new opening
+const createOpening = async (req, res) => {
+  try {
+    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+      return res.status(401).json({ error: 'Please log in to continue.' });
+    }
+
+    const { role, teamName, description, requirements, maxApplicants } = req.body;
+    const user = req.session.user;
+
+    if (user.role !== 'leader') {
+      return res.status(403).json({ error: 'Only leaders can create openings.' });
+    }
+
+    if (!role || !teamName || !description || !requirements) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const newOpening = new Opening({
+      clubId: user.clubId,
+      clubName: user.clubName,
+      role,
+      teamName,
+      description,
+      requirements,
+      maxApplicants: maxApplicants || 10,
+      status: 'active',
+      createdBy: user.email,
+      createdDate: new Date()
+    });
+
+    await newOpening.save();
+
+    res.status(201).json({
+      success: true,
+      headers: { ...req.headers },
+      message: 'Opening created successfully.',
+      opening: newOpening
+    });
+  } catch (error) {
+    console.error('Error creating opening:', error);
+    res.status(500).json({ error: 'Unable to create opening.' });
+  }
+};
+
+// Close an existing opening
+const closeOpening = async (req, res) => {
+  try {
+    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+      return res.status(401).json({ error: 'Please log in to continue.' });
+    }
+
+    const { openingId } = req.body;
+    const user = req.session.user;
+
+    if (user.role !== 'leader') {
+      return res.status(403).json({ error: 'Only leaders can close openings.' });
+    }
+
+    if (!openingId) {
+      return res.status(400).json({ error: 'Opening ID is required.' });
+    }
+
+    // Find the opening and ensure it belongs to this leader
+    const opening = await Opening.findOne({
+      _id: openingId,
+      createdBy: user.email
+    });
+
+    if (!opening) {
+      return res.status(404).json({ error: 'Opening not found or unauthorized.' });
+    }
+
+    opening.status = 'closed';
+    opening.closedDate = new Date();
+    await opening.save();
+
+    res.json({
+      success: true,
+      message: 'Opening closed successfully.',
+      openingId: opening._id
+    });
+  } catch (error) {
+    console.error('Error closing opening:', error);
+    res.status(500).json({ error: 'Unable to close opening.' });
+  }
+};
 
 // Get applicants for specific opening
 const getApplicants = async (req, res) => {
@@ -355,24 +441,23 @@ exports.getApplicants = getApplicants;
 const updates = async (req, res) => {
   if (req.session.isLoggedIn) {
     try {
-      const totalCount = await updatedb.countDocuments(); // 👈 add this
-      const data = await updatedb.find().sort({ date: -1 }).limit(5); // 👈 limit to 5
+      const totalCount = await updatedb.countDocuments();
+      const data = await updatedb.find().sort({ date: -1 }).limit(5);
       const { name, clubName } = req.session.user;
 
-      res.render('leader/Updates', {
+      res.json({
         PageTitle: "Updates",
         Leader_Name: name,
         Club_Name: clubName,
-        Curr: "Updates",
         data: data,
-        totalCount: totalCount // 👈 pass this to EJS
+        totalCount: totalCount
       });
     } catch (err) {
       console.error("Error fetching updates:", err);
-      res.status(500).send("Internal Server Error");
+      res.status(500).json({ error: "Internal Server Error" });
     }
   } else {
-    res.redirect("/login");
+    res.status(401).json({ error: "Not authorized" });
   }
 };
 exports.updates = updates;
@@ -396,28 +481,26 @@ const Post_Updates = (req, res) => {
     const { name, clubId, clubName } = req.session.user;
     const { content, postType, title } = req.body;
 
-    // Use the first 10 words of content as a title if title not provided
-
     const update = new updatedb({
       title: title,
       posted_by: name,
       description: content,
       clubId: clubId,
-      type: postType, // "club" or "public"
+      type: postType,
       date: new Date()
     });
 
     update.save()
       .then(() => {
-        res.redirect('/leader/leader-updates'); // or re-render with success message
+        res.json({ success: true, message: "Update posted successfully" });
       })
       .catch(err => {
         console.error("Error saving update:", err);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ error: "Internal Server Error" });
       });
 
   } else {
-    res.redirect('/login'); // If not logged in
+    res.status(401).json({ error: "Not authorized" });
   }
 }
 exports.Post_Updates = Post_Updates;
@@ -427,8 +510,7 @@ const Post_event = (req, res) => {
     const { name, clubId, clubName } = req.session.user;
     const { title, date, venue, time } = req.body;
     const onlyDate = new Date(date);
-    onlyDate.setHours(0, 0, 0, 0); // This removes the time part
-    // Use the first 10 words of content as a title if title not provided
+    onlyDate.setHours(0, 0, 0, 0);
 
     const event = new eventsdb({
       clubName: clubName,
@@ -442,15 +524,15 @@ const Post_event = (req, res) => {
 
     event.save()
       .then(() => {
-        res.redirect('/leader/leader-events'); // or re-render with success message
+        res.json({ success: true, message: "Event posted successfully" });
       })
       .catch(err => {
         console.error("Error saving events:", err);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ error: "Internal Server Error" });
       });
   }
   else {
-    res.redirect('/login'); // If not logged in
+    res.status(401).json({ error: "Not authorized" });
   }
 
 }
@@ -460,19 +542,22 @@ exports.Post_event = Post_event;
 
 const events = async (req, res) => {
   if (req.session.isLoggedIn) {
-    const totalCount = await eventsdb.countDocuments();
-    const data1 = await eventsdb.find().sort({ date: 1, time: 1 });
-    const { name, clubName } = req.session.user;
-    res.render('leader/Events', {
-      PageTitle: "Events",
-      Leader_Name: name,
-      Club_Name: clubName,
-      Curr: "Events",
-      data: data1,
-      totalCount: totalCount
-
-    });
-  } else res.redirect("/login");
+    try {
+      const totalCount = await eventsdb.countDocuments();
+      const data1 = await eventsdb.find().sort({ date: 1, time: 1 });
+      const { name, clubName } = req.session.user;
+      res.json({
+        PageTitle: "Events",
+        Leader_Name: name,
+        Club_Name: clubName,
+        data: data1,
+        totalCount: totalCount
+      });
+    } catch (err) {
+      console.error("Error fetching events:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  } else res.status(401).json({ error: "Not authorized" });
 };
 exports.events = events;
 

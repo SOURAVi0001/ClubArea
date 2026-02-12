@@ -7,9 +7,9 @@ export const leaderService = {
     // Openings
     getOpenings: () => api.get('/leader/openings').then(res => res.data),
     createOpening: (data) => api.post('/leader/create-opening', data).then(res => res.data),
-    closeOpening: (id) => api.post(`/leader/close-opening/${id}`).then(res => res.data),
-    getApplicants: (openingId) => api.get(`/leader/applicants/${openingId}`).then(res => res.data),
-    reviewApplication: (applicantId, decision) => api.post(`/leader/review-application/${applicantId}`, { decision }).then(res => res.data),
+    closeOpening: (id) => api.post(`/leader/opening/${id}/close`).then(res => res.data),
+    getApplicants: (openingId) => api.get(`/leader/opening/${openingId}/applicants`).then(res => res.data),
+    reviewApplication: (applicantId, decision) => api.post(`/leader/applicant/${applicantId}/review`, { decision }).then(res => res.data),
 
     // Updates
     getUpdates: () => api.get('/leader/leader-updates').then(res => res.data),
