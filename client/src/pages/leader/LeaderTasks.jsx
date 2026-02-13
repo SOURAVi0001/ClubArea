@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLeaderTasks, useCreateTaskMutation } from '../../hooks/useLeader';
+import { useLeaderTasks, useCreateTaskMutation } from '../../queries/useLeader';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 
@@ -53,7 +53,7 @@ export function LeaderTasks() {
     );
 }
 
-import { useLeaderMembers } from '../../hooks/useLeader';
+import { useLeaderMembers } from '../../queries/useLeader';
 
 function TaskDashboardcontent({ tasks, showForm, setShowForm, formData, setFormData, handleSubmit, createTaskMutation }) {
     const { data: membersData } = useLeaderMembers();

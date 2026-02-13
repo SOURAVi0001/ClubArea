@@ -1,4 +1,4 @@
-import { useLeaderFeedback } from '../../hooks/useLeader';
+import { useLeaderFeedback } from '../../queries/useLeader';
 
 export function LeaderFeedback() {
     const { data, isLoading, error } = useLeaderFeedback();

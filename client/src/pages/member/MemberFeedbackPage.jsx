@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMemberFeedback, useSubmitFeedbackMutation } from '../../hooks/useMember';
+import { useMemberFeedback, useSubmitFeedbackMutation } from '../../queries/useMember';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';

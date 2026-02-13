@@ -1,4 +1,4 @@
-import { useUserDataQuery, useUserApplicationsQuery } from '@/hooks/useUser';
+import { useUserDataQuery, useUserApplicationsQuery } from '@/queries/useUser';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { Link } from 'react-router-dom';
 

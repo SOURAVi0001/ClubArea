@@ -1,4 +1,4 @@
-import { useMemberEvents } from '../../hooks/useMember';
+import { useMemberEvents } from '../../queries/useMember';
 import { format } from 'date-fns';
 
 export function MemberEventsPage() {

@@ -1,4 +1,4 @@
-import { useMemberTasks } from '../../hooks/useMember';
+import { useMemberTasks } from '../../queries/useMember';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/utils/constants';

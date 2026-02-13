@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useMemberTaskDetails } from '../../hooks/useMember';
+import { useMemberTaskDetails } from '../../queries/useMember';
 import { format } from 'date-fns';
 import { ROUTES } from '@/utils/constants';
 

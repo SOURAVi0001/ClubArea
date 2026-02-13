@@ -1,4 +1,4 @@
-import { useLeaderDashboard } from '../../hooks/useLeader'; // Import the hook
+import { useLeaderDashboard } from '../../queries/useLeader'; // Import the hook
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/utils/constants';
 

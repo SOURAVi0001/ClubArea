@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLeaderOpenings, useCreateOpeningMutation } from '../../hooks/useLeader';
+import { useLeaderOpenings, useCreateOpeningMutation } from '../../queries/useLeader';
 import { leaderService } from '../../services/leader';
 import { useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';

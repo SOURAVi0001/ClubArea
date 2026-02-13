@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Input, Card } from '@/components/ui';
 import { ROUTES } from '@/utils/constants';
-import { useLoginUserMutation, useLoginAdminMutation } from '@/hooks/useAuth';
+import { useLoginUserMutation, useLoginAdminMutation } from '@/queries/useAuth';
 import { useState } from 'react';
 
 export function LoginPage() {

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button, Input, Card } from '@/components/ui';
 import { ROUTES } from '@/utils/constants';
-import { useRegisterMutation } from '@/hooks/useAuth';
+import { useRegisterMutation } from '@/queries/useAuth';
 import { useState } from 'react';
 
 export function SignupPage() {

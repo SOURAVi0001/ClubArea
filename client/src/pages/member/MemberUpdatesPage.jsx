@@ -1,4 +1,4 @@
-import { useMemberUpdates } from '../../hooks/useMember';
+import { useMemberUpdates } from '../../queries/useMember';
 import { format } from 'date-fns';
 
 export function MemberUpdatesPage() {

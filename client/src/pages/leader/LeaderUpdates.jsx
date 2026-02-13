@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLeaderUpdates, usePostUpdateMutation } from '../../hooks/useLeader';
+import { useLeaderUpdates, usePostUpdateMutation } from '../../queries/useLeader';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 

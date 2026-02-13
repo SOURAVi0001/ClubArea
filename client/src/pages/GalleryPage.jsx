@@ -1,4 +1,4 @@
-import { useGalleryQuery } from '@/hooks/useContent';
+import { useGalleryQuery } from '@/queries/useContent';
 
 export function GalleryPage() {
     const { data: clubGalleries = [], isLoading, isError } = useGalleryQuery();

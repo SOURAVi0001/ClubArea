@@ -1,4 +1,4 @@
-import { useLeaderTeams } from '../../hooks/useLeader';
+import { useLeaderTeams } from '../../queries/useLeader';
 
 export function LeaderTeams() {
     const { data, isLoading, error } = useLeaderTeams();

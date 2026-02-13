@@ -1,4 +1,4 @@
-import { useMemberContact } from '../../hooks/useMember';
+import { useMemberContact } from '../../queries/useMember';
 
 export function MemberContactPage() {
   const { data, isLoading, error } = useMemberContact();
