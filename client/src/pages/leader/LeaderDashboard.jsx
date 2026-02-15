@@ -1,5 +1,5 @@
 import { useLeaderDashboard } from '../../queries/useLeader'; // Import the hook
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { ROUTES } from '@/utils/constants';
 
 // Since the dashboard endpoint mainly returns user info, we can use it to verify session and show welcome message.

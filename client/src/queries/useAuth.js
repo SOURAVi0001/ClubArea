@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { loginUser, loginAdmin, registerUser } from '../services/auth';
 import { useAuthStore } from '../stores/useAuthStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 
 export function useLoginUserMutation() {
     const setUser = useAuthStore((state) => state.setUser);
@@ -11,7 +11,7 @@ export function useLoginUserMutation() {
         mutationFn: loginUser,
         onSuccess: (data) => {
             setUser(data.user);
-            navigate('/user'); // Redirect to user dashboard
+            navigate({ to: '/user' }); // Redirect to user dashboard
         },
     });
 }
@@ -25,9 +25,9 @@ export function useLoginAdminMutation() {
         onSuccess: (data) => {
             setUser(data.user);
             if (data.redirectUrl) {
-                navigate(data.redirectUrl);
+                navigate({ to: data.redirectUrl });
             } else {
-                navigate('/'); // Fallback
+                navigate({ to: '/' }); // Fallback
             }
         },
     });
@@ -38,7 +38,7 @@ export function useRegisterMutation() {
     return useMutation({
         mutationFn: registerUser,
         onSuccess: () => {
-            navigate('/user_login'); // Redirect to login after signup
+            navigate({ to: '/user_login' }); // Redirect to login after signup
         },
     });
 }

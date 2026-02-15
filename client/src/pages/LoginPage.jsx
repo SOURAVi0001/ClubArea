@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '@tanstack/react-router';
 import { Button, Input, Card } from '@/components/ui';
 import { ROUTES } from '@/utils/constants';
 import { useLoginUserMutation, useLoginAdminMutation } from '@/queries/useAuth';

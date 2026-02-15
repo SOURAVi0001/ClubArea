@@ -1,10 +1,10 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from '@tanstack/react-router';
 import { useMemberTaskDetails } from '../../queries/useMember';
 import { format } from 'date-fns';
 import { ROUTES } from '@/utils/constants';
 
 export function ViewDetailsPage() {
-  const { id } = useParams();
+  const { id } = useParams({ strict: false });
   const { data, isLoading, error } = useMemberTaskDetails(id);
 
   if (isLoading) return <div className="p-8 text-center text-slate-500">Loading task details...</div>;
@@ -21,8 +21,8 @@ export function ViewDetailsPage() {
           <div className="flex justify-between items-start mb-4">
             <h1 className="text-3xl font-bold text-slate-900 leading-tight">{task.title}</h1>
             <span className={`px-4 py-1.5 text-sm font-semibold rounded-full border ${task.task_status === 1
-                ? 'bg-green-50 text-green-600 border-green-100'
-                : 'bg-orange-50 text-orange-600 border-orange-100'
+              ? 'bg-green-50 text-green-600 border-green-100'
+              : 'bg-orange-50 text-orange-600 border-orange-100'
               }`}>
               {task.task_status === 1 ? 'Completed' : 'Pending'}
             </span>

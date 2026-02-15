@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/useAuthStore';
 import { ROUTES } from '@/utils/constants';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { Calendar, MessageSquare, ListTodo, User as UserIcon, ThumbsUp } from 'lucide-react';
 
 export function MemberDashboardPage() {

@@ -1,9 +1,5 @@
 import { api } from './axios';
 
-/**
- * Club shape matching models/clubs.js: id, name, description, photo
- * Mock data used until backend API is available.
- */
 const MOCK_CLUBS = [
   { id: '1', name: 'Tech Club', description: 'Coding and tech events.', photo: null },
   { id: '2', name: 'Design Club', description: 'UI/UX and design workshops.', photo: null },

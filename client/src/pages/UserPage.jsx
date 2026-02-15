@@ -1,6 +1,6 @@
 import { useUserDataQuery, useUserApplicationsQuery } from '@/queries/useUser';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 
 export function UserPage() {
   const { user } = useAuthStore();
@@ -49,8 +49,8 @@ export function UserPage() {
                         <td className="p-4 text-slate-300">{app.teamName}</td>
                         <td className="p-4">
                           <span className={`px-2 py-1 rounded text-xs font-semibold ${app.status === 'accepted' ? 'bg-green-500/20 text-green-300' :
-                              app.status === 'rejected' ? 'bg-red-500/20 text-red-300' :
-                                'bg-yellow-500/20 text-yellow-300'
+                            app.status === 'rejected' ? 'bg-red-500/20 text-red-300' :
+                              'bg-yellow-500/20 text-yellow-300'
                             }`}>
                             {app.status?.toUpperCase()}
                           </span>

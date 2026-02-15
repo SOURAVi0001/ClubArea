@@ -1,6 +1,6 @@
 import { useMemberTasks } from '../../queries/useMember';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { ROUTES } from '@/utils/constants';
 
 export function MemberTaskStatusPage() {
@@ -48,8 +48,8 @@ export function MemberTaskStatusPage() {
                   </td>
                   <td className="py-4 px-6">
                     <span className={`px-3 py-1 text-xs font-semibold rounded-full border ${task.task_status === 1
-                        ? 'bg-green-50 text-green-600 border-green-100'
-                        : 'bg-orange-50 text-orange-600 border-orange-100'
+                      ? 'bg-green-50 text-green-600 border-green-100'
+                      : 'bg-orange-50 text-orange-600 border-orange-100'
                       }`}>
                       {task.task_status === 1 ? 'Completed' : 'Pending'}
                     </span>

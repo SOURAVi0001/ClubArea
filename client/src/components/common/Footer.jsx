@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { ROUTES, CURRENT_YEAR } from '@/utils/constants';
 
 export function Footer() {

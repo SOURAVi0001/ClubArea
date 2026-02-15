@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { Button, Input, Card } from '@/components/ui';
 import { ROUTES } from '@/utils/constants';
 import { useRegisterMutation } from '@/queries/useAuth';

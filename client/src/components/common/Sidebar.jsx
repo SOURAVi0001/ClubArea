@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { Menu, X, Calendar, MessageSquare, Users, Image, MessageCircle, ListTodo, UserPlus, ThumbsUp, Settings } from 'lucide-react';
 import { useUIStore } from '@/stores/useUIStore';
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -17,9 +17,9 @@ const sidebarLinks = [
   { to: ROUTES.LEADER_CLUB_SETTING, icon: Settings, label: 'Club Settings' },
 ];
 
-const linkClass = ({ isActive }) =>
-  `flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg font-medium transition-all duration-200 ${isActive ? 'bg-blue-50 text-blue-600 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-  }`;
+const commonLinkClass = "flex items-center gap-3 py-3 px-4 my-1 mx-2 rounded-lg font-medium transition-all duration-200";
+const activeLinkClass = "bg-blue-50 text-blue-600 border-l-4 border-blue-600";
+const inactiveLinkClass = "text-gray-700 hover:bg-gray-100 hover:text-gray-900";
 
 export function Sidebar() {
   const { mobileMenuOpen, setMobileMenuOpen } = useUIStore();
@@ -62,10 +62,16 @@ export function Sidebar() {
           </div>
           <nav className="space-y-2">
             {sidebarLinks.map(({ to, icon: Icon, label }) => (
-              <NavLink key={to} to={to} className={linkClass} onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                key={to}
+                to={to}
+                activeProps={{ className: `${commonLinkClass} ${activeLinkClass}` }}
+                inactiveProps={{ className: `${commonLinkClass} ${inactiveLinkClass}` }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <Icon className="w-5 h-5 flex-shrink-0" />
                 <span>{label}</span>
-              </NavLink>
+              </Link>
             ))}
           </nav>
         </div>
