@@ -74,12 +74,9 @@ app.use(cors({
 }));
 
 
-// Static file serving
-app.use(express.static(path.join(__dirname, 'frontend')));
+// View engine configuration
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend'));
-app.use('/public', express.static('public'));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -171,6 +168,11 @@ app.use(memberevents);
 app.use(memberFeedback);
 app.use(memberTask_Status);
 app.use(memberupdates);
+
+// Static file serving (placed after API routes to prevent directory shadowing)
+app.use(express.static(path.join(__dirname, 'frontend')));
+app.use('/public', express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(Error404);
 
