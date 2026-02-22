@@ -1,4 +1,4 @@
-import { useRecruitmentQuery } from '@/hooks/useContent';
+import { useRecruitmentQuery } from '@/queries/useContent';
 
 export function RecruitmentPage() {
   const { data: openings = [], isLoading, isError } = useRecruitmentQuery();

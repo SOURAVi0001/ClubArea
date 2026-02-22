@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { ChevronDown } from 'lucide-react';
 import { TypingAnimation } from './TypingAnimation';
 import { ROUTES } from '@/utils/constants';

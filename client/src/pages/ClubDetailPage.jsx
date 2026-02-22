@@ -1,11 +1,11 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from '@tanstack/react-router';
 import { useClubDetailQuery } from '@/hooks';
 import { useClubsStore } from '@/stores/useClubsStore';
 import { useEffect } from 'react';
 import { ROUTES } from '@/utils/constants';
 
 export function ClubDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams({ strict: false });
   const { data: club, isLoading, isError } = useClubDetailQuery(id);
   const { selectClub } = useClubsStore();
 

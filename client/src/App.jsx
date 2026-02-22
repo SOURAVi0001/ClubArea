@@ -1,17 +1,17 @@
-import { BrowserRouter } from 'react-router-dom';
-import { AppRoutes } from './routes';
+import { RouterProvider } from '@tanstack/react-router';
+import { router } from './router';
+
 import { useSessionCheck } from './hooks/useSessionCheck';
 
-function AppContent() {
-  useSessionCheck();
-  return <AppRoutes />;
-}
-
 function App() {
+  const { isLoading } = useSessionCheck();
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center h-screen text-white">Loading...</div>;
+  }
+
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <RouterProvider router={router} />
   );
 }
 

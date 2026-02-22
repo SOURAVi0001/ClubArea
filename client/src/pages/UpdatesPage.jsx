@@ -1,4 +1,4 @@
-import { useUpdatesQuery } from '@/hooks/useContent';
+import { useUpdatesQuery } from '@/queries/useContent';
 
 export function UpdatesPage() {
     const { data: updates = [], isLoading, isError } = useUpdatesQuery();

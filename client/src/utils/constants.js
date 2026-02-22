@@ -30,15 +30,22 @@ export const ROUTES = {
   // Leader (role === 'leader')
   LEADER: '/leader',
   LEADER_EVENTS: '/leader/leader-events',
+  LEADER_POST_EVENT: '/leader/post-event',
   LEADER_UPDATES: '/leader/leader-updates',
+  LEADER_POST_UPDATE: '/leader/post-updates',
   LEADER_TEAMS: '/leader/leader-teams',
   LEADER_MEMBERS: '/leader/leader-members',
   LEADER_CHAT: '/leader/leader-chat',
-  LEADER_TASK_STATUS: '/leader/leader-taskstatus',
+  LEADER_TASKS: '/leader/leader-taskstatus',
+  LEADER_CREATE_TASK: '/leader-Create-Task',
   LEADER_CLUB_SETTING: '/leader/leader-clubsetting',
   LEADER_FEEDBACK: '/leader/leader-feedback',
-  LEADER_OPENINGS: '/leader/openings',
-  LEADER_MANAGE_EVENTS: '/leader/manage-events',
+
+  // Recruitment & Openings
+  LEADER_RECRUITMENT: '/leader/openings', // Dashboard for recruitment
+  LEADER_CREATE_OPENING: '/leader/create-opening',
+  LEADER_APPLICANTS: '/leader/opening/:id/applicants',
+  LEADER_REVIEW_APPLICATION: '/leader/applicant/:id/review',
 
   // Member (role === 'member')
   MEMBER: '/member',

@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { Button, Input, Card } from '@/components/ui';
 import { ROUTES } from '@/utils/constants';
-import { useRegisterMutation } from '@/hooks/useAuth';
+import { useRegisterMutation } from '@/queries/useAuth';
 import { useState } from 'react';
 
 export function SignupPage() {
@@ -10,7 +10,7 @@ export function SignupPage() {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmpassword: ''
   });
 
   const [error, setError] = useState('');
@@ -21,7 +21,7 @@ export function SignupPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmpassword) {
       setError('Passwords do not match');
       return;
     }
@@ -35,10 +35,42 @@ export function SignupPage() {
     <Card className="w-full max-w-md p-8">
       <h1 className="text-2xl font-bold text-slate-900 mb-6">Sign Up</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input label="Name" type="text" name="name" value={formData.name} onChange={handleChange} required />
-        <Input label="Email" type="email" name="email" value={formData.email} onChange={handleChange} required />
-        <Input label="Password" type="password" name="password" value={formData.password} onChange={handleChange} required />
-        <Input label="Confirm Password" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+        <Input
+          label="Name"
+          placeholder="Enter your full name"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          label="Email"
+          placeholder="Enter your email"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          label="Password"
+          placeholder="Create a password"
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          label="Confirm Password"
+          placeholder="Confirm your password"
+          type="password"
+          name="confirmpassword"
+          value={formData.confirmpassword}
+          onChange={handleChange}
+          required
+        />
 
         {(error || apiError) && <p className="text-red-500 text-sm">{error || apiError}</p>}
 
