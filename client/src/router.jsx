@@ -37,6 +37,7 @@ import {
 import { UpdatesPage } from '@/pages/UpdatesPage';
 import { GalleryPage } from '@/pages/GalleryPage';
 import { ContactUsPage } from '@/pages/ContactUsPage';
+import { TestingDataPage } from '@/pages/TestingDataPage';
 
 const rootRoute = createRootRoute({
     component: () => <Outlet />,
@@ -93,7 +94,7 @@ const contactRoute = createRoute({
 const testingDataRoute = createRoute({
     getParentRoute: () => publicLayoutRoute,
     path: 'testing_data',
-    component: () => <div className="pt-24 p-8 text-center text-white">Testing data</div>,
+    component: TestingDataPage,
 });
 
 const authLayoutRoute = createRoute({
@@ -117,6 +118,12 @@ const userLoginRoute = createRoute({
 const adminLoginRoute = createRoute({
     getParentRoute: () => authLayoutRoute,
     path: 'admin_login',
+    component: LoginPage,
+});
+
+const memberLoginRoute = createRoute({
+    getParentRoute: () => authLayoutRoute,
+    path: 'member_login',
     component: LoginPage,
 });
 
@@ -286,6 +293,7 @@ const routeTree = rootRoute.addChildren([
         loginTypeRoute,
         userLoginRoute,
         adminLoginRoute,
+        memberLoginRoute,
         signupRoute,
     ]),
     leaderLayoutRoute.addChildren([

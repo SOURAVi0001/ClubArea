@@ -2,6 +2,10 @@ const express = require('express');
 const UserRouter = express.Router();
 const home = require('../controllers/home');
 const InterviewApplicationdb = require('../models/Application_form');
+const authenticateToken = require('../Utils/authMiddleware');
+
+UserRouter.use(authenticateToken);
+
 UserRouter.get('/user', home.user);
 UserRouter.post('/store-application-data', home.storeApplicationData);
 UserRouter.get('/user-applications', home.getUserApplications);

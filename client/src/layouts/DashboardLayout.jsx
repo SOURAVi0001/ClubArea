@@ -11,7 +11,7 @@ export function DashboardLayout() {
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-900">
       {isLeader ? <Sidebar /> : <MemberSidebar />}
-      <div className="flex-1 md:ml-0 transition-all">
+      <div className="flex-1 md:ml-80 transition-all overflow-x-hidden">
         <Outlet />
       </div>
     </div>

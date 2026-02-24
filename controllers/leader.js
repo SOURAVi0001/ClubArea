@@ -47,11 +47,11 @@ const getAvailableRoles = async (clubId) => {
 const getOpeningsDashboard = async (req, res) => {
   try {
     // Check if user is logged in and is a leader
-    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+    if (!req.user) {
       return res.status(401).json({ error: "Please log in to continue" });
     }
 
-    const user = req.session.user;
+    const user = req.user;
 
     // Only leaders can access this dashboard
     if (user.role !== 'leader') {
@@ -111,12 +111,12 @@ const getOpeningsDashboard = async (req, res) => {
 // Create a new opening
 const createOpening = async (req, res) => {
   try {
-    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+    if (!req.user) {
       return res.status(401).json({ error: 'Please log in to continue.' });
     }
 
     const { role, teamName, description, requirements, maxApplicants } = req.body;
-    const user = req.session.user;
+    const user = req.user;
 
     if (user.role !== 'leader') {
       return res.status(403).json({ error: 'Only leaders can create openings.' });
@@ -156,12 +156,12 @@ const createOpening = async (req, res) => {
 // Close an existing opening
 const closeOpening = async (req, res) => {
   try {
-    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+    if (!req.user) {
       return res.status(401).json({ error: 'Please log in to continue.' });
     }
 
     const { openingId } = req.body;
-    const user = req.session.user;
+    const user = req.user;
 
     if (user.role !== 'leader') {
       return res.status(403).json({ error: 'Only leaders can close openings.' });
@@ -199,11 +199,11 @@ const closeOpening = async (req, res) => {
 // Get applicants for specific opening
 const getApplicants = async (req, res) => {
   try {
-    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+    if (!req.user) {
       return res.status(401).json({ error: 'Please log in to continue.' });
     }
 
-    const user = req.session.user;
+    const user = req.user;
 
     if (user.role !== 'leader') {
       return res.status(403).json({ error: 'Only leaders can view applicants.' });
@@ -258,14 +258,14 @@ const getApplicants = async (req, res) => {
 // Review application (accept/reject)
 const reviewApplication = async (req, res) => {
   try {
-    if (!req.session || !req.session.isLoggedIn || !req.session.user) {
+    if (!req.user) {
       return res.status(401).json({
         success: false,
         message: 'Please log in to continue.'
       });
     }
 
-    const user = req.session.user;
+    const user = req.user;
 
     if (user.role !== 'leader') {
       return res.status(403).json({
@@ -439,11 +439,11 @@ exports.closeOpening = closeOpening;
 exports.getApplicants = getApplicants;
 
 const updates = async (req, res) => {
-  if (req.session.isLoggedIn) {
+  if (req.user) {
     try {
       const totalCount = await updatedb.countDocuments();
       const data = await updatedb.find().sort({ date: -1 }).limit(5);
-      const { name, clubName } = req.session.user;
+      const { name, clubName } = req.user;
 
       res.json({
         PageTitle: "Updates",
@@ -477,8 +477,8 @@ exports.updatesPage = updatesPage;
 
 
 const Post_Updates = (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, clubId, clubName } = req.session.user;
+  if (req.user) {
+    const { name, clubId, clubName } = req.user;
     const { content, postType, title } = req.body;
 
     const update = new updatedb({
@@ -506,8 +506,8 @@ const Post_Updates = (req, res) => {
 exports.Post_Updates = Post_Updates;
 
 const Post_event = (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, clubId, clubName } = req.session.user;
+  if (req.user) {
+    const { name, clubId, clubName } = req.user;
     const { title, date, venue, time } = req.body;
     const onlyDate = new Date(date);
     onlyDate.setHours(0, 0, 0, 0);
@@ -541,11 +541,11 @@ exports.Post_event = Post_event;
 
 
 const events = async (req, res) => {
-  if (req.session.isLoggedIn) {
+  if (req.user) {
     try {
       const totalCount = await eventsdb.countDocuments();
       const data1 = await eventsdb.find().sort({ date: 1, time: 1 });
-      const { name, clubName } = req.session.user;
+      const { name, clubName } = req.user;
       res.json({
         PageTitle: "Events",
         Leader_Name: name,
@@ -582,9 +582,9 @@ const paginatedEvents = async (req, res) => {
 exports.paginatedEvents = paginatedEvents;
 
 const feedback = async (req, res) => {
-  if (req.session.isLoggedIn) {
+  if (req.user) {
     try {
-      const { name, clubName, clubId } = req.session.user;
+      const { name, clubName, clubId } = req.user;
       const search = req.query.search || '';
       const userType = req.query.userType || '';
       const limit = parseInt(req.query.limit) || 5;
@@ -623,8 +623,8 @@ const feedback = async (req, res) => {
 exports.feedback = feedback;
 
 const recuriment = (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, clubName } = req.session.user;
+  if (req.user) {
+    const { name, clubName } = req.user;
     res.json({
       PageTitle: "Recruitment",
       Leader_Name: name,
@@ -635,9 +635,9 @@ const recuriment = (req, res) => {
 exports.recuriment = recuriment;
 
 const taskstatus = async (req, res) => {
-  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+  if (!req.user) return res.status(401).json({ error: "Not authorized" });
 
-  const { name, clubName, clubId } = req.session.user;
+  const { name, clubName, clubId } = req.user;
   const search = req.query.search || '';
 
   try {
@@ -668,9 +668,9 @@ const taskstatus = async (req, res) => {
 exports.taskstatus = taskstatus;
 
 const create_task = async (req, res) => {
-  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+  if (!req.user) return res.status(401).json({ error: "Not authorized" });
 
-  const { name, clubName, clubId } = req.session.user;
+  const { name, clubName, clubId } = req.user;
 
   // Handle GET request – show the form
   if (req.method === 'GET') {
@@ -720,9 +720,9 @@ exports.create_task = create_task;
 
 
 const teams = async (req, res) => {
-  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+  if (!req.user) return res.status(401).json({ error: "Not authorized" });
 
-  const { name, clubName, clubId } = req.session.user;
+  const { name, clubName, clubId } = req.user;
 
   try {
     const members = await admindb.find({ clubId, role: "member" });
@@ -753,9 +753,9 @@ const teams = async (req, res) => {
 exports.teams = teams;
 
 const members = (req, res) => {
-  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+  if (!req.user) return res.status(401).json({ error: "Not authorized" });
 
-  const { name, clubName, clubId } = req.session.user;
+  const { name, clubName, clubId } = req.user;
 
   admindb.find({ clubId, role: "member" })
     .then(members => {
@@ -775,8 +775,8 @@ const members = (req, res) => {
 exports.members = members;
 
 const chat = (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, clubName } = req.session.user;
+  if (req.user) {
+    const { name, clubName } = req.user;
     res.json({
       PageTitle: "Chat",
       Leader_Name: name,
@@ -787,8 +787,8 @@ const chat = (req, res) => {
 exports.chat = chat;
 
 const clubsettings = (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, clubName } = req.session.user;
+  if (req.user) {
+    const { name, clubName } = req.user;
     res.json({
       PageTitle: "Club Settings",
       Leader_Name: name,
@@ -799,14 +799,14 @@ const clubsettings = (req, res) => {
 exports.clubsettings = clubsettings;
 
 const dashboard = (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, clubName, email } = req.session.user;
+  if (req.user) {
+    const { name, clubName, email } = req.user;
     res.json({
       PageTitle: "Leader Dashboard",
       Leader_Name: name,
       Club_Name: clubName,
       email: email, // Added email as useful info
-      user: req.session.user // Full user object if needed
+      user: req.user // Full user object if needed
     });
   } else res.status(401).json({ error: "Not authorized" });
 };
