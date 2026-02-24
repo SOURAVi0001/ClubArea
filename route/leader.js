@@ -1,9 +1,13 @@
-const path=require('path');
-const rootDir=require('../Utils/path');
-const express=require('express');
-const UserRouter=express.Router();
-const home=require('../controllers/home');
-UserRouter.get('/leader_log',home.leader_log);
-UserRouter.get('/leader',home.leader);
+const path = require('path');
+const rootDir = require('../Utils/path');
+const express = require('express');
+const UserRouter = express.Router();
+const home = require('../controllers/home');
+const authenticateToken = require('../Utils/authMiddleware');
 
-module.exports=UserRouter;
+UserRouter.use(authenticateToken);
+
+UserRouter.get('/leader_log', home.leader_log);
+UserRouter.get('/leader', home.leader);
+
+module.exports = UserRouter;

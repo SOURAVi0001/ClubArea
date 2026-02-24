@@ -9,7 +9,10 @@ const Applieddb = require('../models/Applied'); // Adjust path as needed
 
 const opening = require('../models/Opening');
 const openingdb = require('../models/Opening');
+const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const { body, validationResult } = require('express-validator');
 const form = async (req, res) => {
   const openingData = await openingdb.findById(req.session.user.openingId);
@@ -218,14 +221,18 @@ const VALIDATE = [
       const user = new userdb({ name, email, password });
       await user.save();
 
-      // Auto-login or just success message
-      req.session.isLoggedIn = true; // Maybe auto-login?
-      req.session.user = user;
+      // Generate JWT Token
+      const token = jwt.sign(
+        { id: user._id, email: user.email, name: user.name, role: 'user' },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+      );
 
       return res.status(201).json({
         success: true,
         message: "User registered successfully",
-        user: { name: user.name, email: user.email }
+        token,
+        user: { name: user.name, email: user.email, role: 'user' }
       });
     } catch (err) {
       console.log("Error in saving the user: ", err);
@@ -277,11 +284,19 @@ const user_login_post = async (req, res) => {
       return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    req.session.errors = [];
-    req.session.oldInput = {};
-    return res.json({ success: true, message: "Login successful", user });
+    // Generate JWT Token
+    const token = jwt.sign(
+      { id: user._id, email: user.email, name: user.name, role: 'user' },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    return res.json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: { name: user.name, email: user.email, role: 'user' }
+    });
 
   } catch (err) {
     console.error("Login error:", err);
@@ -308,11 +323,12 @@ const admin_login_post = async (req, res) => {
       return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
-    // Set session
-    req.session.isLoggedIn = true; // Was false in original?? Setting to true for logic consistency
-    req.session.user = user;
-    req.session.errors = [];
-    req.session.oldInput = {};
+    // Generate JWT Token
+    const token = jwt.sign(
+      { id: user._id, email: user.email, name: user.name, role: user.role, clubName: user.clubName },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
 
     let redirectUrl = '/admin'; // default
     if (user.role === 'leader') {
@@ -321,8 +337,12 @@ const admin_login_post = async (req, res) => {
       redirectUrl = '/member';
     }
 
-    req.session.save(() => {
-      return res.json({ success: true, message: "Login successful", user, redirectUrl });
+    return res.json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: { name: user.name, email: user.email, role: user.role, clubName: user.clubName },
+      redirectUrl
     });
 
   }
@@ -336,8 +356,8 @@ exports.admin_login_post = admin_login_post;
 
 
 const user = async (req, res) => {
-  console.log("user call here with session ", req.url, req.method, req.body, req.session.user);
-  const userEmail = req.session.user.email;
+  console.log("user call here with token", req.url, req.method, req.body, req.user);
+  const userEmail = req.user.email;
 
   // Step 1: Get all applied job records by this user
   const appliedDocs = await Applieddb.find({ applicantEmail: userEmail });
@@ -381,7 +401,7 @@ const user = async (req, res) => {
   console.log("openingsApplied", openingsApplied);
   console.log("openingsNotApplied", openingsNotApplied);
   const alreadyApplied = await InterviewApplicationdb.find({ applicantEmail: userEmail });
-  const username = req.session.user.name;
+  const username = req.user.name;
   // Step 2: Extract jobIds the user has applied to
 
   // Now you can use openingsApplied and openingsNotApplied in your view or return them
@@ -442,19 +462,27 @@ exports.updates = updates;
 // Add this route to check if user is logged in
 // Add to your routes controller
 const checkSession = (req, res) => {
-  try {
-    const isLoggedIn = !!(req.session && req.session.user && req.session.isLoggedIn);
+  // Use authorization header token
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
+  if (!token) {
+    return res.json({ loggedIn: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     res.json({
-      loggedIn: isLoggedIn,
-      user: isLoggedIn ? {
-        name: req.session.user.name,
-        email: req.session.user.email,
-        role: req.session.user.role
-      } : null
+      loggedIn: true,
+      user: {
+        name: decoded.name,
+        email: decoded.email,
+        role: decoded.role,
+        clubName: decoded.clubName
+      }
     });
   } catch (error) {
-    console.error('Error checking session:', error);
+    console.error('Error verifying token:', error.message);
     res.json({ loggedIn: false });
   }
 };
@@ -735,11 +763,11 @@ const storeApplicationData = (req, res) => {
 // Get user applications
 const getUserApplications = async (req, res) => {
   try {
-    if (!req.session || !req.session.user) {
+    if (!req.user) {
       return res.json({ success: false, message: 'Not logged in' });
     }
 
-    const userEmail = req.session.user.email;
+    const userEmail = req.user.email;
 
     // Fetch user's applications using correct field name from schema
     const applications = await InterviewApplicationdb.find({
@@ -771,6 +799,74 @@ const getUserApplications = async (req, res) => {
   }
 };
 
+const google_login_post = async (req, res) => {
+  const { token, role } = req.body;
+
+  try {
+    // 1. Verify Google token
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+    const { email, name, picture } = payload;
+
+    // 2. Check if user exists in admindb first (since they have higher privileges)
+    let user = await admindb.findOne({ email });
+    let isUserType = 'admin';
+
+    // 3. Check userdb if not in admindb
+    if (!user) {
+      user = await userdb.findOne({ email });
+      isUserType = 'user';
+    }
+
+    // 4. Handle auto-registration for generic users if not found
+    if (!user) {
+      // Create new user in userdb
+      user = new userdb({
+        name,
+        email,
+        password: Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8), // Dummy password
+        isGoogleAuth: true
+      });
+      await user.save();
+      isUserType = 'user';
+    }
+
+    // 5. Generate Application JWT
+    const jwtPayload = {
+      id: user._id,
+      email: user.email,
+      name: user.name || name,
+      role: isUserType === 'admin' ? user.role : 'user',
+      clubName: user.clubName
+    };
+
+    const userToken = jwt.sign(
+      jwtPayload,
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    let redirectUrl = '/user'; // Default
+    if (jwtPayload.role === 'leader') redirectUrl = '/leader';
+    if (jwtPayload.role === 'member') redirectUrl = '/member';
+
+    return res.json({
+      success: true,
+      message: "Google Login successful",
+      token: userToken,
+      user: jwtPayload,
+      redirectUrl
+    });
+
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    return res.status(401).json({ success: false, message: "Google Authentication failed" });
+  }
+};
+
 exports.storeApplicationData = storeApplicationData;
 exports.getUserApplications = getUserApplications;
-
+exports.google_login_post = google_login_post;

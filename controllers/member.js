@@ -5,8 +5,8 @@ const taskstatusdb = require('../models/task_status');
 const feedbackdb = require('../models/feedback');
 
 const events = async (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, email } = req.session.user;
+  if (req.user) {
+    const { name, email } = req.user;
 
     const admin = await admindb.findOne({ email });
     if (!admin) {
@@ -61,7 +61,7 @@ const updates = async (req, res) => {
       return res.status(401).json({ error: "Not authorized" });
     }
 
-    const { name, email } = req.session.user;
+    const { name, email } = req.user;
     const admin = await admindb.findOne({ email });
 
     if (!admin) {
@@ -104,8 +104,8 @@ const updates = async (req, res) => {
 exports.updates = updates;
 
 const Contact = async (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, email } = req.session.user;
+  if (req.user) {
+    const { name, email } = req.user;
     const admin = await admindb.findOne({ email });
 
     if (!admin) {
@@ -134,8 +134,8 @@ const Contact = async (req, res) => {
 exports.Contact = Contact;
 
 const Task_Status = async (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, email } = req.session.user;
+  if (req.user) {
+    const { name, email } = req.user;
     const admin = await admindb.findOne({ email });
 
     if (!admin) {
@@ -181,8 +181,8 @@ const Task_Status = async (req, res) => {
 exports.Task_Status = Task_Status;
 
 const Task_view_details = async (req, res) => {
-  if (req.session.isLoggedIn) {
-    const { name, email } = req.session.user;
+  if (req.user) {
+    const { name, email } = req.user;
     const admin = await admindb.findOne({ email });
 
     if (!admin) return res.status(404).json({ error: "Member profile not found" });
@@ -213,9 +213,9 @@ exports.Task_view_details = Task_view_details;
 
 // Split Feedback into get and post
 const getFeedback = async (req, res) => {
-  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+  if (!req.user) return res.status(401).json({ error: "Not authorized" });
 
-  const { name, email } = req.session.user;
+  const { name, email } = req.user;
   const admin = await admindb.findOne({ email });
   if (!admin) return res.status(404).json({ error: "Member profile not found" });
   const { clubName } = admin;
@@ -236,10 +236,10 @@ const getFeedback = async (req, res) => {
 exports.getFeedback = getFeedback;
 
 const postFeedback = async (req, res) => {
-  if (!req.session.isLoggedIn) return res.status(401).json({ error: "Not authorized" });
+  if (!req.user) return res.status(401).json({ error: "Not authorized" });
 
   const { title, description } = req.body;
-  const { name, email } = req.session.user;
+  const { name, email } = req.user;
 
   const admin = await admindb.findOne({ email });
   if (!admin) return res.status(404).json({ error: "Member profile not found" });

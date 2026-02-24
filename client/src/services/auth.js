@@ -19,3 +19,8 @@ export async function checkSession() {
     const { data } = await api.get('/check-session');
     return data;
 }
+
+export async function loginGoogle(data) {
+    const res = await api.post('/google_login_post', data);
+    return res.data;
+}

@@ -1,10 +1,8 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const session = require('express-session');
 
 const app = express();
-const MongoStore = require('connect-mongo');
 // Route imports
 const home = require('./route/Home');
 const ContactUs = require('./route/ContactUs');
@@ -39,32 +37,6 @@ const Sign_Up = require('./route/Sign_Up');
 const VALIDATE = require('./route/VALIDATE');
 const user = require('./route/user');
 const RegistrationRoutes = require('./route/Registration');
-
-// Session configuration - improved for production
-let sessionConfig = {
-  secret: process.env.SESSION_SECRET || 'DUNIYA_SURU_AUR_KATAM_AK_VAHEM_HAI',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 1000 * 60 * 60 * 24 // 1-day cookie expiry
-  }
-};
-
-// Use MongoDB session store in production if available
-if (process.env.MONGODB_URI) {
-  try {
-    const MongoStore = require('connect-mongo');
-    sessionConfig.store = MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI
-    });
-    console.log('Using MongoDB session store');
-  } catch (error) {
-    console.log('MongoDB session store not available, using default memory store');
-  }
-}
-
-app.use(session(sessionConfig));
 
 // Enable CORS
 const cors = require('cors');

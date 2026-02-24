@@ -16,14 +16,19 @@ export const useAuthStore = create((set) => ({
   ...initialState,
 
   /** Set user after login. Backend sends { name, email, role, clubName?, clubId? } */
-  setUser: (user) =>
+  setUser: (user, token) => {
+    if (token) localStorage.setItem('auth_token', token);
     set({
       user: user ?? null,
       isLoggedIn: !!user,
       role: user?.role ?? null,
-    }),
+    });
+  },
 
-  logout: () => set(initialState),
+  logout: () => {
+    localStorage.removeItem('auth_token');
+    set(initialState);
+  },
 
   /** Hydrate from check-session API: { loggedIn, user: { name, email, role } } */
   hydrate: (payload) => {
