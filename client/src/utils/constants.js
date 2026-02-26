@@ -17,6 +17,7 @@ export const ROUTES = {
   LOGIN_TYPE: '/login_type',
   USER_LOGIN: '/user_login',
   ADMIN_LOGIN: '/admin_login',
+  MEMBER_LOGIN: '/member_login',
   SIGNUP: '/Sign_Up',
   VALIDATE: '/VALIDATE',
 

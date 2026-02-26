@@ -16,11 +16,11 @@ export function RecruitmentPage() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {openings.map((opening) => (
-              <div key={opening._id} className="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
-                <h3 className="text-xl font-bold text-white mb-2">{opening.role || opening.position}</h3>
-                <p className="text-fuchsia-400 text-sm mb-4">{opening.clubName} • {opening.teamName}</p>
-                <p className="text-slate-300 mb-6">{opening.description || "Join our team!"}</p>
-                <button className="px-4 py-2 bg-fuchsia-600 hover:bg-fuchsia-700 text-white rounded-lg text-sm font-medium transition">
+              <div key={opening._id} className="group p-6 rounded-3xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-[0px] transition-all duration-300 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+                <h3 className="text-xl font-bold text-white mb-2 drop-shadow-md">{opening.role || opening.position}</h3>
+                <p className="text-fuchsia-300 text-sm mb-4 font-medium drop-shadow-sm">{opening.clubName} • {opening.teamName}</p>
+                <p className="text-slate-200 mb-6 drop-shadow-sm">{opening.description || "Join our team!"}</p>
+                <button className="px-5 py-2.5 bg-fuchsia-600/80 hover:bg-fuchsia-600 border border-fuchsia-500/50 text-white rounded-xl text-sm font-medium transition shadow-lg backdrop-blur-[0px] group-hover:scale-[1.02]">
                   Apply Now
                 </button>
               </div>

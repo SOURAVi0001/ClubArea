@@ -18,14 +18,14 @@ export function MemberContactPage() {
       <div className="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden transform hover:-translate-y-1 transition-all">
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white relative overflow-hidden">
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl font-bold shadow-inner border border-white/30">
+            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-[0px] flex items-center justify-center text-4xl font-bold shadow-inner border border-white/30">
               {leader?.name?.charAt(0)}
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl font-bold text-white mb-1">{leader?.name}</h2>
               <p className="text-blue-100 font-medium tracking-wide opacity-90">Club Leader</p>
               <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-3">
-                <span className="bg-white/10 px-3 py-1 rounded-full text-sm backdrop-blur-sm border border-white/10">{Club_Name}</span>
+                <span className="bg-white/10 px-3 py-1 rounded-full text-sm backdrop-blur-[0px] border border-white/10">{Club_Name}</span>
               </div>
             </div>
           </div>
