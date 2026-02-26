@@ -16,19 +16,19 @@ export function UpdatesPage() {
                 ) : (
                     <div className="space-y-6">
                         {updates.map((update) => (
-                            <div key={update._id} className="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                            <div key={update._id} className="p-6 rounded-3xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-[0px] transition-all duration-300 shadow-[0_4px_16px_0_rgba(0,0,0,0.2)]">
                                 <div className="flex justify-between items-start mb-4">
                                     <div>
-                                        <span className="inline-block px-2 py-1 text-xs font-semibold bg-fuchsia-500/20 text-fuchsia-300 rounded-md mb-2">
+                                        <span className="inline-block px-3 py-1 font-semibold bg-fuchsia-500/20 text-fuchsia-300 rounded-lg mb-2 text-sm shadow-sm border border-fuchsia-500/20">
                                             {update.clubName}
                                         </span>
-                                        <h3 className="text-xl font-bold text-white">{update.title}</h3>
+                                        <h3 className="text-xl font-bold text-white drop-shadow-md">{update.title}</h3>
                                     </div>
-                                    <span className="text-slate-500 text-sm">
+                                    <span className="text-slate-300 text-sm font-medium drop-shadow-sm">
                                         {new Date(update.date || update.createdAt).toLocaleDateString()}
                                     </span>
                                 </div>
-                                <p className="text-slate-300 whitespace-pre-line">{update.content || update.description}</p>
+                                <p className="text-slate-200 whitespace-pre-line leading-relaxed drop-shadow-sm">{update.content || update.description}</p>
                             </div>
                         ))}
                     </div>
