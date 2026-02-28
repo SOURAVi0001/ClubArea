@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "nodemon --exec ts-node app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "description": "",
@@ -100,6 +100,17 @@
     "wrappy": "^1.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.18.2",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.3.2",
+    "@types/nodemailer": "^7.0.11",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }
