@@ -1,7 +1,7 @@
 // Background effect component for main layouts
 export function GlassBackground() {
     return (
-        <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-slate-900">
+        <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-transparent">
             {/* Dynamic gradient background elements matching the app aesthetic */}
             <div className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-blue-900/20 rounded-full blur-[120px] mix-blend-screen animate-pulse duration-10000"></div>
             <div className="absolute bottom-0 -right-1/4 w-1/2 h-1/2 bg-indigo-900/20 rounded-full blur-[120px] mix-blend-screen animate-pulse duration-7000"></div>

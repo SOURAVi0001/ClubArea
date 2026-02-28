@@ -1,7 +1,7 @@
 import { RouterProvider } from '@tanstack/react-router';
 import { router } from './router';
-
 import { useSessionCheck } from './hooks/useSessionCheck';
+import { GlassyOverlay } from './components/common/GlassyOverlay';
 
 function App() {
   const { isLoading } = useSessionCheck();
@@ -11,7 +11,9 @@ function App() {
   }
 
   return (
-    <RouterProvider router={router} />
+    <GlassyOverlay>
+      <RouterProvider router={router} />
+    </GlassyOverlay>
   );
 }
 

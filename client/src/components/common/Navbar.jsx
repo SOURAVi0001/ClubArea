@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Menu, X, Palette } from 'lucide-react';
 import { useUIStore } from '@/stores/useUIStore';
@@ -83,6 +83,7 @@ const inactiveMobileLinkClass = "text-slate-300 hover:text-white hover:bg-slate-
 export function Navbar() {
   const { mobileMenuOpen, setMobileMenuOpen } = useUIStore();
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
+  const preferencesRef = useRef(null);
 
   return (
     <>
@@ -111,32 +112,56 @@ export function Navbar() {
                   <span>{label}</span>
                 </Link>
               ))}
-              <div className="ml-4 pl-4 border-l border-slate-700 flex items-center space-x-4">
-                <button
-                  onClick={() => setIsPreferencesOpen(true)}
-                  className="p-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50"
-                  aria-label="Background Preferences"
-                  title="Change Background"
-                >
-                  <Palette className="w-5 h-5 text-yellow-100" />
-                </button>
+              <div className="ml-4 pl-4 border-l border-white/10 flex items-center space-x-4">
+                <div className="relative" ref={preferencesRef}>
+                    <button
+                        onClick={() => setIsPreferencesOpen(!isPreferencesOpen)}
+                        className={`p-2.5 rounded-xl border border-white/20 transition-all focus:outline-none flex items-center justify-center
+                          ${isPreferencesOpen 
+                              ? 'bg-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]' 
+                              : 'bg-white/5 hover:bg-white/10 backdrop-blur-md'
+                          }
+                        `}
+                        aria-label="Background Preferences"
+                        title="Change Appearance"
+                    >
+                        <Palette className={`w-5 h-5 transition-colors ${isPreferencesOpen ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} />
+                    </button>
+                    {isPreferencesOpen && (
+                        <div className="absolute right-0 top-full mt-2 w-max">
+                            <PreferencesModal isOpen={isPreferencesOpen} onClose={() => setIsPreferencesOpen(false)} />
+                        </div>
+                    )}
+                </div>
                 <Link to={ROUTES.LOGIN_TYPE}>
                   <GlassButton>Login</GlassButton>
                 </Link>
               </div>
             </nav>
 
-            <div className="flex items-center lg:hidden">
-              <button
-                onClick={() => setIsPreferencesOpen(true)}
-                className="p-2 mr-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-full transition-colors"
-                aria-label="Background Preferences"
-              >
-                <Palette className="w-5 h-5 text-gray-400" />
-              </button>
+            <div className="flex items-center lg:hidden gap-2">
+              <div className="relative" ref={preferencesRef}>
+                  <button
+                      onClick={() => setIsPreferencesOpen(!isPreferencesOpen)}
+                      className={`p-2 rounded-xl border border-white/20 transition-all focus:outline-none flex items-center justify-center
+                          ${isPreferencesOpen 
+                              ? 'bg-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]' 
+                              : 'bg-white/5 hover:bg-white/10 backdrop-blur-md'
+                          }
+                      `}
+                      aria-label="Background Preferences"
+                  >
+                      <Palette className={`w-5 h-5 transition-colors ${isPreferencesOpen ? 'text-white' : 'text-slate-300'}`} />
+                  </button>
+                  {isPreferencesOpen && (
+                      <div className="absolute right-0 top-full mt-2 w-[90vw] max-w-sm">
+                          <PreferencesModal isOpen={isPreferencesOpen} onClose={() => setIsPreferencesOpen(false)} />
+                      </div>
+                  )}
+              </div>
               <button
                 type="button"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors"
+                className="p-2 text-slate-300 hover:text-white hover:bg-white/10 bg-white/5 rounded-xl border border-white/20 transition-colors backdrop-blur-md"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
@@ -184,8 +209,6 @@ export function Navbar() {
           </div>
         </div>
       </header>
-
-      <PreferencesModal isOpen={isPreferencesOpen} onClose={() => setIsPreferencesOpen(false)} />
 
     </>
   );

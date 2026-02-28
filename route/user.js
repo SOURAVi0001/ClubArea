@@ -4,12 +4,12 @@ const home = require('../controllers/home');
 const InterviewApplicationdb = require('../models/Application_form');
 const authenticateToken = require('../Utils/authMiddleware');
 
-UserRouter.use(authenticateToken);
+// UserRouter.use(authenticateToken); // Removed global middleware to prevent leakage
 
-UserRouter.get('/user', home.user);
-UserRouter.post('/store-application-data', home.storeApplicationData);
-UserRouter.get('/user-applications', home.getUserApplications);
-UserRouter.get('/store-application-data1', (req, res) => {
+UserRouter.get('/user', authenticateToken, home.user);
+UserRouter.post('/store-application-data', authenticateToken, home.storeApplicationData);
+UserRouter.get('/user-applications', authenticateToken, home.getUserApplications);
+UserRouter.get('/store-application-data1', authenticateToken, (req, res) => {
   if (!req.session) {
     return res.status(500).json({
       success: false,
@@ -29,7 +29,7 @@ UserRouter.get('/store-application-data1', (req, res) => {
   }
 
 });
-UserRouter.get('/user-applied-roles', async (req, res) => {
+UserRouter.get('/user-applied-roles', authenticateToken, async (req, res) => {
   try {
     // Use session user email instead of userId since your schema doesn't have userId
     const userEmail = req.session?.user?.email;

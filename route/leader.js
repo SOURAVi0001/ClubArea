@@ -5,9 +5,9 @@ const UserRouter = express.Router();
 const home = require('../controllers/home');
 const authenticateToken = require('../Utils/authMiddleware');
 
-UserRouter.use(authenticateToken);
+// UserRouter.use(authenticateToken);
 
-UserRouter.get('/leader_log', home.leader_log);
-UserRouter.get('/leader', home.leader);
+UserRouter.get('/leader_log', authenticateToken, home.leader_log);
+UserRouter.get('/leader', authenticateToken, home.leader);
 
 module.exports = UserRouter;
